@@ -664,47 +664,81 @@
                         </div>
                     </header>
 
-                    {/* Progress Steps */}
+                    {/* Progress Header */}
                     <div className="bg-white border-b">
                         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                            <nav className="flex space-x-8 py-4" role="navigation" aria-label="Stappen">
-                                {availableSteps.map((step, index) => (
-                                    <div key={step.stap_id} className="flex items-center">
-                                        <button
-                                            ref={el => stepRefs.current[index] = el}
-                                            onClick={() => goToStep(step.stap_id)}
-                                            className={`flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                                                step.stap_id === currentStep?.stap_id
-                                                    ? 'bg-blue-100 text-blue-700'
-                                                    : index < availableSteps.length - 1
-                                                    ? 'bg-green-100 text-green-700 hover:bg-green-200'
-                                                    : 'text-gray-500 hover:text-gray-700'
-                                            }`}
-                                            aria-current={step.stap_id === currentStep?.stap_id ? 'step' : undefined}
-                                            aria-label={`Stap ${step.volgorde}: ${step.titel}`}
-                                        >
-                                            <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs ${
-                                                index < availableSteps.length - 1 ? 'bg-green-500 text-white' : 
-                                                step.stap_id === currentStep?.stap_id ? 'bg-blue-500 text-white' : 
-                                                'bg-gray-300 text-gray-600'
-                                            }`}>
-                                                {index < availableSteps.length - 1 ? '✓' : step.volgorde}
-                                            </span>
-                                            <span className="hidden sm:inline">{step.titel}</span>
-                                        </button>
-                                        {index < availableSteps.length - 1 && (
-                                            <div className="w-8 h-px bg-gray-300 mx-2"></div>
-                                        )}
-                                    </div>
-                                ))}
-                            </nav>
+                            {/* Progress Percentage */}
+                            <div className="py-4">
+                                <div className="flex items-center justify-between mb-2">
+                                    <span className="text-sm font-medium text-gray-700">Voortgang</span>
+                                    <span className="text-sm text-gray-500">
+                                        {currentFlow ? Math.round(((currentFlow.stappen.findIndex(s => s.stap_id === currentStep?.stap_id) + 1) / currentFlow.stappen.length) * 100) : 0}%
+                                    </span>
+                                </div>
+                                <div className="w-full bg-gray-200 rounded-full h-2">
+                                    <div 
+                                        className="bg-blue-600 h-2 rounded-full transition-all duration-300 ease-out"
+                                        style={{ 
+                                            width: currentFlow ? `${((currentFlow.stappen.findIndex(s => s.stap_id === currentStep?.stap_id) + 1) / currentFlow.stappen.length) * 100}%` : '0%'
+                                        }}
+                                    ></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
                     {/* Main Content */}
                     <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                        {currentStep && (
-                            <div className="bg-white rounded-lg shadow p-6">
+                        <div className="flex gap-8">
+                            {/* Vertical Progress Sidebar */}
+                            <div className="w-64 flex-shrink-0">
+                                <div className="bg-white rounded-lg shadow p-4 sticky top-8">
+                                    <h3 className="text-sm font-semibold text-gray-700 mb-4">Flow Stappen</h3>
+                                    <nav className="space-y-2" role="navigation" aria-label="Flow stappen">
+                                        {currentFlow?.stappen.map((step, index) => {
+                                            const isCompleted = flowEngine.current?.flowHistory?.some(h => h.step.stap_id === step.stap_id) || false;
+                                            const isCurrent = step.stap_id === currentStep?.stap_id;
+                                            const isAccessible = index === 0 || isCompleted || (index > 0 && currentFlow.stappen[index - 1] && 
+                                                flowEngine.current?.flowHistory?.some(h => h.step.stap_id === currentFlow.stappen[index - 1].stap_id));
+                                            
+                                            return (
+                                                <button
+                                                    key={step.stap_id}
+                                                    ref={el => stepRefs.current[index] = el}
+                                                    onClick={() => isAccessible && goToStep(step.stap_id)}
+                                                    disabled={!isAccessible}
+                                                    className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                                                        isCurrent
+                                                            ? 'bg-blue-100 text-blue-700 border-l-4 border-blue-500'
+                                                            : isCompleted
+                                                            ? 'bg-green-50 text-green-700 hover:bg-green-100 border-l-4 border-green-500'
+                                                            : isAccessible
+                                                            ? 'text-gray-700 hover:text-gray-900 hover:bg-gray-50 border-l-4 border-transparent'
+                                                            : 'text-gray-400 cursor-not-allowed border-l-4 border-transparent'
+                                                    }`}
+                                                    aria-current={isCurrent ? 'step' : undefined}
+                                                    aria-label={`Stap ${step.volgorde}: ${step.titel}`}
+                                                >
+                                                    <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs flex-shrink-0 ${
+                                                        isCompleted ? 'bg-green-500 text-white' : 
+                                                        isCurrent ? 'bg-blue-500 text-white' : 
+                                                        isAccessible ? 'bg-gray-300 text-gray-600' :
+                                                        'bg-gray-200 text-gray-400'
+                                                    }`}>
+                                                        {isCompleted ? '✓' : step.volgorde}
+                                                    </span>
+                                                    <span className="text-left truncate">{step.titel}</span>
+                                                </button>
+                                            );
+                                        })}
+                                    </nav>
+                                </div>
+                            </div>
+
+                            {/* Main Content Area */}
+                            <div className="flex-1">
+                                {currentStep && (
+                                    <div className="bg-white rounded-lg shadow p-6">
                                 <h2 className="text-xl font-semibold mb-6">{currentStep.titel}</h2>
                                 
                                 {/* Parameters Step */}
@@ -1000,8 +1034,10 @@
                                         )}
                                     </div>
                                 )}
+                                    </div>
+                                )}
                             </div>
-                        )}
+                        </div>
                     </main>
 
                     {/* Navigation */}
@@ -1015,13 +1051,54 @@
                                 >
                                     ← Vorige
                                 </button>
-                                <button
-                                    onClick={nextStep}
-                                    disabled={!canProceed}
-                                    className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
-                                >
-                                    Volgende →
-                                </button>
+                                {currentStep && currentFlow && currentFlow.stappen.findIndex(s => s.stap_id === currentStep.stap_id) === currentFlow.stappen.length - 1 ? (
+                                    // Last step - show completion options
+                                    <div className="flex space-x-3">
+                                        <button
+                                            onClick={() => {
+                                                // Reset flow history to clear green checkmarks
+                                                if (flowEngine.current) {
+                                                    flowEngine.current.flowHistory = [];
+                                                }
+                                                // Go to first step
+                                                goToStep(currentFlow.stappen[0].stap_id);
+                                            }}
+                                            className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                                        >
+                                            🔄 Nieuwe Flow
+                                        </button>
+                                        <button
+                                            onClick={() => {
+                                                if (confirm('Weet je zeker dat je de flow wilt voltooien? Je kunt altijd terugkeren via de sidebar.')) {
+                                                    // Reset flow history to clear green checkmarks
+                                                    if (flowEngine.current) {
+                                                        flowEngine.current.flowHistory = [];
+                                                    }
+                                                    // Reset to first step
+                                                    goToStep(currentFlow.stappen[0].stap_id);
+                                                    // Clear selections and answers
+                                                    setSelected([]);
+                                                    setFlowAnswers({});
+                                                    setEditedText({});
+                                                    setSearch('');
+                                                    setFilterCat('');
+                                                }
+                                            }}
+                                            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                                        >
+                                            ✅ Flow Voltooien
+                                        </button>
+                                    </div>
+                                ) : (
+                                    // Regular next button
+                                    <button
+                                        onClick={nextStep}
+                                        disabled={!canProceed}
+                                        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                                    >
+                                        Volgende →
+                                    </button>
+                                )}
                             </div>
                         </div>
                     </div>
