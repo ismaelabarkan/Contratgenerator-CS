@@ -1,0 +1,44 @@
+{
+  "CLAUSULE_DPO": {
+    "titel": "Data Protection Officer (DPO)",
+    "tekst": "Indien van toepassing, wijst {opdrachtgever} een Data Protection Officer aan die toezicht houdt op de naleving van de AVG en als contactpersoon fungeert voor privacy gerelateerde zaken.",
+    "toelichting": "Regelt de aanstelling van een Data Protection Officer.",
+    "uitgebreide_uitleg": "Deze clausule regelt de aanstelling van een Data Protection Officer (DPO) die toezicht houdt op de naleving van de AVG. Dit is verplicht bij bepaalde verwerkingsactiviteiten.",
+    "juridische_achtergrond": "Artikel 37 van de AVG vereist de aanstelling van een DPO bij bepaalde verwerkingsactiviteiten.",
+    "best_practices": [
+      "Controleer of DPO verplicht is voor uw organisatie",
+      "Zorg voor onafhankelijke positie van de DPO",
+      "Documenteer DPO taken en verantwoordelijkheden"
+    ],
+    "waarschuwingen": [
+      "DPO is niet altijd verplicht - controleer de voorwaarden",
+      "Zorg voor voldoende expertise van de DPO"
+    ],
+    "categorie": "Privacy",
+    "verplicht": false,
+    "versie": "1.0",
+    "laatste_update": "2025-01-06",
+    "auteur": "Juridisch Team"
+  },
+  "CLAUSULE_DATA_PROCESSING": {
+    "titel": "Data Processing Agreement",
+    "tekst": "Partijen sluiten een aparte Data Processing Agreement (DPA) waarin de verwerkingsverantwoordelijkheden en -verplichtingen nader worden uitgewerkt conform artikel 28 van de AVG.",
+    "toelichting": "Verwijst naar een aparte Data Processing Agreement.",
+    "uitgebreide_uitleg": "Deze clausule verwijst naar een aparte Data Processing Agreement (DPA) die de verwerkingsverantwoordelijkheden nader uitwerkt. Dit is verplicht bij het uitbesteden van gegevensverwerking.",
+    "juridische_achtergrond": "Artikel 28 van de AVG vereist een schriftelijke overeenkomst bij het uitbesteden van gegevensverwerking.",
+    "best_practices": [
+      "Sluit altijd een DPA af bij uitbesteding",
+      "Zorg voor duidelijke verwerkingsinstructies",
+      "Documenteer alle verwerkingsactiviteiten"
+    ],
+    "waarschuwingen": [
+      "Zonder DPA is uitbesteding van gegevensverwerking niet toegestaan",
+      "Zorg voor regelmatige updates van de DPA"
+    ],
+    "categorie": "Privacy",
+    "verplicht": false,
+    "versie": "1.0",
+    "laatste_update": "2025-01-06",
+    "auteur": "Juridisch Team"
+  }
+}

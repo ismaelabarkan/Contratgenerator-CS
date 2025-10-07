@@ -1,0 +1,44 @@
+{
+  "CLAUSULE_ONDERHOUD": {
+    "titel": "Onderhoud en preventief onderhoud",
+    "tekst": "De onderhoudspartij voert regelmatig preventief onderhoud uit conform het overeengekomen onderhoudsplan. Onderhoud wordt uitgevoerd volgens de specificaties van de fabrikant.",
+    "toelichting": "Regelt preventief onderhoud en onderhoudsplanning.",
+    "uitgebreide_uitleg": "Deze clausule regelt hoe preventief onderhoud wordt uitgevoerd. Het zorgt voor een gestructureerde aanpak van onderhoud en verlengt de levensduur van apparatuur.",
+    "juridische_achtergrond": "Artikel 7:401 BW bepaalt dat de dienstverlener verplicht is om de dienstverlening zorgvuldig uit te voeren.",
+    "best_practices": [
+      "Specificeer duidelijk het onderhoudsplan",
+      "Overweeg onderhoudsintervallen en -procedures",
+      "Zorg voor duidelijke onderhoudsdocumentatie"
+    ],
+    "waarschuwingen": [
+      "Onduidelijke onderhoudsprocedures kunnen leiden tot geschillen",
+      "Zorg voor haalbare onderhoudsintervallen"
+    ],
+    "categorie": "Onderhoud",
+    "verplicht": true,
+    "versie": "1.0",
+    "laatste_update": "2025-01-06",
+    "auteur": "Juridisch Team"
+  },
+  "CLAUSULE_STORING": {
+    "titel": "Storingsdienst en responsetijd",
+    "tekst": "De onderhoudspartij biedt storingsdienst 24/7. Bij storingen wordt binnen 4 uur gereageerd en binnen 24 uur een oplossing geboden, tenzij anders overeengekomen.",
+    "toelichting": "Regelt storingsdienst en responsetijden.",
+    "uitgebreide_uitleg": "Deze clausule regelt hoe storingen worden afgehandeld. Het zorgt voor snelle respons bij storingen en minimale downtime.",
+    "juridische_achtergrond": "Artikel 7:401 BW bepaalt dat de dienstverlener verplicht is om de dienstverlening zorgvuldig uit te voeren.",
+    "best_practices": [
+      "Specificeer duidelijk responsetijden",
+      "Overweeg verschillende prioriteitsniveaus",
+      "Zorg voor duidelijke storingsprocedures"
+    ],
+    "waarschuwingen": [
+      "Te korte responsetijden kunnen problemen veroorzaken",
+      "Zorg voor haalbare storingsafhandeling"
+    ],
+    "categorie": "Onderhoud",
+    "verplicht": false,
+    "versie": "1.0",
+    "laatste_update": "2025-01-06",
+    "auteur": "Juridisch Team"
+  }
+}

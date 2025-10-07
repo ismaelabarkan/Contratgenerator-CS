@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flow Beheer - Contract Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.5/purify.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .focus-visible:focus { outline: 2px solid #4f46e5; outline-offset: 2px; }
+        .loading { animation: spin 1s linear infinite; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .flow-builder { min-height: 600px; }
+        .step-node { 
+            border: 2px solid #e5e7eb; 
+            border-radius: 8px; 
+            padding: 16px; 
+            background: white;
+            position: relative;
+            cursor: move;
+        }
+        .step-node.selected { border-color: #3b82f6; }
+        .step-node.required { border-color: #ef4444; }
+        .connection-line {
+            position: absolute;
+            height: 2px;
+            background: #6b7280;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+    <div id="app"></div>
+
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <script type="text/babel">
+        const { useState, useMemo, useCallback, useRef, useEffect } = React;
+
+        // ===== FLOW BUILDER COMPONENT =====
+        function FlowBeheer() {
+            const [flows, setFlows] = useState([]);
+            const [currentFlow, setCurrentFlow] = useState(null);
+            const [clausules, setClausules] = useState({});
+            const [loading, setLoading] = useState(true);
+            const [error, setError] = useState(null);
+            const [selectedStep, setSelectedStep] = useState(null);
+            const [showStepEditor, setShowStepEditor] = useState(false);
+            const [editingStep, setEditingStep] = useState(null);
+
+            // Laad flows en clausules
+            useEffect(() => {
+                const loadData = async () => {
+                    setLoading(true);
+                    try {
+                        // Laad bestaande flows
+                        const flowsResponse = await fetch('../flows/basis-flow.json');
+                        if (flowsResponse.ok) {
+                            const flowData = await flowsResponse.json();
+                            setFlows([flowData]);
+                            setCurrentFlow(flowData);
+                        }
+
+                        // Laad clausules
+                        const categories = ['algemeen', 'financieel', 'privacy', 'looptijd', 'dienstverlening', 'leverancier', 'onderhoud', 'privacy-uitgebreid'];
+                        const allClausules = {};
+                        
+                        for (const category of categories) {
+                            try {
+                                const response = await fetch(`../clausules/${category}.json`);
+                                if (response.ok) {
+                                    const data = await response.json();
+                                    Object.assign(allClausules, data);
+                                }
+                            } catch (error) {
+                                console.warn(`Kon ${category}.json niet laden:`, error);
+                            }
+                        }
+                        
+                        setClausules(allClausules);
+                    } catch (err) {
+                        setError('Fout bij laden van data: ' + err.message);
+                    } finally {
+                        setLoading(false);
+                    }
+                };
+                
+                loadData();
+            }, []);
+
+            const availableClausules = useMemo(() => {
+                return Object.entries(clausules).map(([id, clausule]) => ({
+                    id,
+                    titel: clausule.titel,
+                    categorie: clausule.categorie
+                }));
+            }, [clausules]);
+
+            const handleStepSelect = useCallback((step) => {
+                setSelectedStep(step);
+                setEditingStep({ ...step });
+                setShowStepEditor(true);
+            }, []);
+
+            const handleStepUpdate = useCallback((updatedStep) => {
+                if (!currentFlow) return;
+                
+                const updatedFlow = {
+                    ...currentFlow,
+                    stappen: currentFlow.stappen.map(step => 
+                        step.stap_id === updatedStep.stap_id ? updatedStep : step
+                    )
+                };
+                
+                setCurrentFlow(updatedFlow);
+                setFlows(prev => prev.map(flow => 
+                    flow.flow_id === updatedFlow.flow_id ? updatedFlow : flow
+                ));
+                setShowStepEditor(false);
+                setEditingStep(null);
+            }, [currentFlow]);
+
+            const handleAddStep = useCallback(() => {
+                if (!currentFlow) return;
+                
+                const newStepId = `stap_${Date.now()}`;
+                const newStep = {
+                    stap_id: newStepId,
+                    titel: 'Nieuwe Stap',
+                    type: 'clausules',
+                    verplicht: false,
+                    volgorde: currentFlow.stappen.length + 1,
+                    conditionele_clausules: [],
+                    volgende_stappen: []
+                };
+                
+                const updatedFlow = {
+                    ...currentFlow,
+                    stappen: [...currentFlow.stappen, newStep]
+                };
+                
+                setCurrentFlow(updatedFlow);
+                setFlows(prev => prev.map(flow => 
+                    flow.flow_id === updatedFlow.flow_id ? updatedFlow : flow
+                ));
+            }, [currentFlow]);
+
+            const handleDeleteStep = useCallback((stepId) => {
+                if (!currentFlow) return;
+                
+                const updatedFlow = {
+                    ...currentFlow,
+                    stappen: currentFlow.stappen.filter(step => step.stap_id !== stepId)
+                };
+                
+                setCurrentFlow(updatedFlow);
+                setFlows(prev => prev.map(flow => 
+                    flow.flow_id === updatedFlow.flow_id ? updatedFlow : flow
+                ));
+            }, [currentFlow]);
+
+            const handleSaveFlow = useCallback(async () => {
+                if (!currentFlow) return;
+                
+                try {
+                    // In een echte applicatie zou je hier de flow opslaan naar de server
+                    console.log('Flow opslaan:', currentFlow);
+                    alert('Flow opgeslagen! (In productie zou dit naar de server worden gestuurd)');
+                } catch (error) {
+                    console.error('Fout bij opslaan:', error);
+                    alert('Fout bij opslaan van flow');
+                }
+            }, [currentFlow]);
+
+            if (loading) {
+                return (
+                    <div className="min-h-screen flex items-center justify-center">
+                        <div className="text-center">
+                            <div className="loading w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4"></div>
+                            <p className="text-gray-600">Data laden...</p>
+                        </div>
+                    </div>
+                );
+            }
+
+            if (error) {
+                return (
+                    <div className="min-h-screen flex items-center justify-center">
+                        <div className="text-center max-w-md mx-auto p-6">
+                            <div className="text-red-500 text-6xl mb-4">⚠️</div>
+                            <h2 className="text-xl font-semibold text-gray-800 mb-2">Fout bij laden</h2>
+                            <p className="text-gray-600 mb-4">{error}</p>
+                            <button 
+                                onClick={() => window.location.reload()} 
+                                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                            >
+                                Opnieuw proberen
+                            </button>
+                        </div>
+                    </div>
+                );
+            }
+
+            return (
+                <div className="min-h-screen">
+                    {/* Header */}
+                    <header className="bg-white shadow-sm border-b">
+                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                            <div className="flex justify-between items-center py-4">
+                                <div>
+                                    <h1 className="text-2xl font-bold text-gray-900">Flow Beheer</h1>
+                                    <p className="text-sm text-gray-600">Configureer contract flows en stappen</p>
+                                </div>
+                                <div className="flex items-center space-x-4">
+                                    <button
+                                        onClick={handleSaveFlow}
+                                        className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                                    >
+                                        💾 Opslaan
+                                    </button>
+                                    <a
+                                        href="../"
+                                        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                                    >
+                                        🔄 Test Flow
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </header>
+
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                            {/* Flow List */}
+                            <div className="lg:col-span-1">
+                                <div className="bg-white rounded-lg shadow p-6">
+                                    <h2 className="text-lg font-semibold mb-4">Beschikbare Flows</h2>
+                                    <div className="space-y-2">
+                                        {flows.map((flow) => (
+                                            <div
+                                                key={flow.flow_id}
+                                                className={`p-3 rounded-lg cursor-pointer transition-colors ${
+                                                    currentFlow?.flow_id === flow.flow_id
+                                                        ? 'bg-blue-100 border-2 border-blue-500'
+                                                        : 'bg-gray-50 hover:bg-gray-100'
+                                                }`}
+                                                onClick={() => setCurrentFlow(flow)}
+                                            >
+                                                <h3 className="font-medium text-gray-900">{flow.naam}</h3>
+                                                <p className="text-sm text-gray-600">{flow.beschrijving}</p>
+                                                <p className="text-xs text-gray-500 mt-1">
+                                                    {flow.stappen.length} stappen
+                                                </p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Flow Builder */}
+                            <div className="lg:col-span-2">
+                                <div className="bg-white rounded-lg shadow p-6">
+                                    <div className="flex justify-between items-center mb-6">
+                                        <h2 className="text-lg font-semibold">
+                                            {currentFlow?.naam || 'Selecteer een flow'}
+                                        </h2>
+                                        <button
+                                            onClick={handleAddStep}
+                                            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                                        >
+                                            ➕ Stap Toevoegen
+                                        </button>
+                                    </div>
+
+                                    {currentFlow && (
+                                        <div className="flow-builder">
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                {currentFlow.stappen
+                                                    .sort((a, b) => a.volgorde - b.volgorde)
+                                                    .map((step) => (
+                                                    <div
+                                                        key={step.stap_id}
+                                                        className={`step-node ${
+                                                            selectedStep?.stap_id === step.stap_id ? 'selected' : ''
+                                                        } ${step.verplicht ? 'required' : ''}`}
+                                                        onClick={() => handleStepSelect(step)}
+                                                    >
+                                                        <div className="flex justify-between items-start mb-2">
+                                                            <h3 className="font-medium text-gray-900">
+                                                                {step.volgorde}. {step.titel}
+                                                            </h3>
+                                                            <div className="flex space-x-1">
+                                                                {step.verplicht && (
+                                                                    <span className="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded-full">
+                                                                        Verplicht
+                                                                    </span>
+                                                                )}
+                                                                <button
+                                                                    onClick={(e) => {
+                                                                        e.stopPropagation();
+                                                                        handleDeleteStep(step.stap_id);
+                                                                    }}
+                                                                    className="text-red-500 hover:text-red-700 text-xs"
+                                                                >
+                                                                    🗑️
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <p className="text-sm text-gray-600 mb-2">
+                                                            Type: {step.type}
+                                                        </p>
+                                                        {step.conditionele_clausules && step.conditionele_clausules.length > 0 && (
+                                                            <p className="text-xs text-gray-500">
+                                                                {step.conditionele_clausules.length} clausules
+                                                            </p>
+                                                        )}
+                                                        {step.vragen && step.vragen.length > 0 && (
+                                                            <p className="text-xs text-gray-500">
+                                                                {step.vragen.length} vragen
+                                                            </p>
+                                                        )}
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Step Editor Modal */}
+                    {showStepEditor && editingStep && (
+                        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                            <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+                                <div className="p-6">
+                                    <div className="flex justify-between items-center mb-6">
+                                        <h2 className="text-xl font-semibold">Stap Bewerken</h2>
+                                        <button
+                                            onClick={() => setShowStepEditor(false)}
+                                            className="text-gray-500 hover:text-gray-700"
+                                        >
+                                            ✕
+                                        </button>
+                                    </div>
+
+                                    <StepEditor
+                                        step={editingStep}
+                                        availableClausules={availableClausules}
+                                        onSave={handleStepUpdate}
+                                        onCancel={() => setShowStepEditor(false)}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        // ===== STEP EDITOR COMPONENT =====
+        function StepEditor({ step, availableClausules, onSave, onCancel }) {
+            const [editedStep, setEditedStep] = useState(step);
+
+            const handleSave = useCallback(() => {
+                onSave(editedStep);
+            }, [editedStep, onSave]);
+
+            const handleClausuleToggle = useCallback((clausuleId) => {
+                setEditedStep(prev => ({
+                    ...prev,
+                    conditionele_clausules: prev.conditionele_clausules?.includes(clausuleId)
+                        ? prev.conditionele_clausules.filter(id => id !== clausuleId)
+                        : [...(prev.conditionele_clausules || []), clausuleId]
+                }));
+            }, []);
+
+            const handleQuestionAdd = useCallback(() => {
+                const newQuestion = {
+                    vraag_id: `vraag_${Date.now()}`,
+                    titel: 'Nieuwe vraag',
+                    type: 'select',
+                    verplicht: false,
+                    opties: []
+                };
+                
+                setEditedStep(prev => ({
+                    ...prev,
+                    vragen: [...(prev.vragen || []), newQuestion]
+                }));
+            }, []);
+
+            const handleQuestionUpdate = useCallback((questionIndex, updatedQuestion) => {
+                setEditedStep(prev => ({
+                    ...prev,
+                    vragen: prev.vragen?.map((q, idx) => 
+                        idx === questionIndex ? updatedQuestion : q
+                    ) || []
+                }));
+            }, []);
+
+            const handleQuestionDelete = useCallback((questionIndex) => {
+                setEditedStep(prev => ({
+                    ...prev,
+                    vragen: prev.vragen?.filter((_, idx) => idx !== questionIndex) || []
+                }));
+            }, []);
+
+            return (
+                <div className="space-y-6">
+                    {/* Basic Step Info */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Stap ID
+                            </label>
+                            <input
+                                type="text"
+                                value={editedStep.stap_id}
+                                onChange={(e) => setEditedStep(prev => ({ ...prev, stap_id: e.target.value }))}
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Volgorde
+                            </label>
+                            <input
+                                type="number"
+                                value={editedStep.volgorde}
+                                onChange={(e) => setEditedStep(prev => ({ ...prev, volgorde: parseInt(e.target.value) }))}
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            />
+                        </div>
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Titel
+                        </label>
+                        <input
+                            type="text"
+                            value={editedStep.titel}
+                            onChange={(e) => setEditedStep(prev => ({ ...prev, titel: e.target.value }))}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Type
+                            </label>
+                            <select
+                                value={editedStep.type}
+                                onChange={(e) => setEditedStep(prev => ({ ...prev, type: e.target.value }))}
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            >
+                                <option value="parameters">Parameters</option>
+                                <option value="clausules">Clausules</option>
+                                <option value="edit">Bewerken</option>
+                                <option value="review">Review</option>
+                            </select>
+                        </div>
+                        <div className="flex items-center">
+                            <input
+                                type="checkbox"
+                                id="verplicht"
+                                checked={editedStep.verplicht}
+                                onChange={(e) => setEditedStep(prev => ({ ...prev, verplicht: e.target.checked }))}
+                                className="mr-2"
+                            />
+                            <label htmlFor="verplicht" className="text-sm font-medium text-gray-700">
+                                Verplichte stap
+                            </label>
+                        </div>
+                    </div>
+
+                    {/* Questions Section */}
+                    {editedStep.type === 'parameters' && (
+                        <div>
+                            <div className="flex justify-between items-center mb-4">
+                                <h3 className="text-lg font-medium">Vragen</h3>
+                                <button
+                                    onClick={handleQuestionAdd}
+                                    className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm"
+                                >
+                                    ➕ Vraag Toevoegen
+                                </button>
+                            </div>
+                            <div className="space-y-4">
+                                {editedStep.vragen?.map((question, index) => (
+                                    <QuestionEditor
+                                        key={question.vraag_id}
+                                        question={question}
+                                        onUpdate={(updatedQuestion) => handleQuestionUpdate(index, updatedQuestion)}
+                                        onDelete={() => handleQuestionDelete(index)}
+                                    />
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Clausules Section */}
+                    {editedStep.type === 'clausules' && (
+                        <div>
+                            <h3 className="text-lg font-medium mb-4">Conditionele Clausules</h3>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 max-h-60 overflow-y-auto">
+                                {availableClausules.map((clausule) => (
+                                    <label key={clausule.id} className="flex items-center p-2 hover:bg-gray-50 rounded">
+                                        <input
+                                            type="checkbox"
+                                            checked={editedStep.conditionele_clausules?.includes(clausule.id)}
+                                            onChange={() => handleClausuleToggle(clausule.id)}
+                                            className="mr-2"
+                                        />
+                                        <div>
+                                            <div className="text-sm font-medium">{clausule.titel}</div>
+                                            <div className="text-xs text-gray-500">{clausule.categorie}</div>
+                                        </div>
+                                    </label>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Action Buttons */}
+                    <div className="flex justify-end space-x-4 pt-6 border-t">
+                        <button
+                            onClick={onCancel}
+                            className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+                        >
+                            Annuleren
+                        </button>
+                        <button
+                            onClick={handleSave}
+                            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                        >
+                            Opslaan
+                        </button>
+                    </div>
+                </div>
+            );
+        }
+
+        // ===== QUESTION EDITOR COMPONENT =====
+        function QuestionEditor({ question, onUpdate, onDelete }) {
+            const [editedQuestion, setEditedQuestion] = useState(question);
+
+            const handleSave = useCallback(() => {
+                onUpdate(editedQuestion);
+            }, [editedQuestion, onUpdate]);
+
+            const handleOptionAdd = useCallback(() => {
+                const newOption = {
+                    waarde: `optie_${Date.now()}`,
+                    label: 'Nieuwe optie',
+                    volgende_stappen: []
+                };
+                
+                setEditedQuestion(prev => ({
+                    ...prev,
+                    opties: [...(prev.opties || []), newOption]
+                }));
+            }, []);
+
+            const handleOptionUpdate = useCallback((optionIndex, updatedOption) => {
+                setEditedQuestion(prev => ({
+                    ...prev,
+                    opties: prev.opties?.map((opt, idx) => 
+                        idx === optionIndex ? updatedOption : opt
+                    ) || []
+                }));
+            }, []);
+
+            const handleOptionDelete = useCallback((optionIndex) => {
+                setEditedQuestion(prev => ({
+                    ...prev,
+                    opties: prev.opties?.filter((_, idx) => idx !== optionIndex) || []
+                }));
+            }, []);
+
+            return (
+                <div className="border border-gray-200 rounded-lg p-4">
+                    <div className="flex justify-between items-center mb-4">
+                        <h4 className="font-medium">Vraag: {editedQuestion.titel}</h4>
+                        <button
+                            onClick={onDelete}
+                            className="text-red-500 hover:text-red-700 text-sm"
+                        >
+                            🗑️ Verwijderen
+                        </button>
+                    </div>
+
+                    <div className="space-y-4">
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Vraag ID
+                            </label>
+                            <input
+                                type="text"
+                                value={editedQuestion.vraag_id}
+                                onChange={(e) => setEditedQuestion(prev => ({ ...prev, vraag_id: e.target.value }))}
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            />
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Vraag Titel
+                            </label>
+                            <input
+                                type="text"
+                                value={editedQuestion.titel}
+                                onChange={(e) => setEditedQuestion(prev => ({ ...prev, titel: e.target.value }))}
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            />
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    Type
+                                </label>
+                                <select
+                                    value={editedQuestion.type}
+                                    onChange={(e) => setEditedQuestion(prev => ({ ...prev, type: e.target.value }))}
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                >
+                                    <option value="select">Select</option>
+                                    <option value="boolean">Ja/Nee</option>
+                                    <option value="text">Tekst</option>
+                                    <option value="number">Nummer</option>
+                                </select>
+                            </div>
+                            <div className="flex items-center">
+                                <input
+                                    type="checkbox"
+                                    id={`verplicht-${editedQuestion.vraag_id}`}
+                                    checked={editedQuestion.verplicht}
+                                    onChange={(e) => setEditedQuestion(prev => ({ ...prev, verplicht: e.target.checked }))}
+                                    className="mr-2"
+                                />
+                                <label htmlFor={`verplicht-${editedQuestion.vraag_id}`} className="text-sm font-medium text-gray-700">
+                                    Verplicht
+                                </label>
+                            </div>
+                        </div>
+
+                        {/* Options for select type */}
+                        {editedQuestion.type === 'select' && (
+                            <div>
+                                <div className="flex justify-between items-center mb-2">
+                                    <h5 className="font-medium">Opties</h5>
+                                    <button
+                                        onClick={handleOptionAdd}
+                                        className="px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 text-xs"
+                                    >
+                                        ➕ Optie
+                                    </button>
+                                </div>
+                                <div className="space-y-2">
+                                    {editedQuestion.opties?.map((option, index) => (
+                                        <div key={index} className="flex items-center space-x-2 p-2 bg-gray-50 rounded">
+                                            <input
+                                                type="text"
+                                                placeholder="Waarde"
+                                                value={option.waarde}
+                                                onChange={(e) => handleOptionUpdate(index, { ...option, waarde: e.target.value })}
+                                                className="flex-1 px-2 py-1 border border-gray-300 rounded text-sm"
+                                            />
+                                            <input
+                                                type="text"
+                                                placeholder="Label"
+                                                value={option.label}
+                                                onChange={(e) => handleOptionUpdate(index, { ...option, label: e.target.value })}
+                                                className="flex-1 px-2 py-1 border border-gray-300 rounded text-sm"
+                                            />
+                                            <button
+                                                onClick={() => handleOptionDelete(index)}
+                                                className="text-red-500 hover:text-red-700 text-xs"
+                                            >
+                                                🗑️
+                                            </button>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        <div className="flex justify-end">
+                            <button
+                                onClick={handleSave}
+                                className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600 text-sm"
+                            >
+                                Opslaan
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // Render the app
+        ReactDOM.render(<FlowBeheer />, document.getElementById('app'));
+    </script>
+</body>
+</html>

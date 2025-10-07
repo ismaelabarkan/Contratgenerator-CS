@@ -1,0 +1,209 @@
+{
+  "flow_id": "basis-flow",
+  "naam": "Basis Contract Flow",
+  "beschrijving": "Standaard flow voor contract generatie",
+  "versie": "1.0",
+  "auteur": "Systeem",
+  "laatste_update": "2025-01-06",
+  "stappen": [
+    {
+      "stap_id": "parameters",
+      "titel": "Algemene Parameters",
+      "type": "parameters",
+      "verplicht": true,
+      "volgorde": 1,
+      "vragen": [
+        {
+          "vraag_id": "contract_type",
+          "titel": "Wat voor type contract wordt er opgesteld?",
+          "type": "select",
+          "verplicht": true,
+          "opties": [
+            {
+              "waarde": "dienstverlening",
+              "label": "Dienstverlening",
+              "volgende_stappen": ["verplicht_dienstverlening"]
+            },
+            {
+              "waarde": "leverancier",
+              "label": "Leverancier",
+              "volgende_stappen": ["verplicht_leverancier"]
+            },
+            {
+              "waarde": "onderhoud",
+              "label": "Onderhoud",
+              "volgende_stappen": ["verplicht_onderhoud"]
+            }
+          ]
+        },
+        {
+          "vraag_id": "bedrag_contract",
+          "titel": "Wat is het geschatte contractbedrag?",
+          "type": "select",
+          "verplicht": true,
+          "opties": [
+            {
+              "waarde": "onder_25000",
+              "label": "Onder €25.000",
+              "volgende_stappen": ["simplified_flow"]
+            },
+            {
+              "waarde": "25000_100000",
+              "label": "€25.000 - €100.000",
+              "volgende_stappen": ["standard_flow"]
+            },
+            {
+              "waarde": "boven_100000",
+              "label": "Boven €100.000",
+              "volgende_stappen": ["extended_flow"]
+            }
+          ]
+        },
+        {
+          "vraag_id": "privacy_sensitive",
+          "titel": "Worden er persoonsgegevens verwerkt?",
+          "type": "boolean",
+          "verplicht": true,
+          "volgende_stappen": {
+            "true": ["privacy_verplicht"],
+            "false": ["privacy_optioneel"]
+          }
+        }
+      ]
+    },
+    {
+      "stap_id": "verplicht_dienstverlening",
+      "titel": "Verplichte Clausules - Dienstverlening",
+      "type": "clausules",
+      "verplicht": true,
+      "volgorde": 2,
+      "conditionele_clausules": [
+        "CLAUSULE_DEFINITIES",
+        "CLAUSULE_TOEPASSELIJK_RECHT",
+        "CLAUSULE_LOOPTIJD",
+        "CLAUSULE_DECLARATIE",
+        "CLAUSULE_BETALING",
+        "CLAUSULE_AVG"
+      ],
+      "volgende_stappen": ["optioneel_dienstverlening"]
+    },
+    {
+      "stap_id": "verplicht_leverancier",
+      "titel": "Verplichte Clausules - Leverancier",
+      "type": "clausules",
+      "verplicht": true,
+      "volgorde": 2,
+      "conditionele_clausules": [
+        "CLAUSULE_DEFINITIES",
+        "CLAUSULE_TOEPASSELIJK_RECHT",
+        "CLAUSULE_LOOPTIJD",
+        "CLAUSULE_DECLARATIE",
+        "CLAUSULE_BETALING",
+        "CLAUSULE_AVG",
+        "CLAUSULE_LEVERING"
+      ],
+      "volgende_stappen": ["optioneel_leverancier"]
+    },
+    {
+      "stap_id": "verplicht_onderhoud",
+      "titel": "Verplichte Clausules - Onderhoud",
+      "type": "clausules",
+      "verplicht": true,
+      "volgorde": 2,
+      "conditionele_clausules": [
+        "CLAUSULE_DEFINITIES",
+        "CLAUSULE_TOEPASSELIJK_RECHT",
+        "CLAUSULE_LOOPTIJD",
+        "CLAUSULE_DECLARATIE",
+        "CLAUSULE_BETALING",
+        "CLAUSULE_AVG",
+        "CLAUSULE_ONDERHOUD"
+      ],
+      "volgende_stappen": ["optioneel_onderhoud"]
+    },
+    {
+      "stap_id": "privacy_verplicht",
+      "titel": "Privacy Clausules - Verplicht",
+      "type": "clausules",
+      "verplicht": true,
+      "volgorde": 3,
+      "conditionele_clausules": [
+        "CLAUSULE_AVG",
+        "CLAUSULE_DPO",
+        "CLAUSULE_DATA_PROCESSING"
+      ],
+      "volgende_stappen": ["optioneel"]
+    },
+    {
+      "stap_id": "privacy_optioneel",
+      "titel": "Privacy Clausules - Optioneel",
+      "type": "clausules",
+      "verplicht": false,
+      "volgorde": 3,
+      "conditionele_clausules": [
+        "CLAUSULE_AVG"
+      ],
+      "volgende_stappen": ["optioneel"]
+    },
+    {
+      "stap_id": "optioneel_dienstverlening",
+      "titel": "Optionele Clausules - Dienstverlening",
+      "type": "clausules",
+      "verplicht": false,
+      "volgorde": 4,
+      "conditionele_clausules": [
+        "CLAUSULE_OPZEGGING",
+        "CLAUSULE_INDEXERING",
+        "CLAUSULE_KWALITEIT",
+        "CLAUSULE_RAPPORTAGE"
+      ],
+      "volgende_stappen": ["aanpassen"]
+    },
+    {
+      "stap_id": "optioneel_leverancier",
+      "titel": "Optionele Clausules - Leverancier",
+      "type": "clausules",
+      "verplicht": false,
+      "volgorde": 4,
+      "conditionele_clausules": [
+        "CLAUSULE_OPZEGGING",
+        "CLAUSULE_INDEXERING",
+        "CLAUSULE_KWALITEIT",
+        "CLAUSULE_GARANTIE",
+        "CLAUSULE_LEVERING"
+      ],
+      "volgende_stappen": ["aanpassen"]
+    },
+    {
+      "stap_id": "optioneel_onderhoud",
+      "titel": "Optionele Clausules - Onderhoud",
+      "type": "clausules",
+      "verplicht": false,
+      "volgorde": 4,
+      "conditionele_clausules": [
+        "CLAUSULE_OPZEGGING",
+        "CLAUSULE_INDEXERING",
+        "CLAUSULE_KWALITEIT",
+        "CLAUSULE_ONDERHOUD",
+        "CLAUSULE_STORING"
+      ],
+      "volgende_stappen": ["aanpassen"]
+    },
+    {
+      "stap_id": "aanpassen",
+      "titel": "Clausules Aanpassen",
+      "type": "edit",
+      "verplicht": false,
+      "volgorde": 5,
+      "volgende_stappen": ["review"]
+    },
+    {
+      "stap_id": "review",
+      "titel": "Review en Export",
+      "type": "review",
+      "verplicht": false,
+      "volgorde": 6,
+      "volgende_stappen": []
+    }
+  ]
+}

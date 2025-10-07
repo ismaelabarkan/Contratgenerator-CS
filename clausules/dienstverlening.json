@@ -1,0 +1,44 @@
+{
+  "CLAUSULE_KWALITEIT": {
+    "titel": "Kwaliteit van dienstverlening",
+    "tekst": "De dienstverlener zorgt ervoor dat de dienstverlening voldoet aan de in deze overeenkomst gestelde eisen en aan de algemeen aanvaarde normen voor dergelijke dienstverlening.",
+    "toelichting": "Bepaalt de kwaliteitseisen voor de dienstverlening.",
+    "uitgebreide_uitleg": "Deze clausule stelt kwaliteitseisen voor de dienstverlening. Het zorgt ervoor dat de dienstverlener voldoet aan de overeengekomen eisen en algemeen aanvaarde normen.",
+    "juridische_achtergrond": "Artikel 7:401 BW bepaalt dat de dienstverlener verplicht is om de dienstverlening zorgvuldig uit te voeren.",
+    "best_practices": [
+      "Specificeer concrete kwaliteitseisen",
+      "Overweeg certificeringen en kwaliteitsnormen",
+      "Zorg voor duidelijke meetbare criteria"
+    ],
+    "waarschuwingen": [
+      "Onduidelijke kwaliteitseisen kunnen leiden tot geschillen",
+      "Zorg voor haalbare en meetbare eisen"
+    ],
+    "categorie": "Dienstverlening",
+    "verplicht": false,
+    "versie": "1.0",
+    "laatste_update": "2025-01-06",
+    "auteur": "Juridisch Team"
+  },
+  "CLAUSULE_RAPPORTAGE": {
+    "titel": "Rapportage en verantwoording",
+    "tekst": "De dienstverlener rapporteert maandelijks over de voortgang van de dienstverlening aan {opdrachtgever}. De rapportage bevat een overzicht van de uitgevoerde werkzaamheden en eventuele knelpunten.",
+    "toelichting": "Regelt de rapportageverplichting van de dienstverlener.",
+    "uitgebreide_uitleg": "Deze clausule regelt hoe de dienstverlener verantwoording aflegt over de uitgevoerde werkzaamheden. Het zorgt voor transparantie en controle over de dienstverlening.",
+    "juridische_achtergrond": "Artikel 7:401 BW bepaalt dat de dienstverlener verplicht is om de opdrachtgever te informeren over de voortgang.",
+    "best_practices": [
+      "Specificeer de frequentie en inhoud van rapportages",
+      "Overweeg digitale rapportage mogelijkheden",
+      "Zorg voor duidelijke rapportageformaten"
+    ],
+    "waarschuwingen": [
+      "Te frequente rapportages kunnen administratieve last veroorzaken",
+      "Zorg voor duidelijke rapportage-eisen"
+    ],
+    "categorie": "Dienstverlening",
+    "verplicht": false,
+    "versie": "1.0",
+    "laatste_update": "2025-01-06",
+    "auteur": "Juridisch Team"
+  }
+}

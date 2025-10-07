@@ -6,6 +6,9 @@
 README.md
 *.md
 
+# HTML files (allow all HTML files)
+!*.html
+
 # Development files
 .vscode
 .idea

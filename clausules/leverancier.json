@@ -1,0 +1,44 @@
+{
+  "CLAUSULE_LEVERING": {
+    "titel": "Levering en leveringsvoorwaarden",
+    "tekst": "De leverancier levert de goederen conform de in deze overeenkomst gestelde specificaties. Levering geschiedt op de overeengekomen locatie en tijdstip.",
+    "toelichting": "Regelt de leveringsvoorwaarden en specificaties.",
+    "uitgebreide_uitleg": "Deze clausule regelt hoe en wanneer de goederen geleverd worden. Het zorgt voor duidelijkheid over leveringsvoorwaarden en specificaties.",
+    "juridische_achtergrond": "Artikel 7:9 BW bepaalt dat de verkoper verplicht is om de zaak te leveren conform de overeenkomst.",
+    "best_practices": [
+      "Specificeer duidelijk leveringslocatie en tijdstip",
+      "Overweeg leveringsgaranties en boetes",
+      "Zorg voor duidelijke specificaties van de goederen"
+    ],
+    "waarschuwingen": [
+      "Onduidelijke leveringsvoorwaarden kunnen leiden tot geschillen",
+      "Zorg voor haalbare leveringstermijnen"
+    ],
+    "categorie": "Leverancier",
+    "verplicht": true,
+    "versie": "1.0",
+    "laatste_update": "2025-01-06",
+    "auteur": "Juridisch Team"
+  },
+  "CLAUSULE_GARANTIE": {
+    "titel": "Garantie en aansprakelijkheid",
+    "tekst": "De leverancier geeft garantie op de geleverde goederen voor een periode van 24 maanden na levering. De garantie dekt gebreken die het gevolg zijn van materiaal- of fabricagefouten.",
+    "toelichting": "Regelt garantie en aansprakelijkheid voor geleverde goederen.",
+    "uitgebreide_uitleg": "Deze clausule regelt de garantie op geleverde goederen en de aansprakelijkheid van de leverancier. Het geeft de opdrachtgever bescherming tegen gebreken.",
+    "juridische_achtergrond": "Artikel 7:17 BW bepaalt dat de verkoper aansprakelijk is voor gebreken die op het moment van levering bestonden.",
+    "best_practices": [
+      "Specificeer duidelijk de garantieperiode",
+      "Overweeg uitgebreide garantievoorwaarden",
+      "Zorg voor duidelijke garantieprocedures"
+    ],
+    "waarschuwingen": [
+      "Te lange garantieperiodes kunnen risico's met zich meebrengen",
+      "Zorg voor duidelijke garantie-uitsluitingen"
+    ],
+    "categorie": "Leverancier",
+    "verplicht": false,
+    "versie": "1.0",
+    "laatste_update": "2025-01-06",
+    "auteur": "Juridisch Team"
+  }
+}

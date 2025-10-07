@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  contract-generator:
+    build: .
+    container_name: contract-generator-v3
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    volumes:
+      # Mount voor development - wijzigingen worden direct zichtbaar
+      - ./standalone_contract_generator_v3_flow.html:/usr/share/nginx/html/index.html:ro
+      - ./clausules:/usr/share/nginx/html/clausules:ro
+      - ./flows:/usr/share/nginx/html/flows:ro
+      - ./beheer:/usr/share/nginx/html/beheer:ro
