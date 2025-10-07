@@ -44,7 +44,7 @@
 
             async loadFlow(flowId = 'basis-flow') {
                 try {
-                    const response = await fetch(`flows/${flowId}.json`);
+                    const response = await fetch(`/api/flows/${flowId}`);
                     if (!response.ok) {
                         throw new Error(`Flow ${flowId} niet gevonden`);
                     }
@@ -115,6 +115,30 @@
                 return this.currentFlow.stappen.filter(s => s.volgorde <= (this.currentStep?.volgorde || 1));
             }
         }
+
+        // ===== FLOW LOADER =====
+        const loadAvailableFlows = async () => {
+            try {
+                // Load flows from API
+                const response = await fetch('/api/flows');
+                if (response.ok) {
+                    const flowsData = await response.json();
+                    return flowsData.map(row => ({
+                        id: row.flow_id,
+                        naam: row.naam,
+                        beschrijving: row.beschrijving,
+                        versie: row.versie,
+                        auteur: row.auteur
+                    }));
+                } else {
+                    console.error('Failed to load flows from API');
+                    return [];
+                }
+            } catch (error) {
+                console.error('Fout bij laden van flows:', error);
+                return [{ id: 'basis-flow', naam: 'Basis Contract Flow', beschrijving: 'Standaard flow voor contract generatie' }];
+            }
+        };
 
         // ===== CLAUSULE LOADER =====
         const loadClausules = async () => {
@@ -247,11 +271,13 @@
             const [flowAnswers, setFlowAnswers] = useState({});
             const [availableSteps, setAvailableSteps] = useState([]);
             const [currentFlow, setCurrentFlow] = useState(null);
+            const [availableFlows, setAvailableFlows] = useState([]);
+            const [selectedFlowId, setSelectedFlowId] = useState('basis-flow');
             const [parameters, setParameters] = useState({
                 opdrachtgever: 'Gemeente',
                 gemeente: 'Amsterdam',
-                ingangsdatum: '01-01-2025',
-                einddatum: '31-12-2025',
+                ingangsdatum: '2025-01-01',
+                einddatum: '2025-12-31',
                 opzegtermijn: '90',
                 betalingstermijn: '30'
             });
@@ -270,9 +296,13 @@
                         const loadedClausules = await loadClausules();
                         setClausules(loadedClausules);
                         
-                        // Laad flow
+                        // Laad beschikbare flows
+                        const flows = await loadAvailableFlows();
+                        setAvailableFlows(flows);
+                        
+                        // Laad geselecteerde flow
                         flowEngine.current = new FlowEngine();
-                        const loadedFlow = await flowEngine.current.loadFlow();
+                        const loadedFlow = await flowEngine.current.loadFlow(selectedFlowId);
                         setCurrentFlow(loadedFlow);
                         setCurrentStep(flowEngine.current.currentStep);
                         setAvailableSteps(flowEngine.current.getAvailableSteps());
@@ -445,6 +475,33 @@
                     setCurrentStep(step);
                 }
             }, [currentFlow]);
+
+            const switchFlow = useCallback(async (flowId) => {
+                try {
+                    setLoading(true);
+                    setSelectedFlowId(flowId);
+                    
+                    // Reset all state
+                    setSelected([]);
+                    setFlowAnswers({});
+                    setEditedText({});
+                    setSearch('');
+                    setFilterCat('');
+                    
+                    // Load new flow
+                    flowEngine.current = new FlowEngine();
+                    const loadedFlow = await flowEngine.current.loadFlow(flowId);
+                    setCurrentFlow(loadedFlow);
+                    setCurrentStep(flowEngine.current.currentStep);
+                    setAvailableSteps(flowEngine.current.getAvailableSteps());
+                    
+                } catch (error) {
+                    console.error('Fout bij wisselen van flow:', error);
+                    setError('Fout bij laden van flow: ' + error.message);
+                } finally {
+                    setLoading(false);
+                }
+            }, []);
 
             const copyToClipboard = useCallback(async () => {
                 try {
@@ -651,9 +708,24 @@
                             <div className="flex justify-between items-center py-4">
                                 <div>
                                     <h1 className="text-2xl font-bold text-gray-900">Contract Generator v3 - Flow Engine</h1>
-                                    <p className="text-sm text-gray-600">
-                                        {currentFlow?.naam} - {Object.keys(clausules).length} clausules geladen
-                                    </p>
+                                    <div className="flex items-center gap-4 mt-2">
+                                        <p className="text-sm text-gray-600">
+                                            {currentFlow?.naam} - {Object.keys(clausules).length} clausules geladen
+                                        </p>
+                                        {availableFlows.length > 1 && (
+                                            <select
+                                                value={selectedFlowId}
+                                                onChange={(e) => switchFlow(e.target.value)}
+                                                className="text-sm border border-gray-300 rounded px-2 py-1 bg-white"
+                                            >
+                                                {availableFlows.map(flow => (
+                                                    <option key={flow.id} value={flow.id}>
+                                                        {flow.naam}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        )}
+                                    </div>
                                 </div>
                                 <div className="flex items-center space-x-4">
                                     <span className="text-sm text-gray-500">

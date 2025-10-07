@@ -1,0 +1,66 @@
+{
+  "flow_id": "financieel-flow",
+  "naam": "Financieel Contract Flow",
+  "beschrijving": "Flow gericht op financiële contracten",
+  "versie": "1.0",
+  "auteur": "Systeem",
+  "laatste_update": "2025-01-07",
+  "stappen": [
+    {
+      "stap_id": "parameters",
+      "titel": "Algemene Parameters",
+      "type": "parameters",
+      "volgorde": 1,
+      "verplicht": true,
+      "vragen": [
+        {
+          "vraag_id": "contract_type",
+          "titel": "Type Contract",
+          "type": "select",
+          "verplicht": true,
+          "opties": [
+            { "waarde": "financieel", "label": "Financieel Contract" },
+            { "waarde": "investering", "label": "Investeringscontract" }
+          ]
+        }
+      ]
+    },
+    {
+      "stap_id": "financiele-clausules",
+      "titel": "Financiële Clausules",
+      "type": "clausules",
+      "volgorde": 2,
+      "verplicht": true,
+      "conditionele_clausules": [
+        "CLAUSULE_BETALING",
+        "CLAUSULE_INDEXERING",
+        "CLAUSULE_DECLARATIE"
+      ]
+    },
+    {
+      "stap_id": "looptijd-clausules",
+      "titel": "Looptijd & Opzegging",
+      "type": "clausules",
+      "volgorde": 3,
+      "verplicht": true,
+      "conditionele_clausules": [
+        "CLAUSULE_LOOPTIJD",
+        "CLAUSULE_OPZEGGING"
+      ]
+    },
+    {
+      "stap_id": "bewerken",
+      "titel": "Clausules Bewerken",
+      "type": "edit",
+      "volgorde": 4,
+      "verplicht": false
+    },
+    {
+      "stap_id": "review",
+      "titel": "Review en Export",
+      "type": "review",
+      "volgorde": 5,
+      "verplicht": false
+    }
+  ]
+}

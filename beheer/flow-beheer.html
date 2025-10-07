@@ -57,12 +57,21 @@
                 const loadData = async () => {
                     setLoading(true);
                     try {
-                        // Laad bestaande flows
-                        const flowsResponse = await fetch('../flows/basis-flow.json');
-                        if (flowsResponse.ok) {
-                            const flowData = await flowsResponse.json();
-                            setFlows([flowData]);
-                            setCurrentFlow(flowData);
+                        // Laad flows via API
+                        try {
+                            const response = await fetch('/api/flows');
+                            if (response.ok) {
+                                const flowsData = await response.json();
+                                const loadedFlows = flowsData.map(row => JSON.parse(row.flow_data));
+                                setFlows(loadedFlows);
+                                if (loadedFlows.length > 0) {
+                                    setCurrentFlow(loadedFlows[0]);
+                                }
+                            } else {
+                                console.error('Kon flows niet laden via API');
+                            }
+                        } catch (error) {
+                            console.error('Fout bij laden van flows:', error);
                         }
 
                         // Laad clausules
@@ -124,6 +133,28 @@
                 setEditingStep(null);
             }, [currentFlow]);
 
+            const saveFlow = useCallback(async (flow) => {
+                try {
+                    const response = await fetch(`/api/flows/${flow.flow_id}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(flow)
+                    });
+                    
+                    if (response.ok) {
+                        alert('Flow succesvol opgeslagen!');
+                    } else {
+                        const error = await response.json();
+                        alert('Fout bij opslaan: ' + error.error);
+                    }
+                } catch (error) {
+                    console.error('Fout bij opslaan van flow:', error);
+                    alert('Fout bij opslaan van flow: ' + error.message);
+                }
+            }, []);
+
             const handleAddStep = useCallback(() => {
                 if (!currentFlow) return;
                 
@@ -167,12 +198,23 @@
                 if (!currentFlow) return;
                 
                 try {
-                    // In een echte applicatie zou je hier de flow opslaan naar de server
-                    console.log('Flow opslaan:', currentFlow);
-                    alert('Flow opgeslagen! (In productie zou dit naar de server worden gestuurd)');
+                    const response = await fetch(`/api/flows/${currentFlow.flow_id}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(currentFlow)
+                    });
+                    
+                    if (response.ok) {
+                        alert('Flow succesvol opgeslagen!');
+                    } else {
+                        const error = await response.json();
+                        alert('Fout bij opslaan: ' + error.error);
+                    }
                 } catch (error) {
                     console.error('Fout bij opslaan:', error);
-                    alert('Fout bij opslaan van flow');
+                    alert('Fout bij opslaan van flow: ' + error.message);
                 }
             }, [currentFlow]);
 

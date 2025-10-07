@@ -2,20 +2,28 @@ version: '3.8'
 
 services:
   contract-generator:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
     container_name: contract-generator-v3
     ports:
-      - "8080:80"
+      - "8080:3001"
     restart: unless-stopped
+    environment:
+      - NODE_ENV=production
     healthcheck:
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/health"]
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3001/api/health"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 40s
     volumes:
       # Mount voor development - wijzigingen worden direct zichtbaar
-      - ./standalone_contract_generator_v3_flow.html:/usr/share/nginx/html/index.html:ro
-      - ./clausules:/usr/share/nginx/html/clausules:ro
-      - ./flows:/usr/share/nginx/html/flows:ro
-      - ./beheer:/usr/share/nginx/html/beheer:ro
+      - ./standalone_contract_generator_v3_flow.html:/app/public/index.html:ro
+      - ./clausules:/app/public/clausules:ro
+      - ./flows:/app/flows:ro
+      - ./beheer:/app/public/beheer:ro
+      - flows-data:/app
+
+volumes:
+  flows-data:
