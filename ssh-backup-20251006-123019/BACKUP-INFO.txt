@@ -1,0 +1,20 @@
+SSH Keys Backup
+===============
+Date: Mon Oct  6 12:30:19 CEST 2025
+VPS IP: 159.69.204.101
+VPS User: root
+
+Files in this backup:
+- id_ed25519_vps (Private SSH key - KEEP SECURE!)
+- id_ed25519_vps.pub (Public SSH key)
+- complete-deployment.sh (Deployment script)
+- standalone_contract_generator.html (Application)
+- DEPLOYMENT-GUIDE.md (Full documentation)
+- QUICK-REFERENCE.md (Quick commands)
+
+To restore:
+1. Copy files back to ~/.ssh/
+2. Set correct permissions: chmod 600 ~/.ssh/id_ed25519_vps
+3. Use deployment script to deploy
+
+IMPORTANT: Keep the private key (id_ed25519_vps) secure and never share it!

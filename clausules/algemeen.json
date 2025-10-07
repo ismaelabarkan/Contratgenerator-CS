@@ -1,0 +1,46 @@
+{
+  "CLAUSULE_DEFINITIES": {
+    "titel": "Definities",
+    "tekst": "De in deze overeenkomst gehanteerde begrippen hebben de betekenis zoals opgenomen in de bijlage Definities.",
+    "toelichting": "Deze clausule verwijst naar een apart document met definities van gebruikte termen.",
+    "uitgebreide_uitleg": "Deze clausule zorgt voor duidelijkheid over de betekenis van belangrijke termen in het contract. Het voorkomt misverstanden en zorgt voor een eenduidige interpretatie van het contract.",
+    "juridische_achtergrond": "Artikel 3:37 BW vereist dat contracten duidelijk en begrijpelijk zijn. Definities dragen bij aan de duidelijkheid van de overeenkomst.",
+    "best_practices": [
+      "Zorg voor duidelijke en eenduidige definities",
+      "Verwijs naar een apart document met definities",
+      "Houd definities up-to-date bij wijzigingen"
+    ],
+    "waarschuwingen": [
+      "Onduidelijke definities kunnen leiden tot geschillen",
+      "Zorg voor consistentie in het gebruik van termen"
+    ],
+    "categorie": "Algemeen",
+    "verplicht": true,
+    "versie": "1.0",
+    "laatste_update": "2025-01-06",
+    "auteur": "Juridisch Team"
+  },
+  "CLAUSULE_TOEPASSELIJK_RECHT": {
+    "titel": "Toepasselijk recht en geschillen",
+    "tekst": "Op deze overeenkomst is Nederlands recht van toepassing. Geschillen worden voorgelegd aan de bevoegde rechter in het arrondissement {gemeente}.",
+    "toelichting": "Bepaalt welk rechtssysteem geldt en waar geschillen worden behandeld.",
+    "uitgebreide_uitleg": "Deze clausule bepaalt welk recht van toepassing is op de overeenkomst en welke rechter bevoegd is om geschillen te behandelen. Dit voorkomt onduidelijkheid bij internationale contracten of geschillen.",
+    "juridische_achtergrond": "Artikel 1:13 BW bepaalt dat partijen vrij zijn om het toepasselijke recht te kiezen, mits er een redelijk verband bestaat met de overeenkomst.",
+    "best_practices": [
+      "Kies altijd Nederlands recht voor Nederlandse contracten",
+      "Specificeer de bevoegde rechter duidelijk",
+      "Overweeg arbitrage voor complexe geschillen"
+    ],
+    "waarschuwingen": [
+      "Internationale contracten kunnen andere regels vereisen",
+      "Zorg voor duidelijkheid over de bevoegde rechter"
+    ],
+    "categorie": "Algemeen",
+    "verplicht": true,
+    "versie": "1.0",
+    "laatste_update": "2025-01-06",
+    "auteur": "Juridisch Team"
+  }
+}
+
+

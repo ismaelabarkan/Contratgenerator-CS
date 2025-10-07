@@ -1,0 +1,27 @@
+{
+  "CLAUSULE_AVG": {
+    "titel": "Privacy & AVG",
+    "tekst": "Partijen waarborgen de verwerking van persoonsgegevens conform de AVG. {opdrachtgever} is verwerkingsverantwoordelijke.",
+    "toelichting": "Verplichte clausule die privacy regelt conform de AVG.",
+    "uitgebreide_uitleg": "Deze clausule is verplicht volgens de Algemene Verordening Gegevensbescherming (AVG). Het bepaalt wie verantwoordelijk is voor de verwerking van persoonsgegevens en zorgt voor compliance met privacywetgeving.",
+    "juridische_achtergrond": "Artikel 4 en 26 van de AVG vereisen duidelijke afspraken over verwerkingsverantwoordelijkheid. De verwerkingsverantwoordelijke is verantwoordelijk voor de naleving van de AVG.",
+    "best_practices": [
+      "Zorg voor duidelijke afspraken over wie welke gegevens verwerkt",
+      "Documenteer alle verwerkingsactiviteiten",
+      "Implementeer passende technische en organisatorische maatregelen",
+      "Houd een register van verwerkingsactiviteiten bij"
+    ],
+    "waarschuwingen": [
+      "Niet-naleving kan leiden tot boetes tot 4% van de jaaromzet",
+      "Zorg voor regelmatige updates bij wijzigingen in wetgeving",
+      "Overweeg een Data Protection Impact Assessment (DPIA)"
+    ],
+    "categorie": "Privacy",
+    "verplicht": true,
+    "versie": "1.0",
+    "laatste_update": "2025-01-06",
+    "auteur": "Juridisch Team"
+  }
+}
+
+

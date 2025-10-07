@@ -1,0 +1,46 @@
+{
+  "CLAUSULE_LOOPTIJD": {
+    "titel": "Looptijd",
+    "tekst": "Deze overeenkomst vangt aan op {ingangsdatum} en eindigt op {einddatum}, tenzij zij eerder wordt beëindigd.",
+    "toelichting": "Geeft duidelijkheid over de contractperiode.",
+    "uitgebreide_uitleg": "Deze clausule bepaalt de looptijd van de overeenkomst. Het geeft duidelijkheid over wanneer het contract ingaat en wanneer het eindigt, wat essentieel is voor de planning en uitvoering van de overeenkomst.",
+    "juridische_achtergrond": "Artikel 6:217 BW bepaalt dat een overeenkomst voor bepaalde tijd eindigt op de overeengekomen datum, tenzij er andere afspraken zijn gemaakt.",
+    "best_practices": [
+      "Specificeer duidelijk de ingangs- en einddatum",
+      "Overweeg automatische verlenging bij stilzwijgende voortzetting",
+      "Zorg voor duidelijkheid over vroegtijdige beëindiging"
+    ],
+    "waarschuwingen": [
+      "Onduidelijke looptijd kan leiden tot geschillen",
+      "Zorg voor duidelijkheid over verlenging en beëindiging"
+    ],
+    "categorie": "Looptijd en beëindiging",
+    "verplicht": true,
+    "versie": "1.0",
+    "laatste_update": "2025-01-06",
+    "auteur": "Juridisch Team"
+  },
+  "CLAUSULE_OPZEGGING": {
+    "titel": "Opzegging",
+    "tekst": "Beide partijen kunnen de overeenkomst beëindigen met een opzegtermijn van {opzegtermijn} dagen.",
+    "toelichting": "Regelt hoe het contract voortijdig kan worden beëindigd.",
+    "uitgebreide_uitleg": "Deze clausule regelt hoe het contract voortijdig kan worden beëindigd. Het geeft beide partijen de mogelijkheid om het contract op te zeggen met inachtneming van een opzegtermijn.",
+    "juridische_achtergrond": "Artikel 6:217 BW bepaalt dat een overeenkomst voor bepaalde tijd kan worden beëindigd volgens de overeengekomen voorwaarden.",
+    "best_practices": [
+      "Houd rekening met redelijke opzegtermijnen",
+      "Specificeer duidelijk de opzegprocedure",
+      "Overweeg verschillende opzegtermijnen voor verschillende partijen"
+    ],
+    "waarschuwingen": [
+      "Te korte opzegtermijnen kunnen problemen veroorzaken",
+      "Zorg voor duidelijkheid over de opzegprocedure"
+    ],
+    "categorie": "Looptijd en beëindiging",
+    "verplicht": false,
+    "versie": "1.0",
+    "laatste_update": "2025-01-06",
+    "auteur": "Juridisch Team"
+  }
+}
+
+

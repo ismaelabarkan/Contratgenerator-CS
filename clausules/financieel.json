@@ -1,0 +1,67 @@
+{
+  "CLAUSULE_DECLARATIE": {
+    "titel": "Declaratie",
+    "tekst": "Declaraties worden ingediend via het landelijk berichtenverkeer. {opdrachtgever} kan onjuiste declaraties afwijzen.",
+    "toelichting": "Regelt hoe facturen ingediend moeten worden.",
+    "uitgebreide_uitleg": "Deze clausule bepaalt hoe declaraties (facturen) moeten worden ingediend en geeft de opdrachtgever het recht om onjuiste declaraties af te wijzen. Dit zorgt voor duidelijkheid over het declaratieproces.",
+    "juridische_achtergrond": "Artikel 6:119 BW bepaalt dat de schuldenaar verplicht is om te betalen volgens de overeenkomst. Duidelijke declaratieafspraken dragen bij aan een soepel betalingsproces.",
+    "best_practices": [
+      "Gebruik het landelijk berichtenverkeer voor declaraties",
+      "Zorg voor duidelijke declaratieformulieren",
+      "Houd rekening met afwijzingsmogelijkheden"
+    ],
+    "waarschuwingen": [
+      "Onjuiste declaraties kunnen leiden tot betalingsvertraging",
+      "Zorg voor duidelijke afwijzingscriteria"
+    ],
+    "categorie": "Financieel",
+    "verplicht": true,
+    "versie": "1.0",
+    "laatste_update": "2025-01-06",
+    "auteur": "Juridisch Team"
+  },
+  "CLAUSULE_BETALING": {
+    "titel": "Betaling",
+    "tekst": "Betaling vindt plaats binnen {betalingstermijn} dagen na ontvangst van een correcte declaratie.",
+    "toelichting": "Bepaalt de betalingstermijn.",
+    "uitgebreide_uitleg": "Deze clausule bepaalt binnen welke termijn betaling moet plaatsvinden na ontvangst van een correcte declaratie. Dit geeft duidelijkheid over de betalingstermijn en voorkomt onduidelijkheid.",
+    "juridische_achtergrond": "Artikel 6:119 BW bepaalt dat betaling moet plaatsvinden volgens de overeenkomst. Een duidelijke betalingstermijn is essentieel voor een soepel betalingsproces.",
+    "best_practices": [
+      "Houd rekening met standaard betalingstermijnen (30 dagen)",
+      "Overweeg korting voor snelle betaling",
+      "Specificeer gevolgen van late betaling"
+    ],
+    "waarschuwingen": [
+      "Te korte betalingstermijnen kunnen problemen veroorzaken",
+      "Zorg voor duidelijkheid over gevolgen van late betaling"
+    ],
+    "categorie": "Financieel",
+    "verplicht": true,
+    "versie": "1.0",
+    "laatste_update": "2025-01-06",
+    "auteur": "Juridisch Team"
+  },
+  "CLAUSULE_INDEXERING": {
+    "titel": "Indexering",
+    "tekst": "Tarieven worden jaarlijks aangepast op basis van de CPI zoals gepubliceerd door het CBS.",
+    "toelichting": "Zorgt voor automatische aanpassing van tarieven aan inflatie.",
+    "uitgebreide_uitleg": "Deze clausule zorgt voor automatische aanpassing van tarieven aan de inflatie. Dit voorkomt dat tarieven verouderd raken en zorgt voor een eerlijke prijsstelling over de looptijd van het contract.",
+    "juridische_achtergrond": "Indexering is toegestaan mits er een objectieve maatstaf wordt gebruikt. De CPI van het CBS is een erkende maatstaf voor inflatie.",
+    "best_practices": [
+      "Gebruik de CPI van het CBS als maatstaf",
+      "Specificeer de indexeringsdatum duidelijk",
+      "Overweeg een maximum indexeringspercentage"
+    ],
+    "waarschuwingen": [
+      "Indexering kan leiden tot onverwachte kostenstijgingen",
+      "Zorg voor duidelijkheid over de indexeringsprocedure"
+    ],
+    "categorie": "Financieel",
+    "verplicht": false,
+    "versie": "1.0",
+    "laatste_update": "2025-01-06",
+    "auteur": "Juridisch Team"
+  }
+}
+
+
