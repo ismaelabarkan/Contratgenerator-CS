@@ -13,17 +13,277 @@
     <script src="https://unpkg.com/docx@7.8.2/build/index.js"></script>
     <script src="https://unpkg.com/file-saver@2.0.5/dist/FileSaver.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; }
-        .focus-visible:focus { outline: 2px solid #4f46e5; outline-offset: 2px; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #f8fafc;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+        .focus-visible:focus { outline: 2px solid #dc2626; outline-offset: 2px; }
         .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
         .loading { animation: spin 1s linear infinite; }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         .flow-step { transition: all 0.3s ease; }
         .flow-step.active { transform: scale(1.02); }
+        
+        /* Modern, strak design system */
+        .header-red {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.15);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .header-nav {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+            padding: 12px 24px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(220, 38, 38, 0.2);
+            border: none;
+            letter-spacing: 0.025em;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+        }
+        .btn-secondary {
+            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+            color: white;
+            font-weight: 500;
+            font-size: 14px;
+            padding: 10px 20px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 4px rgba(107, 114, 128, 0.2);
+            border: none;
+        }
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, #4b5563 0%, #374151 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(107, 114, 128, 0.3);
+        }
+        .btn-success {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+            padding: 12px 24px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(5, 150, 105, 0.2);
+            border: none;
+            letter-spacing: 0.025em;
+        }
+        .btn-success:hover {
+            background: linear-gradient(135deg, #047857 0%, #065f46 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+        }
+        .btn-warning {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+            padding: 12px 24px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(245, 158, 11, 0.2);
+            border: none;
+            letter-spacing: 0.025em;
+        }
+        .btn-warning:hover {
+            background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+        }
+        
+        /* Enhanced card styling */
+        .content-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #f1f5f9;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        .content-card:hover {
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08);
+            transform: translateY(-2px);
+        }
+        
+        /* Enhanced progress indicators */
+        .progress-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-right: 16px;
+            flex-shrink: 0;
+        }
+        .progress-completed { 
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+        }
+        .progress-current { 
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
+        }
+        .progress-pending { 
+            background: linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%);
+            color: #6b7280;
+        }
+        
+        /* Enhanced sidebar styling */
+        .sidebar-step {
+            display: flex;
+            align-items: center;
+            padding: 16px 20px;
+            margin-bottom: 8px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid transparent;
+            background-color: #f8fafc;
+            position: relative;
+        }
+        .sidebar-step:hover {
+            background-color: #f1f5f9;
+            border-color: #e2e8f0;
+            transform: translateX(4px);
+        }
+        .sidebar-step.completed {
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            border-color: #10b981;
+            border-left: 4px solid #10b981;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.2);
+        }
+        .sidebar-step.current {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-color: #f59e0b;
+            border-left: 4px solid #f59e0b;
+            box-shadow: 0 2px 8px rgba(245, 158, 11, 0.2);
+        }
+        .sidebar-step.opacity-50 {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        /* Enhanced clausule cards */
+        .clausule-card {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .clausule-card:hover {
+            border-color: #d1d5db;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transform: translateY(-1px);
+        }
+        .clausule-card.selected {
+            border-color: #3b82f6;
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+        }
+        .clausule-card.mandatory {
+            border-color: #10b981;
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15);
+        }
+        
+        /* Typography improvements */
+        .text-title {
+            font-size: 28px;
+            font-weight: 800;
+            color: #1f2937;
+            letter-spacing: -0.025em;
+            line-height: 1.2;
+        }
+        .text-subtitle {
+            font-size: 18px;
+            font-weight: 600;
+            color: #374151;
+            letter-spacing: -0.01em;
+        }
+        .text-body {
+            font-size: 15px;
+            font-weight: 400;
+            color: #4b5563;
+            line-height: 1.6;
+        }
+        .text-caption {
+            font-size: 13px;
+            font-weight: 500;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        /* Enhanced form styling */
+        .form-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 400;
+            transition: all 0.2s ease;
+            background: white;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: #dc2626;
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+            background: #fefefe;
+        }
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 8px;
+            letter-spacing: 0.025em;
+        }
+        
+        /* Enhanced progress bar */
+        .progress-bar {
+            height: 8px;
+            background: linear-gradient(90deg, #e5e7eb 0%, #f3f4f6 100%);
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #dc2626 0%, #b91c1c 100%);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+            box-shadow: 0 1px 3px rgba(220, 38, 38, 0.3);
+        }
     </style>
 </head>
-<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+<body class="bg-gray-50 min-h-screen">
     <div id="app"></div>
 
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
@@ -143,24 +403,40 @@
         // ===== CLAUSULE LOADER =====
         const loadClausules = async () => {
             try {
-                const categories = ['algemeen', 'financieel', 'privacy', 'looptijd', 'dienstverlening', 'leverancier', 'onderhoud', 'privacy-uitgebreid'];
-                const allClausules = {};
-                
-                for (const category of categories) {
-                    try {
-                        const response = await fetch(`clausules/${category}.json`);
-                        if (response.ok) {
-                            const data = await response.json();
-                            Object.assign(allClausules, data);
-                        } else {
-                            console.warn(`Kon ${category}.json niet laden:`, response.status);
+                // Load clausules from API
+                const response = await fetch('/api/clausules');
+                if (response.ok) {
+                    const clausulesData = await response.json();
+                    const allClausules = {};
+                    
+                    // Convert API data to expected format
+                    clausulesData.forEach(clausule => {
+                        try {
+                            // Parse the JSON content
+                            const parsedInhoud = JSON.parse(clausule.inhoud);
+                            allClausules[clausule.clausule_id] = {
+                                titel: clausule.titel,
+                                categorie: clausule.categorie,
+                                tekst: parsedInhoud.tekst || '',
+                                toelichting: parsedInhoud.toelichting || '',
+                                uitgebreide_uitleg: parsedInhoud.uitgebreide_uitleg || '',
+                                juridische_achtergrond: parsedInhoud.juridische_achtergrond || '',
+                                verplicht: parsedInhoud.verplicht || false,
+                                artikelnummer: parsedInhoud.artikelnummer || null,
+                                versie: clausule.versie,
+                                auteur: clausule.auteur,
+                                actief: clausule.actief
+                            };
+                        } catch (e) {
+                            console.warn(`Fout bij parsen van clausule ${clausule.clausule_id}:`, e);
                         }
-                    } catch (error) {
-                        console.warn(`Fout bij laden van ${category}.json:`, error);
-                    }
+                    });
+                    
+                    return allClausules;
+                } else {
+                    console.error('Kon clausules niet laden via API');
+                    return {};
                 }
-                
-                return allClausules;
             } catch (error) {
                 console.error('Fout bij laden van clausules:', error);
                 return {};
@@ -234,7 +510,7 @@
                                 </p>
                                 <button 
                                     onClick={() => window.location.reload()} 
-                                    className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                                    className="btn-primary text-white px-4 py-2 rounded"
                                 >
                                     Pagina verversen
                                 </button>
@@ -357,23 +633,361 @@
                 return filtered;
             }, [currentClausules, search, filterCat]);
 
+            // Get missing required questions
+            const missingRequiredQuestions = useMemo(() => {
+                if (!currentStep || currentStep.type !== 'parameters' || !currentStep.vragen) {
+                    return [];
+                }
+                
+                const missing = [];
+                const requiredQuestions = currentStep.vragen.filter(q => q.verplicht);
+                
+                requiredQuestions.forEach(q => {
+                    const answer = flowAnswers[q.vraag_id];
+                    let isMissing = false;
+                    
+                    if (answer === undefined || answer === null || answer === '') {
+                        isMissing = true;
+                    } else if (q.type === 'multiselect') {
+                        // For multiselect, check if at least one option is selected
+                        isMissing = !Array.isArray(answer) || answer.length === 0;
+                    } else if (q.type === 'boolean') {
+                        // For boolean, check if it's explicitly true or false
+                        isMissing = answer !== 'true' && answer !== 'false';
+                    }
+                    
+                    if (isMissing) {
+                        missing.push(q);
+                    }
+                });
+                
+                return missing;
+            }, [currentStep, flowAnswers]);
+            
+            // Render parameters step content
+            const renderParametersStep = useMemo(() => {
+                if (!currentStep || currentStep.type !== 'parameters') {
+                    return null;
+                }
+                
+                // Check if vragen exist
+                if (!currentStep.vragen) {
+                    return (
+                        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                            <p className="text-yellow-800">Geen vragen beschikbaar voor deze stap. (currentStep.vragen is undefined)</p>
+                            <p className="text-yellow-700 text-sm mt-2">Stap ID: {currentStep.stap_id}</p>
+                        </div>
+                    );
+                }
+                
+                if (currentStep.vragen.length === 0) {
+                    return (
+                        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                            <p className="text-yellow-800">Geen vragen beschikbaar voor deze stap. (vragen array is leeg)</p>
+                        </div>
+                    );
+                }
+                
+                // Show validation feedback if there are missing required questions
+                const hasMissingRequired = missingRequiredQuestions.length > 0;
+                
+                // Group questions by category
+                const groupedQuestions = {};
+                const standaloneQuestions = [];
+                
+                // Define question groups for better organization
+                const questionGroups = {
+                    'opdrachtgever': ['opdrachtgever_naam', 'opdrachtgever_adres', 'opdrachtgever_postcode', 'opdrachtgever_plaats', 'opdrachtgever_kvk'],
+                    'opdrachtnemer': ['opdrachtnemer_naam', 'opdrachtnemer_adres', 'opdrachtnemer_postcode', 'opdrachtnemer_plaats', 'opdrachtnemer_kvk'],
+                    'inkoop': ['inkoopmethode', 'inkoopprocedure'],
+                    'uitvoering': ['uitvoeringsvariant'],
+                    'jeugdhulp': ['jeugdhulp', 'extra_overwegingen', 'begripsdefinities'],
+                    'looptijd': ['looptijd_begindatum', 'looptijd_einddatum'],
+                    'verlenging': ['verlenging_hoevaak', 'verlenging_maanden'],
+                    'documenten': ['documenten_samenstelling'],
+                    'specifiek': ['specifieke_jeugdhulp'],
+                    'meerdere': ['meerdere_opdrachtnemers'],
+                    'opzegoptie': ['opzegoptie'],
+                    'herzieningsclausule': ['herzieningsclausule'],
+                    'bestedingsruimte': ['bestedingsruimte'],
+                    'opzegging': ['opzegging_onvoldoende_inzet'],
+                    'bepaling': ['bepaling_18_18plus', 'bibob', 'sroi'],
+                    'extra': ['extra_bepalingen_deel1'],
+                    'individuele': ['individuele_afspraken']
+                };
+                
+                currentStep.vragen?.forEach((vraag) => {
+                    const vraagId = vraag.vraag_id;
+                    let grouped = false;
+                    
+                    // Check if question belongs to a predefined group
+                    for (const [groupName, questionIds] of Object.entries(questionGroups)) {
+                        if (questionIds.includes(vraagId)) {
+                            if (!groupedQuestions[groupName]) {
+                                groupedQuestions[groupName] = [];
+                            }
+                            groupedQuestions[groupName].push(vraag);
+                            grouped = true;
+                            break;
+                        }
+                    }
+                    
+                    // If not in predefined group, try to extract from ID
+                    if (!grouped) {
+                        const parts = vraagId.split('_');
+                        if (parts.length > 1) {
+                            const category = parts[0];
+                            if (!groupedQuestions[category]) {
+                                groupedQuestions[category] = [];
+                            }
+                            groupedQuestions[category].push(vraag);
+                        } else {
+                            standaloneQuestions.push(vraag);
+                        }
+                    }
+                });
+                
+                // Category labels
+                const categoryLabels = {
+                    'opdrachtgever': 'Opdrachtgever Gegevens',
+                    'opdrachtnemer': 'Opdrachtnemer Gegevens',
+                    'inkoop': 'Inkoop en Aanbesteding',
+                    'uitvoering': 'Uitvoeringsvariant',
+                    'jeugdhulp': 'Jeugdhulp en Aanvullende Informatie',
+                    'looptijd': 'Looptijd',
+                    'verlenging': 'Verlenging',
+                    'documenten': 'Documenten',
+                    'specifiek': 'Specifieke Jeugdhulp',
+                    'meerdere': 'Meerdere Opdrachtnemers',
+                    'opzegoptie': 'Opzegoptie',
+                    'herzieningsclausule': 'Herzieningsclausule',
+                    'bestedingsruimte': 'Bestedingsruimte',
+                    'opzegging': 'Opzegging',
+                    'bepaling': 'Bepalingen',
+                    'extra': 'Extra Bepalingen',
+                    'individuele': 'Individuele Afspraken'
+                };
+                
+                const renderQuestion = (vraag) => {
+                    const isMissing = missingRequiredQuestions.some(q => q.vraag_id === vraag.vraag_id);
+                    const answer = flowAnswers[vraag.vraag_id];
+                    let isEmpty = false;
+                    
+                    if (vraag.verplicht) {
+                        if (answer === undefined || answer === null || answer === '') {
+                            isEmpty = true;
+                        } else if (vraag.type === 'multiselect') {
+                            isEmpty = !Array.isArray(answer) || answer.length === 0;
+                        } else if (vraag.type === 'boolean') {
+                            isEmpty = answer !== 'true' && answer !== 'false';
+                        }
+                    }
+                    
+                    return (
+                        <div key={vraag.vraag_id} className={isEmpty ? 'border-2 border-red-300 rounded-lg p-4 bg-red-50' : ''}>
+                            <label htmlFor={vraag.vraag_id} className={`block text-sm font-medium mb-3 ${isEmpty ? 'text-red-700' : 'text-gray-900'}`}>
+                                {vraag.titel} {vraag.verplicht && <span className="text-red-500">*</span>}
+                                {isEmpty && <span className="ml-2 text-xs text-red-600">(verplicht)</span>}
+                            </label>
+                            
+                            {vraag.type === 'select' && (
+                                <select
+                                    id={vraag.vraag_id}
+                                    value={flowAnswers[vraag.vraag_id] || ''}
+                                    onChange={(e) => handleFlowAnswer(vraag.vraag_id, e.target.value)}
+                                    className={`form-input ${isEmpty ? 'border-red-400 border-2' : ''}`}
+                                >
+                                    <option value="">Selecteer een optie</option>
+                                    {vraag.opties?.map((optie) => (
+                                        <option key={optie.waarde} value={optie.waarde}>
+                                            {optie.label}
+                                        </option>
+                                    ))}
+                                </select>
+                            )}
+                            
+                            {vraag.type === 'boolean' && (
+                                <div className={`flex space-x-4 p-3 rounded-lg ${isEmpty ? 'border-2 border-red-400 bg-red-50' : ''}`}>
+                                    <label className="flex items-center">
+                                        <input
+                                            type="radio"
+                                            name={vraag.vraag_id}
+                                            value="true"
+                                            checked={flowAnswers[vraag.vraag_id] === 'true'}
+                                            onChange={(e) => handleFlowAnswer(vraag.vraag_id, e.target.value)}
+                                            className="mr-2"
+                                        />
+                                        <span className={isEmpty ? 'text-red-700 font-medium' : ''}>Ja</span>
+                                    </label>
+                                    <label className="flex items-center">
+                                        <input
+                                            type="radio"
+                                            name={vraag.vraag_id}
+                                            value="false"
+                                            checked={flowAnswers[vraag.vraag_id] === 'false'}
+                                            onChange={(e) => handleFlowAnswer(vraag.vraag_id, e.target.value)}
+                                            className="mr-2"
+                                        />
+                                        <span className={isEmpty ? 'text-red-700 font-medium' : ''}>Nee</span>
+                                    </label>
+                                </div>
+                            )}
+                            
+                            {vraag.type === 'text' && (
+                                <input
+                                    id={vraag.vraag_id}
+                                    type="text"
+                                    value={flowAnswers[vraag.vraag_id] || ''}
+                                    onChange={(e) => handleFlowAnswer(vraag.vraag_id, e.target.value)}
+                                    className={`form-input ${isEmpty ? 'border-red-400 border-2' : ''}`}
+                                    required={vraag.verplicht}
+                                />
+                            )}
+                            
+                            {vraag.type === 'textarea' && (
+                                <textarea
+                                    id={vraag.vraag_id}
+                                    value={flowAnswers[vraag.vraag_id] || ''}
+                                    onChange={(e) => handleFlowAnswer(vraag.vraag_id, e.target.value)}
+                                    className={`form-input ${isEmpty ? 'border-red-400 border-2' : ''}`}
+                                    rows={4}
+                                    required={vraag.verplicht}
+                                />
+                            )}
+                            
+                            {vraag.type === 'date' && (
+                                <input
+                                    id={vraag.vraag_id}
+                                    type="date"
+                                    value={flowAnswers[vraag.vraag_id] || ''}
+                                    onChange={(e) => handleFlowAnswer(vraag.vraag_id, e.target.value)}
+                                    className={`form-input ${isEmpty ? 'border-red-400 border-2' : ''}`}
+                                    required={vraag.verplicht}
+                                />
+                            )}
+                            
+                            {vraag.type === 'multiselect' && (
+                                <div className={`space-y-2 p-3 rounded-lg ${isEmpty ? 'border-2 border-red-400 bg-red-50' : 'border border-gray-200'}`}>
+                                    {vraag.opties?.map((optie) => (
+                                        <label key={optie.waarde} className="flex items-center">
+                                            <input
+                                                type="checkbox"
+                                                value={optie.waarde}
+                                                checked={(flowAnswers[vraag.vraag_id] || []).includes(optie.waarde)}
+                                                onChange={(e) => {
+                                                    const currentValues = flowAnswers[vraag.vraag_id] || [];
+                                                    const newValues = e.target.checked
+                                                        ? [...currentValues, optie.waarde]
+                                                        : currentValues.filter(v => v !== optie.waarde);
+                                                    handleFlowAnswer(vraag.vraag_id, newValues);
+                                                }}
+                                                className="mr-2"
+                                            />
+                                            {optie.label}
+                                        </label>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    );
+                };
+                
+                return (
+                    <div className="space-y-6">
+                        {/* Validation feedback */}
+                        {hasMissingRequired && (
+                            <div className="bg-red-50 border-2 border-red-200 rounded-lg p-5">
+                                <div className="flex items-start">
+                                    <div className="flex-shrink-0">
+                                        <span className="text-2xl">⚠️</span>
+                                    </div>
+                                    <div className="ml-3 flex-1">
+                                        <h3 className="text-lg font-semibold text-red-800 mb-2">
+                                            Er zijn nog {missingRequiredQuestions.length} verplichte {missingRequiredQuestions.length === 1 ? 'vraag' : 'vragen'} niet ingevuld:
+                                        </h3>
+                                        <ul className="list-disc list-inside space-y-1">
+                                            {missingRequiredQuestions.map(q => (
+                                                <li key={q.vraag_id} className="text-red-700">
+                                                    {q.titel}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                        <p className="text-sm text-red-600 mt-3">
+                                            Vul deze vragen in voordat je naar de volgende stap kunt gaan.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                        
+                        {/* Grouped questions */}
+                        {Object.entries(groupedQuestions).map(([category, questions]) => (
+                            <div key={category} className="border border-gray-200 rounded-lg p-6 bg-gray-50">
+                                <h3 className="text-lg font-semibold text-gray-800 mb-4">
+                                    {categoryLabels[category] || category.charAt(0).toUpperCase() + category.slice(1)}
+                                </h3>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    {questions.map(renderQuestion)}
+                                </div>
+                            </div>
+                        ))}
+                        
+                        {/* Standalone questions */}
+                        {standaloneQuestions.length > 0 && (
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                {standaloneQuestions.map(renderQuestion)}
+                            </div>
+                        )}
+                    </div>
+                );
+            }, [currentStep, missingRequiredQuestions, flowAnswers, handleFlowAnswer]);
+            
             const canProceed = useMemo(() => {
                 if (!currentStep) return false;
                 
                 if (currentStep.type === 'parameters') {
+                    // Check if all required questions are answered
+                    if (currentStep.vragen) {
+                        const requiredQuestions = currentStep.vragen.filter(q => q.verplicht);
+                        const allRequiredAnswered = requiredQuestions.every(q => {
+                            const answer = flowAnswers[q.vraag_id];
+                            if (answer === undefined || answer === null || answer === '') {
+                                return false;
+                            }
+                            // For multiselect, check if at least one option is selected
+                            if (q.type === 'multiselect') {
+                                return Array.isArray(answer) && answer.length > 0;
+                            }
+                            // For boolean, check if it's explicitly true or false
+                            if (q.type === 'boolean') {
+                                return answer === 'true' || answer === 'false';
+                            }
+                            // For other types, just check if there's a value
+                            return true;
+                        });
+                        
+                        if (!allRequiredAnswered) {
+                            return false;
+                        }
+                    }
+                    
+                    // Also check old parameters validation (for backward compatibility)
                     const errors = validateParameters(parameters);
                     return Object.keys(errors).length === 0;
                 }
                 
                 if (currentStep.type === 'clausules') {
                     if (currentStep.verplicht) {
-                        return currentClausules.length > 0;
+                        // For mandatory clausule steps, always allow proceeding
+                        // The mandatory clausules will be automatically added in nextStep
+                        // Just check if there are clausules available, not if they're selected
+                        return currentStep.conditionele_clausules && currentStep.conditionele_clausules.length > 0;
                     }
                     return true;
                 }
                 
                 return true;
-            }, [currentStep, parameters, currentClausules]);
+            }, [currentStep, parameters, currentClausules, flowAnswers]);
 
             const handleParameterChange = useCallback((key, value) => {
                 const sanitizedValue = sanitizeInput(value);
@@ -438,6 +1052,22 @@
             const nextStep = useCallback(() => {
                 if (!canProceed || !currentStep || !currentFlow || !flowEngine.current) return;
                 
+                // Add mandatory clausules to selected array if current step is mandatory
+                if (currentStep.type === 'clausules' && currentStep.verplicht && currentStep.conditionele_clausules) {
+                    // If step is mandatory, add ALL clausules from conditionele_clausules
+                    // (they are all mandatory by virtue of being in a mandatory step)
+                    setSelected(prev => {
+                        const newSelected = [...prev];
+                        currentStep.conditionele_clausules.forEach(clausuleId => {
+                            // Only add if clausule exists and not already selected
+                            if (clausules[clausuleId] && !newSelected.includes(clausuleId)) {
+                                newSelected.push(clausuleId);
+                            }
+                        });
+                        return newSelected;
+                    });
+                }
+                
                 // Simple step progression
                 const currentIndex = currentFlow.stappen.findIndex(s => s.stap_id === currentStep.stap_id);
                 if (currentIndex < currentFlow.stappen.length - 1) {
@@ -451,7 +1081,7 @@
                         timestamp: new Date()
                     });
                 }
-            }, [currentStep, canProceed, currentFlow]);
+            }, [currentStep, canProceed, currentFlow, clausules]);
 
             const prevStep = useCallback(() => {
                 if (!currentStep || !currentFlow || !flowEngine.current) return;
@@ -583,53 +1213,380 @@
                                 </style>
                             </head>
                             <body>
-                                <div class="title">CONTRACT</div>
+                                <div class="title">Overeenkomst Wmo begeleiding</div>
                                 
-                                <div class="section-title">Contract Details</div>
+                                <div class="section-title">Partijen</div>
                         `;
                         
-                        // Add contract parameters
-                        const contractDetails = [
-                            { label: "Opdrachtgever", value: parameters.opdrachtgever },
-                            { label: "Gemeente", value: parameters.gemeente },
-                            { label: "Ingangsdatum", value: parameters.ingangsdatum },
-                            { label: "Einddatum", value: parameters.einddatum },
-                            { label: "Opzegtermijn", value: `${parameters.opzegtermijn} dagen` },
-                            { label: "Betalingstermijn", value: `${parameters.betalingstermijn} dagen` }
-                        ];
-                        
-                        contractDetails.forEach(detail => {
+                        // Add partijen (opdrachtgever/opdrachtnemer) from flowAnswers - formatted like example
+                        if (flowAnswers.opdrachtgever_naam || flowAnswers.opdrachtgever_adres || flowAnswers.opdrachtgever_postcode) {
                             htmlContent += `
                                 <div class="contract-detail">
-                                    <strong>${detail.label}:</strong> ${detail.value}
+                                    <strong>1. Opdrachtgever</strong><br>
+                                    De gemeente <strong>${flowAnswers.opdrachtgever_naam || ''}</strong>,<br>
+                                    gevestigd te <strong>${flowAnswers.opdrachtgever_postcode || ''} ${flowAnswers.opdrachtgever_plaats || ''}</strong>,<br>
+                                    adres: <strong>${flowAnswers.opdrachtgever_adres || ''}</strong>,<br>
+                                    KVK: <strong>${flowAnswers.opdrachtgever_kvk || ''}</strong><br>
+                                    hierna te noemen: <strong>"Opdrachtgever"</strong>
+                                </div>
+                                <br>
+                                <div class="contract-detail"><strong>en</strong></div>
+                                <br>
+                            `;
+                        }
+                        
+                        if (flowAnswers.opdrachtnemer_naam || flowAnswers.opdrachtnemer_adres || flowAnswers.opdrachtnemer_postcode) {
+                            htmlContent += `
+                                <div class="contract-detail">
+                                    <strong>2. Opdrachtnemer</strong><br>
+                                    De organisatie <strong>${flowAnswers.opdrachtnemer_naam || ''}</strong>,<br>
+                                    gevestigd te <strong>${flowAnswers.opdrachtnemer_postcode || ''} ${flowAnswers.opdrachtnemer_plaats || ''}</strong>,<br>
+                                    adres: <strong>${flowAnswers.opdrachtnemer_adres || ''}</strong>,<br>
+                                    KVK: <strong>${flowAnswers.opdrachtnemer_kvk || ''}</strong><br>
+                                    hierna te noemen: <strong>"Opdrachtnemer"</strong>
+                                </div>
+                                <br>
+                                <div class="contract-detail">
+                                    Opdrachtgever en Opdrachtnemer worden samen aangeduid als: <strong>"Partijen"</strong>
                                 </div>
                             `;
-                        });
+                        }
                         
-                        // Add clausules section
-                        if (selected.length > 0) {
-                            htmlContent += `
-                                <div class="section-title">Contract Clausules</div>
-                            `;
+                        // Add overwegingen - numbered list like example
+                        htmlContent += `
+                                <div class="section-title">Overwegingen</div>
+                        `;
+                        
+                        let overwegingCounter = 1;
+                        const overwegingenItems = [];
+                        
+                        // Standard overwegingen
+                        overwegingenItems.push(`${overwegingCounter++}. Opdrachtgever is verantwoordelijk voor het uitvoeren van de Wmo onder de Jeugdwet.`);
+                        overwegingenItems.push(`${overwegingCounter++}. Opdrachtgever wil voor inwoners passende begeleiding inkopen.`);
+                        overwegingenItems.push(`${overwegingCounter++}. Partijen willen samenwerken op basis van duidelijkheid, kwaliteit en continuïteit.`);
+                        overwegingenItems.push(`${overwegingCounter++}. Deze overeenkomst is gesloten om de overeengekomen ondersteuning te leveren.`);
+                        
+                        // Conditional: aanbesteding vs toelatingsprocedure
+                        if (flowAnswers.inkoopmethode === 'aanbestedingsprocedure') {
+                            overwegingenItems.push(`${overwegingCounter++}. Deze overeenkomst is tot stand gekomen na aanbesteding […].`);
+                            // Conditional: inkoopprocedure type
+                            if (flowAnswers.inkoopprocedure === 'aanbesteding_met_selectie') {
+                                overwegingenItems.push(`${overwegingCounter++}. Aanbesteding met selectie.`);
+                            } else if (flowAnswers.inkoopprocedure === 'aanbesteding_met_emvi') {
+                                overwegingenItems.push(`${overwegingCounter++}. Aanbesteding met EMVI-criterium.`);
+                            } else if (flowAnswers.inkoopprocedure === 'aanbesteding_zonder_emvi') {
+                                overwegingenItems.push(`${overwegingCounter++}. Aanbesteding zonder EMVI-criterium.`);
+                            }
+                        } else if (flowAnswers.inkoopmethode === 'toelatingsprocedure') {
+                            overwegingenItems.push(`${overwegingCounter++}. Deze overeenkomst is tot stand gekomen na toelatingsprocedure […].`);
+                            overwegingenItems.push(`${overwegingCounter++}. Toelatingsprocedure zonder EMVI-criterium.`);
+                        }
+                        
+                        overwegingenItems.push(`${overwegingCounter++}. Partijen streven naar goede samenwerking en transparantie.`);
+                        overwegingenItems.push(`${overwegingCounter++}. Partijen houden zich aan wet- en regelgeving, waaronder Wmo 2015 en AVG.`);
+                        
+                        // Uitvoeringsvariant
+                        if (flowAnswers.uitvoeringsvariant) {
+                            const variantText = flowAnswers.uitvoeringsvariant === 'inspanningsgericht' ? 'inspanning' : 
+                                              flowAnswers.uitvoeringsvariant === 'outputgericht' ? 'output' : 
+                                              flowAnswers.uitvoeringsvariant;
                             
-                            selected.forEach((key, index) => {
-                                const clausule = clausules[key];
-                                if (clausule) {
-                                    const tekst = editedText[key] || clausule.tekst;
-                                    const finalText = replaceParameters(tekst, parameters);
-                                    
-                                    htmlContent += `
-                                        <div class="clausule-title">${index + 1}. ${clausule.titel}</div>
-                                        <div class="clausule-text">${finalText.replace(/\n/g, '<br>')}</div>
-                                    `;
-                                }
+                            overwegingenItems.push(`${overwegingCounter++}. <strong>Uitvoeringsvariant:</strong> ${variantText}`);
+                            
+                            if (flowAnswers.uitvoeringsvariant === 'inspanningsgericht' || flowAnswers.uitvoeringsvariant === 'outputgericht') {
+                                overwegingenItems.push(`${overwegingCounter++}. Deze overeenkomst is gebaseerd op ${variantText === 'inspanning' ? 'inspanning' : 'output'}.`);
+                            } else if (flowAnswers.uitvoeringsvariant === 'taakgericht') {
+                                overwegingenItems.push(`${overwegingCounter++}. Deze overeenkomst is taakgericht.`);
+                            }
+                        }
+                        
+                        // Extra overwegingen
+                        if (flowAnswers.extra_overwegingen) {
+                            const extraLines = flowAnswers.extra_overwegingen.split('\n').filter(line => line.trim());
+                            extraLines.forEach(line => {
+                                overwegingenItems.push(`${overwegingCounter++}. ${line.trim()}`);
                             });
                         }
                         
-                        // Add footer
+                        htmlContent += '<div class="contract-detail">' + overwegingenItems.join('<br>') + '</div>';
+                        
+                        // Definities section
+                        if (flowAnswers.begripsdefinities) {
+                            htmlContent += `
+                                <div class="section-title">Definities</div>
+                                <div class="contract-detail">
+                                    De definities in deze overeenkomst hebben de betekenis zoals opgenomen in hoofdstuk 1 van de standaardovereenkomst van het CS Sociaal Domein.
+                                </div>
+                                <div class="contract-detail">
+                                    ${flowAnswers.begripsdefinities.replace(/\n/g, '<br>')}
+                                </div>
+                            `;
+                        } else {
+                            htmlContent += `
+                                <div class="section-title">Definities</div>
+                                <div class="contract-detail">
+                                    De definities in deze overeenkomst hebben de betekenis zoals opgenomen in hoofdstuk 1 van de standaardovereenkomst van het CS Sociaal Domein.
+                                </div>
+                            `;
+                        }
+                        
+                        // Deel 1 - Bepalingen tussen opdrachtgever en alle opdrachtnemers
                         htmlContent += `
-                                <div class="footer">
-                                    Contract gegenereerd op ${new Date().toLocaleDateString('nl-NL')}
+                                <div class="section-title">DEEL 1 – Bepalingen tussen Opdrachtgever en alle Opdrachtnemers</div>
+                        `;
+                        
+                        // Get Deel 1 step to process questions in order
+                        const deel1Step = currentFlow?.stappen.find(s => s.stap_id === 'deel1');
+                        
+                        if (deel1Step && deel1Step.vragen) {
+                            // Process questions in order, grouping by artikel number
+                            const artikelMap = {};
+                            
+                            deel1Step.vragen.forEach(vraag => {
+                                if (vraag.artikel) {
+                                    const artikelKey = vraag.artikel.split('.')[0]; // Get main artikel number (1, 2, etc.)
+                                    if (!artikelMap[artikelKey]) {
+                                        artikelMap[artikelKey] = [];
+                                    }
+                                    artikelMap[artikelKey].push(vraag);
+                                }
+                            });
+                            
+                            // Process artikelen in order
+                            Object.keys(artikelMap).sort((a, b) => {
+                                const numA = parseInt(a) || 0;
+                                const numB = parseInt(b) || 0;
+                                return numA - numB;
+                            }).forEach(artikelKey => {
+                                const vragen = artikelMap[artikelKey];
+                                
+                                vragen.forEach(vraag => {
+                                    const answer = flowAnswers[vraag.vraag_id];
+                                    
+                                    // Skip if no answer and not required
+                                    if (!answer && vraag.verplicht) return;
+                                    if (!answer && vraag.type !== 'boolean') return;
+                                    
+                                    // Handle different question types - use em-dash (—) for artikel titles
+                                    if (vraag.type === 'textarea' && answer) {
+                                        const artikelNum = vraag.artikel.replace('+', ''); // Remove + from 1.10+
+                                        htmlContent += `
+                                            <div class="clausule-title">Artikel ${artikelNum} – ${vraag.titel.replace(': beschrijving invullen', '').replace('?', '')}</div>
+                                            <div class="clausule-text">${answer.replace(/\n/g, '<br>')}</div>
+                                        `;
+                                    } else if (vraag.type === 'multiselect' && answer && Array.isArray(answer)) {
+                                        const selectedLabels = vraag.opties
+                                            .filter(opt => answer.includes(opt.waarde))
+                                            .map(opt => opt.label);
+                                        
+                                        if (selectedLabels.length > 0) {
+                                            const artikelNum = vraag.artikel.replace('+', '');
+                                            let artikelTitle = '';
+                                            if (vraag.vraag_id === 'documenten_samenstelling') {
+                                                artikelTitle = 'Documenten behorend bij de overeenkomst';
+                                            } else {
+                                                artikelTitle = vraag.titel.replace('?', '');
+                                            }
+                                            htmlContent += `
+                                                <div class="clausule-title">Artikel ${artikelNum} – ${artikelTitle}</div>
+                                                <div class="clausule-text">
+                                                    De overeenkomst bestaat uit:<br>
+                                                    ${selectedLabels.map((label, idx) => `${idx + 1}. ${label.replace(/^\d+\.\s*/, '')}`).join('<br>')}
+                                                </div>
+                                            `;
+                                        }
+                                    } else if (vraag.type === 'date') {
+                                        // Combine begindatum and einddatum into one artikel
+                                        if (vraag.vraag_id === 'looptijd_begindatum') {
+                                            const begindatum = flowAnswers.looptijd_begindatum;
+                                            const einddatum = flowAnswers.looptijd_einddatum;
+                                            const verlengingHoevaak = flowAnswers.verlenging_hoevaak;
+                                            const verlengingMaanden = flowAnswers.verlenging_maanden;
+                                            
+                                            if (begindatum || einddatum) {
+                                                htmlContent += `
+                                                    <div class="clausule-title">Artikel 1.3 – Looptijd en verlenging</div>
+                                                    <div class="clausule-text">
+                                                        1. De overeenkomst gaat in op <strong>${begindatum || 'niet ingevuld'}</strong> en loopt tot en met <strong>${einddatum || 'niet ingevuld'}</strong>.<br>
+                                                        ${verlengingHoevaak && verlengingMaanden ? `2. De overeenkomst kan maximaal <strong>${verlengingHoevaak}</strong> keer worden verlengd met telkens <strong>${verlengingMaanden}</strong> maanden.` : ''}
+                                                        ${flowAnswers.opzegoptie ? `3. Opzegging gebeurt volgens de door Opdrachtgever gekozen optie: <strong>${flowAnswers.opzegoptie}</strong>` : ''}
+                                                    </div>
+                                                `;
+                                            }
+                                        }
+                                    } else if (vraag.type === 'boolean') {
+                                        const isTrue = answer === 'true';
+                                        const isFalse = answer === 'false';
+                                        
+                                        if (isTrue || isFalse) {
+                                            const artikelNum = vraag.artikel.replace('+', '');
+                                            let artikelTitle = '';
+                                            if (vraag.vraag_id === 'herzieningsclausule') {
+                                                artikelTitle = 'Herzieningsclausule';
+                                            } else if (vraag.vraag_id === 'bestedingsruimte') {
+                                                artikelTitle = 'Bestedingsruimte';
+                                            } else if (vraag.vraag_id === 'opzegging_onvoldoende_inzet') {
+                                                artikelTitle = 'Opzegging bij onvoldoende inzet';
+                                            } else if (vraag.vraag_id === 'bepaling_18_18plus') {
+                                                artikelTitle = '18-/18+ bepaling';
+                                            } else if (vraag.vraag_id === 'bibob') {
+                                                artikelTitle = 'Bibob';
+                                            } else {
+                                                artikelTitle = vraag.titel.replace('?', '').replace(':', '');
+                                            }
+                                            
+                                            if (isTrue) {
+                                                htmlContent += `
+                                                    <div class="clausule-title">Artikel ${artikelNum} – ${artikelTitle}</div>
+                                                    <div class="clausule-text">
+                                                        ${flowAnswers[vraag.vraag_id + '_tekst'] ? flowAnswers[vraag.vraag_id + '_tekst'].replace(/\n/g, '<br>') : 'Van toepassing.'}
+                                                    </div>
+                                                `;
+                                            } else {
+                                                htmlContent += `
+                                                    <div class="clausule-title">Artikel ${artikelNum} – ${artikelTitle}</div>
+                                                    <div class="clausule-text">N.v.t.</div>
+                                                `;
+                                            }
+                                        }
+                                    } else if (vraag.type === 'select' && answer) {
+                                        const selectedOption = vraag.opties?.find(opt => opt.waarde === answer);
+                                        if (selectedOption) {
+                                            const artikelNum = vraag.artikel.replace('+', '');
+                                            htmlContent += `
+                                                <div class="clausule-title">Artikel ${artikelNum} – ${vraag.titel.replace('?', '')}</div>
+                                                <div class="clausule-text">${selectedOption.label}</div>
+                                            `;
+                                        }
+                                    } else if (vraag.type === 'text' && answer) {
+                                        const artikelNum = vraag.artikel.replace('+', '');
+                                        let artikelTitle = '';
+                                        if (vraag.vraag_id === 'specifieke_jeugdhulp') {
+                                            artikelTitle = 'Vorm van Wmo-begeleiding';
+                                        } else {
+                                            artikelTitle = vraag.titel.replace('?', '');
+                                        }
+                                        htmlContent += `
+                                            <div class="clausule-title">Artikel ${artikelNum} – ${artikelTitle}</div>
+                                            <div class="clausule-text">${answer}</div>
+                                        `;
+                                    }
+                                });
+                            });
+                        }
+                        
+                        // Deel 2 - Individuele bepalingen (if applicable) - comes BEFORE Deel 3
+                        if (flowAnswers.meerdere_opdrachtnemers === 'true' && flowAnswers.individuele_afspraken === 'true') {
+                            htmlContent += `
+                                <div class="section-title">DEEL 2 – Individuele bepalingen</div>
+                                <div class="contract-detail">*(Alleen opnemen indien van toepassing)*</div>
+                                <div class="clausule-title">Artikel 2.1 t/m 2.n – Individuele afspraken</div>
+                                <div class="clausule-text">${(flowAnswers.individuele_afspraken_tekst || '').replace(/\n/g, '<br>')}</div>
+                            `;
+                        } else if (flowAnswers.meerdere_opdrachtnemers === 'true') {
+                            htmlContent += `
+                                <div class="section-title">DEEL 2 – Individuele bepalingen</div>
+                                <div class="contract-detail">*(Geen aanvullende individuele bepalingen)*</div>
+                            `;
+                        }
+                        
+                        // Add clausules from Deel 3 (sorted by flow order)
+                        // Always show Deel 3 if there's a deel3 step with clausules (they're mandatory)
+                        if (currentFlow) {
+                            const deel3Step = currentFlow.stappen.find(s => s.stap_id === 'deel3');
+                            if (deel3Step && deel3Step.conditionele_clausules) {
+                                // Use all clausules from conditionele_clausules (they're mandatory)
+                                // But prioritize selected ones if they exist
+                                const clausulesToUse = selected.length > 0 
+                                    ? deel3Step.conditionele_clausules.filter(clausuleId => selected.includes(clausuleId))
+                                    : deel3Step.conditionele_clausules;
+                                
+                                const sortedClausules = clausulesToUse
+                                    .map(clausuleId => {
+                                        const clausule = clausules[clausuleId];
+                                        if (clausule) {
+                                            const tekst = editedText[clausuleId] || clausule.tekst;
+                                            const finalText = replaceParameters(tekst, {...parameters, ...flowAnswers});
+                                            return { clausuleId, clausule, finalText };
+                                        }
+                                        return null;
+                                    })
+                                    .filter(Boolean);
+                                
+                                if (sortedClausules.length > 0) {
+                                    htmlContent += `
+                                        <div class="section-title">DEEL 3 – Generieke bepalingen</div>
+                                    `;
+                                    
+                                    sortedClausules.forEach((item) => {
+                                        // Use artikelnummer from clausule, fallback to index if not present
+                                        const artikelNum = item.clausule.artikelnummer || `3.${sortedClausules.indexOf(item) + 1}`;
+                                        
+                                        // Convert markdown headers (####) to HTML and format text
+                                        let formattedText = item.finalText
+                                            .replace(/####\s*(.+?)\n/g, '<div style="font-weight: bold; margin-top: 8pt; margin-bottom: 4pt;">$1</div>')
+                                            .replace(/####\s*(.+)/g, '<div style="font-weight: bold; margin-top: 8pt; margin-bottom: 4pt;">$1</div>')
+                                            .replace(/\n/g, '<br>')
+                                            .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+                                            .replace(/^- (.+)$/gm, '&bull; $1<br>');
+                                        
+                                        htmlContent += `
+                                            <div class="clausule-title">Art. ${artikelNum} – ${item.clausule.titel}</div>
+                                            <div class="clausule-text">${formattedText}</div>
+                                        `;
+                                    });
+                                }
+                            } else if (selected.length > 0) {
+                                // Fallback: use selected order if no deel3 step found
+                                htmlContent += `
+                                    <div class="section-title">DEEL 3 – Generieke bepalingen</div>
+                                `;
+                                
+                                selected.forEach((key, index) => {
+                                    const clausule = clausules[key];
+                                    if (clausule) {
+                                        const tekst = editedText[key] || clausule.tekst;
+                                        const finalText = replaceParameters(tekst, {...parameters, ...flowAnswers});
+                                        
+                                        // Use artikelnummer from clausule, fallback to index if not present
+                                        const artikelNum = clausule.artikelnummer || `3.${index + 1}`;
+                                        
+                                        // Convert markdown headers (####) to HTML and format text
+                                        let formattedText = finalText
+                                            .replace(/####\s*(.+?)\n/g, '<div style="font-weight: bold; margin-top: 8pt; margin-bottom: 4pt;">$1</div>')
+                                            .replace(/####\s*(.+)/g, '<div style="font-weight: bold; margin-top: 8pt; margin-bottom: 4pt;">$1</div>')
+                                            .replace(/\n/g, '<br>')
+                                            .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+                                            .replace(/^- (.+)$/gm, '&bull; $1<br>');
+                                        
+                                        htmlContent += `
+                                            <div class="clausule-title">Art. ${artikelNum} – ${clausule.titel}</div>
+                                            <div class="clausule-text">${formattedText}</div>
+                                        `;
+                                    }
+                                });
+                            }
+                        }
+                        
+                        // Ondertekening section
+                        htmlContent += `
+                                <div class="section-title">Ondertekening</div>
+                                <div class="contract-detail">
+                                    Aldus overeengekomen, in tweevoud,
+                                </div>
+                                <div class="contract-detail">
+                                    <strong>Plaats:</strong> ${flowAnswers.opdrachtgever_plaats || '[plaats]'}<br>
+                                    <strong>Datum:</strong> ${new Date().toLocaleDateString('nl-NL')}
+                                </div>
+                                <br>
+                                <div class="contract-detail">
+                                    <strong>Namens Opdrachtgever:</strong><br>
+                                    ${flowAnswers.opdrachtgever_naam || '[naam]'}, ${flowAnswers.opdrachtgever_functie || '[functie]'}
+                                </div>
+                                <br>
+                                <div class="contract-detail">
+                                    <strong>Namens Opdrachtnemer:</strong><br>
+                                    ${flowAnswers.opdrachtnemer_naam || '[naam]'}, ${flowAnswers.opdrachtnemer_functie || '[functie]'}
                                 </div>
                             </body>
                             </html>
@@ -646,15 +1603,21 @@
                         type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' 
                     });
                     
+                    // Generate filename based on flow answers
+                    const opdrachtgeverNaam = flowAnswers.opdrachtgever_naam || 'Contract';
+                    const opdrachtnemerNaam = flowAnswers.opdrachtnemer_naam || '';
+                    const datum = new Date().toISOString().split('T')[0];
+                    const filename = `Overeenkomst_${opdrachtgeverNaam.replace(/[^a-zA-Z0-9]/g, '_')}${opdrachtnemerNaam ? '_' + opdrachtnemerNaam.replace(/[^a-zA-Z0-9]/g, '_') : ''}_${datum}.doc`;
+                    
                     // Use FileSaver.js for better browser compatibility
                     if (typeof saveAs !== 'undefined') {
-                        saveAs(blob, `contract_${parameters.gemeente}_${new Date().toISOString().split('T')[0]}.doc`);
+                        saveAs(blob, filename);
                     } else {
                         // Fallback to manual download
                         const url = URL.createObjectURL(blob);
                         const a = document.createElement('a');
                         a.href = url;
-                        a.download = `contract_${parameters.gemeente}_${new Date().toISOString().split('T')[0]}.doc`;
+                        a.download = filename;
                         document.body.appendChild(a);
                         a.click();
                         document.body.removeChild(a);
@@ -667,7 +1630,7 @@
                     console.error('Fout bij Word export:', error);
                     alert('Fout bij Word export: ' + error.message);
                 }
-            }, [selected, clausules, editedText, parameters]);
+            }, [selected, clausules, editedText, parameters, flowAnswers, currentFlow]);
 
             // Loading state
             if (loading) {
@@ -701,71 +1664,89 @@
             }
 
             return (
-                <div className="min-h-screen">
-                    {/* Header */}
-                    <header className="bg-white shadow-sm border-b">
-                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="min-h-screen bg-gray-50">
+                    {/* Red Header */}
+                    <header className="header-red">
+                        <div className="max-w-7xl mx-auto px-6 lg:px-8">
                             <div className="flex justify-between items-center py-4">
-                                <div>
-                                    <h1 className="text-2xl font-bold text-gray-900">Contract Generator v3 - Flow Engine</h1>
-                                    <div className="flex items-center gap-4 mt-2">
-                                        <p className="text-sm text-gray-600">
-                                            {currentFlow?.naam} - {Object.keys(clausules).length} clausules geladen
-                                        </p>
-                                        {availableFlows.length > 1 && (
-                                            <select
-                                                value={selectedFlowId}
-                                                onChange={(e) => switchFlow(e.target.value)}
-                                                className="text-sm border border-gray-300 rounded px-2 py-1 bg-white"
-                                            >
-                                                {availableFlows.map(flow => (
-                                                    <option key={flow.id} value={flow.id}>
-                                                        {flow.naam}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                        )}
+                                <h1 className="text-3xl font-bold text-white tracking-tight">Contract Generator</h1>
+                                <div className="flex items-center space-x-6">
+                                    <div className="flex items-center space-x-3">
+                                        <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+                                            <span className="text-sm font-semibold text-white">GS</span>
+                                        </div>
+                                        <div className="text-right">
+                                            <div className="text-white font-semibold text-lg">Gebruiker</div>
+                                            <div className="text-red-100 text-sm">Actief</div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="flex items-center space-x-4">
-                                    <span className="text-sm text-gray-500">
-                                        {selected.length} clausules geselecteerd
-                                    </span>
+                                    <a href="beheer/clausule-beheer.html" className="btn-secondary text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-all duration-200 font-medium">
+                                        Beheer
+                                    </a>
                                 </div>
                             </div>
                         </div>
                     </header>
 
-                    {/* Progress Header */}
-                    <div className="bg-white border-b">
-                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                            {/* Progress Percentage */}
-                            <div className="py-4">
-                                <div className="flex items-center justify-between mb-2">
-                                    <span className="text-sm font-medium text-gray-700">Voortgang</span>
-                                    <span className="text-sm text-gray-500">
-                                        {currentFlow ? Math.round(((currentFlow.stappen.findIndex(s => s.stap_id === currentStep?.stap_id) + 1) / currentFlow.stappen.length) * 100) : 0}%
-                                    </span>
+                    {/* Navigation */}
+                    <nav className="header-nav">
+                        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+                            <div className="flex items-center space-x-8 py-3">
+                                {availableFlows.length > 1 && (
+                                    <select
+                                        value={selectedFlowId}
+                                        onChange={(e) => switchFlow(e.target.value)}
+                                        className="bg-white/10 border border-white/20 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-white/40 transition-all duration-200 font-medium"
+                                    >
+                                        {availableFlows.map(flow => (
+                                            <option key={flow.id} value={flow.id} className="bg-gray-800 text-white">
+                                                {flow.naam}
+                                            </option>
+                                        ))}
+                                    </select>
+                                )}
+                            </div>
+                        </div>
+                    </nav>
+
+                    {/* Main Content */}
+                    <main className="max-w-7xl mx-auto px-6 lg:px-8 py-8">
+                        {/* Combined Header */}
+                        <div className="content-card p-6 mb-8">
+                            <div className="flex items-center justify-between">
+                                <div className="flex-1">
+                                    <h2 className="text-title text-red-600 mb-2">{currentFlow?.naam}</h2>
+                                    <p className="text-body">
+                                        {Object.keys(clausules).length} clausules beschikbaar • {selected.length} geselecteerd
+                                    </p>
                                 </div>
-                                <div className="w-full bg-gray-200 rounded-full h-2">
-                                    <div 
-                                        className="bg-blue-600 h-2 rounded-full transition-all duration-300 ease-out"
-                                        style={{ 
-                                            width: currentFlow ? `${((currentFlow.stappen.findIndex(s => s.stap_id === currentStep?.stap_id) + 1) / currentFlow.stappen.length) * 100}%` : '0%'
-                                        }}
-                                    ></div>
+                                <div className="flex items-center space-x-8">
+                                    <div className="text-right">
+                                        <div className="text-caption">Voortgang</div>
+                                        <div className="text-2xl font-bold text-gray-900">
+                                            {currentFlow ? Math.round(((currentFlow.stappen.findIndex(s => s.stap_id === currentStep?.stap_id) + 1) / currentFlow.stappen.length) * 100) : 0}%
+                                        </div>
+                                    </div>
+                                    <div className="w-40">
+                                        <div className="progress-bar">
+                                            <div 
+                                                className="progress-fill"
+                                                style={{ 
+                                                    width: currentFlow ? `${((currentFlow.stappen.findIndex(s => s.stap_id === currentStep?.stap_id) + 1) / currentFlow.stappen.length) * 100}%` : '0%'
+                                                }}
+                                            ></div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    {/* Main Content */}
-                    <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                        {/* Main Content */}
                         <div className="flex gap-8">
                             {/* Vertical Progress Sidebar */}
-                            <div className="w-64 flex-shrink-0">
-                                <div className="bg-white rounded-lg shadow p-4 sticky top-8">
-                                    <h3 className="text-sm font-semibold text-gray-700 mb-4">Flow Stappen</h3>
+                            <div className="w-72 flex-shrink-0">
+                                <div className="content-card p-6 sticky top-8">
+                                    <h3 className="text-subtitle text-gray-800 mb-6">Flow Stappen</h3>
                                     <nav className="space-y-2" role="navigation" aria-label="Flow stappen">
                                         {currentFlow?.stappen.map((step, index) => {
                                             const isCompleted = flowEngine.current?.flowHistory?.some(h => h.step.stap_id === step.stap_id) || false;
@@ -779,27 +1760,26 @@
                                                     ref={el => stepRefs.current[index] = el}
                                                     onClick={() => isAccessible && goToStep(step.stap_id)}
                                                     disabled={!isAccessible}
-                                                    className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                                                    className={`sidebar-step ${
                                                         isCurrent
-                                                            ? 'bg-blue-100 text-blue-700 border-l-4 border-blue-500'
+                                                            ? 'current'
                                                             : isCompleted
-                                                            ? 'bg-green-50 text-green-700 hover:bg-green-100 border-l-4 border-green-500'
+                                                            ? 'completed'
                                                             : isAccessible
-                                                            ? 'text-gray-700 hover:text-gray-900 hover:bg-gray-50 border-l-4 border-transparent'
-                                                            : 'text-gray-400 cursor-not-allowed border-l-4 border-transparent'
+                                                            ? ''
+                                                            : 'opacity-50 cursor-not-allowed'
                                                     }`}
                                                     aria-current={isCurrent ? 'step' : undefined}
                                                     aria-label={`Stap ${step.volgorde}: ${step.titel}`}
                                                 >
-                                                    <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs flex-shrink-0 ${
-                                                        isCompleted ? 'bg-green-500 text-white' : 
-                                                        isCurrent ? 'bg-blue-500 text-white' : 
-                                                        isAccessible ? 'bg-gray-300 text-gray-600' :
-                                                        'bg-gray-200 text-gray-400'
+                                                    <span className={`progress-circle ${
+                                                        isCompleted ? 'progress-completed' : 
+                                                        isCurrent ? 'progress-current' : 
+                                                        'progress-pending'
                                                     }`}>
                                                         {isCompleted ? '✓' : step.volgorde}
                                                     </span>
-                                                    <span className="text-left truncate">{step.titel}</span>
+                                                    <span className="text-left text-sm font-medium text-gray-900 leading-tight">{step.titel}</span>
                                                 </button>
                                             );
                                         })}
@@ -810,89 +1790,16 @@
                             {/* Main Content Area */}
                             <div className="flex-1">
                                 {currentStep && (
-                                    <div className="bg-white rounded-lg shadow p-6">
-                                <h2 className="text-xl font-semibold mb-6">{currentStep.titel}</h2>
+                                    <div className="content-card p-8">
+                                        <div className="flex items-center mb-6">
+                                            <div className="progress-circle progress-current mr-3">
+                                                {currentFlow?.stappen.findIndex(s => s.stap_id === currentStep?.stap_id) + 1}
+                                            </div>
+                                            <h2 className="text-xl font-semibold text-red-600">{currentStep.titel}</h2>
+                                        </div>
                                 
                                 {/* Parameters Step */}
-                                {currentStep.type === 'parameters' && (
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                        {currentStep.vragen?.map((vraag) => (
-                                            <div key={vraag.vraag_id}>
-                                                <label htmlFor={vraag.vraag_id} className="block text-sm font-medium text-gray-700 mb-2">
-                                                    {vraag.titel} {vraag.verplicht && '*'}
-                                                </label>
-                                                
-                                                {vraag.type === 'select' && (
-                                                    <select
-                                                        id={vraag.vraag_id}
-                                                        value={flowAnswers[vraag.vraag_id] || ''}
-                                                        onChange={(e) => handleFlowAnswer(vraag.vraag_id, e.target.value)}
-                                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                                    >
-                                                        <option value="">Selecteer een optie</option>
-                                                        {vraag.opties?.map((optie) => (
-                                                            <option key={optie.waarde} value={optie.waarde}>
-                                                                {optie.label}
-                                                            </option>
-                                                        ))}
-                                                    </select>
-                                                )}
-                                                
-                                                {vraag.type === 'boolean' && (
-                                                    <div className="flex space-x-4">
-                                                        <label className="flex items-center">
-                                                            <input
-                                                                type="radio"
-                                                                name={vraag.vraag_id}
-                                                                value="true"
-                                                                checked={flowAnswers[vraag.vraag_id] === 'true'}
-                                                                onChange={(e) => handleFlowAnswer(vraag.vraag_id, e.target.value)}
-                                                                className="mr-2"
-                                                            />
-                                                            Ja
-                                                        </label>
-                                                        <label className="flex items-center">
-                                                            <input
-                                                                type="radio"
-                                                                name={vraag.vraag_id}
-                                                                value="false"
-                                                                checked={flowAnswers[vraag.vraag_id] === 'false'}
-                                                                onChange={(e) => handleFlowAnswer(vraag.vraag_id, e.target.value)}
-                                                                className="mr-2"
-                                                            />
-                                                            Nee
-                                                        </label>
-                                                    </div>
-                                                )}
-                                            </div>
-                                        ))}
-                                        
-                                        {/* Standard parameters */}
-                                        {Object.entries(parameters).map(([key, value]) => (
-                                            <div key={key}>
-                                                <label htmlFor={key} className="block text-sm font-medium text-gray-700 mb-2">
-                                                    {key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1')}
-                                                </label>
-                                                <input
-                                                    id={key}
-                                                    type={key.includes('datum') ? 'date' : key.includes('termijn') ? 'number' : 'text'}
-                                                    value={value}
-                                                    onChange={(e) => handleParameterChange(key, e.target.value)}
-                                                    className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                                                        validationErrors[key] ? 'border-red-500' : 'border-gray-300'
-                                                    }`}
-                                                    aria-invalid={!!validationErrors[key]}
-                                                    aria-describedby={validationErrors[key] ? `${key}-error` : undefined}
-                                                />
-                                                {validationErrors[key] && (
-                                                    <p id={`${key}-error`} className="mt-1 text-sm text-red-600" role="alert">
-                                                        {validationErrors[key]}
-                                                    </p>
-                                                )}
-                                            </div>
-                                        ))}
-                                    </div>
-                                )}
+                                {currentStep.type === 'parameters' && renderParametersStep}
 
                                 {/* Clausules Step */}
                                 {currentStep.type === 'clausules' && (
@@ -913,7 +1820,7 @@
                                                         placeholder="Zoek in clausules..."
                                                         value={search}
                                                         onChange={(e) => setSearch(e.target.value)}
-                                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                        className="form-input"
                                                     />
                                                 </div>
                                                 <select
@@ -931,12 +1838,12 @@
                                         
                                         <div className="space-y-4 max-h-[600px] overflow-y-auto" role="list" aria-label="Clausules">
                                             {filteredClausules.map(([key, clausule]) => (
-                                                <div key={key} className={`border-2 rounded-lg p-4 cursor-pointer transition-colors ${
+                                                <div key={key} className={`clausule-card ${
                                                     selected.includes(key) 
-                                                        ? 'border-blue-500 bg-blue-50' 
+                                                        ? 'selected' 
                                                         : currentStep.verplicht
-                                                        ? 'border-green-200 bg-green-50'
-                                                        : 'border-gray-200 hover:border-gray-300'
+                                                        ? 'mandatory'
+                                                        : ''
                                                 }`} onClick={() => !currentStep.verplicht && toggleSelect(key)} role="listitem">
                                                     <div className="flex items-center justify-between mb-2">
                                                         <div className="flex items-center gap-2">
@@ -1006,60 +1913,107 @@
 
                                 {/* Edit Step */}
                                 {currentStep.type === 'edit' && (
-                                    <div className="space-y-4 max-h-[600px] overflow-y-auto" role="list" aria-label="Geselecteerde clausules voor bewerking">
-                                        {selected.map(key => {
-                                            const clausule = clausules[key];
-                                            return (
-                                                <div key={key} className="border-2 border-gray-200 rounded-lg p-4" role="listitem">
-                                                    <div className="flex items-center justify-between mb-3">
-                                                        <h3 className="font-semibold text-gray-800">{clausule.titel}</h3>
-                                                        <span className="text-xs bg-gray-100 px-2 py-1 rounded-full">{clausule.categorie}</span>
-                                                    </div>
-                                                    {editMode[key] ? (
-                                                        <div className="space-y-3">
-                                                            <textarea
-                                                                value={editedText[key] || clausule.tekst}
-                                                                onChange={(e) => updateText(key, e.target.value)}
-                                                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                                                rows="3"
-                                                                aria-label={`Bewerk tekst voor ${clausule.titel}`}
-                                                            />
-                                                            <div className="flex gap-2">
-                                                                <button
-                                                                    onClick={() => toggleEdit(key)}
-                                                                    className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600"
-                                                                >
-                                                                    Opslaan
-                                                                </button>
-                                                                <button
-                                                                    onClick={() => {
-                                                                        setEditedText(prev => {
-                                                                            const newEdited = { ...prev };
-                                                                            delete newEdited[key];
-                                                                            return newEdited;
-                                                                        });
-                                                                        toggleEdit(key);
-                                                                    }}
-                                                                    className="px-3 py-1 bg-gray-500 text-white rounded hover:bg-gray-600"
-                                                                >
-                                                                    Annuleren
-                                                                </button>
+                                    <div className="space-y-6">
+                                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                                            <p className="text-blue-800 font-medium">
+                                                Je kunt hier de teksten van de geselecteerde clausules aanpassen voordat je het contract exporteert.
+                                            </p>
+                                            <p className="text-blue-700 text-sm mt-2">
+                                                {selected.length > 0 
+                                                    ? `${selected.length} clausule(s) beschikbaar voor bewerking`
+                                                    : 'Geen clausules geselecteerd. Ga terug naar de vorige stap om clausules te selecteren.'}
+                                            </p>
+                                        </div>
+                                        
+                                        {selected.length === 0 ? (
+                                            <div className="text-center py-8 text-gray-500">
+                                                <p>Er zijn nog geen clausules geselecteerd.</p>
+                                                <p className="text-sm mt-2">Ga terug naar de vorige stap om clausules te selecteren.</p>
+                                            </div>
+                                        ) : (
+                                            <div className="space-y-4 max-h-[600px] overflow-y-auto" role="list" aria-label="Geselecteerde clausules voor bewerking">
+                                                {selected.map(key => {
+                                                    const clausule = clausules[key];
+                                                    if (!clausule) return null;
+                                                    
+                                                    return (
+                                                        <div key={key} className="border-2 border-gray-200 rounded-lg p-6 bg-white hover:border-gray-300 transition-colors" role="listitem">
+                                                            <div className="flex items-center justify-between mb-4">
+                                                                <div>
+                                                                    <h3 className="font-semibold text-gray-800 text-lg">{clausule.titel}</h3>
+                                                                    <span className="text-xs bg-gray-100 px-3 py-1 rounded-full text-gray-600 mt-1 inline-block">
+                                                                        {clausule.categorie}
+                                                                    </span>
+                                                                </div>
                                                             </div>
+                                                            {editMode[key] ? (
+                                                                <div className="space-y-4">
+                                                                    <div>
+                                                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                                                            Tekst aanpassen:
+                                                                        </label>
+                                                                        <textarea
+                                                                            value={editedText[key] || clausule.tekst || ''}
+                                                                            onChange={(e) => updateText(key, e.target.value)}
+                                                                            className="form-input"
+                                                                            rows="8"
+                                                                            aria-label={`Bewerk tekst voor ${clausule.titel}`}
+                                                                        />
+                                                                    </div>
+                                                                    {clausule.toelichting && (
+                                                                        <div className="bg-gray-50 border border-gray-200 rounded-lg p-3">
+                                                                            <p className="text-xs font-medium text-gray-600 mb-1">Toelichting:</p>
+                                                                            <p className="text-sm text-gray-700">{clausule.toelichting}</p>
+                                                                        </div>
+                                                                    )}
+                                                                    <div className="flex gap-3">
+                                                                        <button
+                                                                            onClick={() => toggleEdit(key)}
+                                                                            className="btn-success text-white px-4 py-2 rounded-lg font-medium"
+                                                                        >
+                                                                            ✓ Opslaan
+                                                                        </button>
+                                                                        <button
+                                                                            onClick={() => {
+                                                                                setEditedText(prev => {
+                                                                                    const newEdited = { ...prev };
+                                                                                    delete newEdited[key];
+                                                                                    return newEdited;
+                                                                                });
+                                                                                toggleEdit(key);
+                                                                            }}
+                                                                            className="btn-secondary text-white px-4 py-2 rounded-lg font-medium"
+                                                                        >
+                                                                            Annuleren
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            ) : (
+                                                                <div className="space-y-3">
+                                                                    <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                                                                        <p className="text-gray-700 whitespace-pre-wrap leading-relaxed">
+                                                                            {replaceParameters(editedText[key] || clausule.tekst || '', {...parameters, ...flowAnswers})}
+                                                                        </p>
+                                                                    </div>
+                                                                    {clausule.toelichting && (
+                                                                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                                                                            <p className="text-xs font-medium text-blue-600 mb-1">Toelichting:</p>
+                                                                            <p className="text-sm text-blue-700">{clausule.toelichting}</p>
+                                                                        </div>
+                                                                    )}
+                                                                    <button
+                                                                        onClick={() => toggleEdit(key)}
+                                                                        className="btn-secondary text-white px-4 py-2 rounded-lg font-medium"
+                                                                    >
+                                                                        ✏️ Bewerken
+                                                                    </button>
+                                                                </div>
+                                                            )}
                                                         </div>
-                                                    ) : (
-                                                        <div>
-                                                            <p className="text-gray-700 mb-3">{replaceParameters(editedText[key] || clausule.tekst, parameters)}</p>
-                                                            <button
-                                                                onClick={() => toggleEdit(key)}
-                                                                className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
-                                                            >
-                                                                Bewerken
-                                                            </button>
-                                                        </div>
-                                                    )}
-                                                </div>
-                                            );
-                                        })}
+                                                    );
+                                                })}
+                                            </div>
+                                        )}
                                     </div>
                                 )}
 
@@ -1093,7 +2047,7 @@
                                             </button>
                                             <button
                                                 onClick={exportToWord}
-                                                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 flex items-center gap-2"
+                                                className="btn-primary text-white px-4 py-2 rounded flex items-center gap-2"
                                             >
                                                 📄 Word Document Downloaden
                                             </button>
@@ -1119,7 +2073,7 @@
                                 <button
                                     onClick={prevStep}
                                     disabled={flowEngine.current?.flowHistory?.length === 0}
-                                    className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                                    className="px-6 py-3 bg-gray-500 text-white rounded-lg hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed font-medium transition-colors"
                                 >
                                     ← Vorige
                                 </button>
@@ -1135,7 +2089,7 @@
                                                 // Go to first step
                                                 goToStep(currentFlow.stappen[0].stap_id);
                                             }}
-                                            className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                                            className="btn-warning text-white px-6 py-3 rounded-lg font-medium transition-colors"
                                         >
                                             🔄 Nieuwe Flow
                                         </button>
@@ -1156,7 +2110,7 @@
                                                     setFilterCat('');
                                                 }
                                             }}
-                                            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                                            className="btn-success text-white px-6 py-3 rounded-lg font-medium transition-colors"
                                         >
                                             ✅ Flow Voltooien
                                         </button>
@@ -1166,7 +2120,7 @@
                                     <button
                                         onClick={nextStep}
                                         disabled={!canProceed}
-                                        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                                        className="btn-primary text-white px-6 py-3 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed font-medium transition-colors"
                                     >
                                         Volgende →
                                     </button>
@@ -1174,6 +2128,9 @@
                             </div>
                         </div>
                     </div>
+                    
+                    {/* Bottom padding for fixed navigation */}
+                    <div className="h-20"></div>
                 </div>
             );
         }

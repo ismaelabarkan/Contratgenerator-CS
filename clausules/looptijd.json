@@ -1,5 +1,6 @@
 {
   "CLAUSULE_LOOPTIJD": {
+    "artikelnummer": "3.3",
     "titel": "Looptijd",
     "tekst": "Deze overeenkomst vangt aan op {ingangsdatum} en eindigt op {einddatum}, tenzij zij eerder wordt beëindigd.",
     "toelichting": "Geeft duidelijkheid over de contractperiode.",
@@ -21,6 +22,7 @@
     "auteur": "Juridisch Team"
   },
   "CLAUSULE_OPZEGGING": {
+    "artikelnummer": "3.7",
     "titel": "Opzegging",
     "tekst": "Beide partijen kunnen de overeenkomst beëindigen met een opzegtermijn van {opzegtermijn} dagen.",
     "toelichting": "Regelt hoe het contract voortijdig kan worden beëindigd.",

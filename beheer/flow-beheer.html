@@ -8,8 +8,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.5/purify.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; }
-        .focus-visible:focus { outline: 2px solid #4f46e5; outline-offset: 2px; }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #f8fafc;
+            margin: 0;
+            padding: 0;
+        }
+        .focus-visible:focus { outline: 2px solid #dc2626; outline-offset: 2px; }
         .loading { animation: spin 1s linear infinite; }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         .flow-builder { min-height: 600px; }
@@ -21,7 +26,7 @@
             position: relative;
             cursor: move;
         }
-        .step-node.selected { border-color: #3b82f6; }
+        .step-node.selected { border-color: #dc2626; }
         .step-node.required { border-color: #ef4444; }
         .connection-line {
             position: absolute;
@@ -29,9 +34,29 @@
             background: #6b7280;
             z-index: 1;
         }
+        
+        /* Custom header styling */
+        .header-red { background-color: #dc2626; }
+        .header-nav { background-color: #1e3a8a; }
+        .btn-primary { background-color: #dc2626; }
+        .btn-primary:hover { background-color: #b91c1c; }
+        .btn-secondary { background-color: #1e3a8a; }
+        .btn-secondary:hover { background-color: #1e40af; }
+        .btn-success { background-color: #059669; }
+        .btn-success:hover { background-color: #047857; }
+        .btn-warning { background-color: #d97706; }
+        .btn-warning:hover { background-color: #b45309; }
+        
+        /* Card styling */
+        .content-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border: 1px solid #e5e7eb;
+        }
     </style>
 </head>
-<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+<body class="bg-gray-50 min-h-screen">
     <div id="app"></div>
 
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
@@ -235,7 +260,7 @@
                         const result = await response.json();
                         alert(`Import voltooid! ${result.total} flows verwerkt.`);
                         // Reload flows
-                        loadFlows();
+                        window.location.reload();
                     } else {
                         throw new Error('Fout bij importeren');
                     }
@@ -276,49 +301,71 @@
 
             return (
                 <div className="min-h-screen">
-                    {/* Header */}
-                    <header className="bg-white shadow-sm border-b">
+                    {/* Red Header */}
+                    <header className="header-red">
                         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                            <div className="flex justify-between items-center py-4">
-                                <div>
-                                    <h1 className="text-2xl font-bold text-gray-900">Flow Beheer</h1>
-                                    <p className="text-sm text-gray-600">Configureer contract flows en stappen</p>
-                                </div>
+                            <div className="flex justify-between items-center py-3">
+                                <h1 className="text-2xl font-bold text-white">Contract Generator</h1>
                                 <div className="flex items-center space-x-4">
-                                    <button
-                                        onClick={handleSaveFlow}
-                                        className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-                                    >
-                                        💾 Opslaan
-                                    </button>
-                                    <button
-                                        onClick={importFlows}
-                                        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-                                    >
-                                        📥 Importeer JSON
-                                    </button>
-                                    <a
-                                        href="clausule-beheer.html"
-                                        className="px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600"
-                                    >
-                                        📝 Clausule Beheer
-                                    </a>
-                                    <a
-                                        href="../"
-                                        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-                                    >
-                                        🔄 Test Flow
+                                    <div className="flex items-center space-x-2">
+                                        <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
+                                            <span className="text-sm font-medium text-gray-700">GS</span>
+                                        </div>
+                                        <span className="text-white font-medium">Admin</span>
+                                    </div>
+                                    <a href="../" className="text-white hover:text-gray-200 text-sm">
+                                        🚪 Uitloggen
                                     </a>
                                 </div>
                             </div>
                         </div>
                     </header>
 
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    {/* Navigation */}
+                    <nav className="header-nav">
+                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                            <div className="flex space-x-8 py-2">
+                                <a href="flow-beheer.html" className="bg-gray-700 text-white rounded-md py-2 px-3 text-sm font-medium">
+                                    Flow Beheer
+                                </a>
+                                <a href="clausule-beheer.html" className="text-white hover:text-gray-200 py-4 px-2 text-sm font-medium">
+                                    Clausule Beheer
+                                </a>
+                                <a href="../" className="text-white hover:text-gray-200 py-4 px-2 text-sm font-medium">
+                                    Home
+                                </a>
+                            </div>
+                        </div>
+                    </nav>
+
+                    {/* Main Content */}
+                    <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                        <div className="content-card p-6">
+                            <div className="flex justify-between items-center mb-6">
+                                <div>
+                                    <h2 className="text-2xl font-bold text-red-600">Flow Beheer</h2>
+                                    <p className="text-gray-600 mt-1">Configureer contract flows en stappen</p>
+                                </div>
+                                <div className="flex space-x-3">
+                                    <button
+                                        onClick={handleSaveFlow}
+                                        className="btn-primary text-white px-4 py-2 rounded-md text-sm font-medium"
+                                    >
+                                        💾 Opslaan
+                                    </button>
+                                    <button
+                                        onClick={importFlows}
+                                        className="btn-success text-white px-4 py-2 rounded-md text-sm font-medium"
+                                    >
+                                        📥 Importeer JSON
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                             {/* Flow List */}
                             <div className="lg:col-span-1">
-                                <div className="bg-white rounded-lg shadow p-6">
+                                <div className="content-card p-6">
                                     <h2 className="text-lg font-semibold mb-4">Beschikbare Flows</h2>
                                     <div className="space-y-2">
                                         {flows.map((flow) => (
@@ -344,7 +391,7 @@
 
                             {/* Flow Builder */}
                             <div className="lg:col-span-2">
-                                <div className="bg-white rounded-lg shadow p-6">
+                                <div className="content-card p-6">
                                     <div className="flex justify-between items-center mb-6">
                                         <h2 className="text-lg font-semibold">
                                             {currentFlow?.naam || 'Selecteer een flow'}
@@ -413,6 +460,7 @@
                             </div>
                         </div>
                     </div>
+                    </main>
 
                     {/* Step Editor Modal */}
                     {showStepEditor && editingStep && (
@@ -503,7 +551,7 @@
                                 type="text"
                                 value={editedStep.stap_id}
                                 onChange={(e) => setEditedStep(prev => ({ ...prev, stap_id: e.target.value }))}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
                             />
                         </div>
                         <div>
@@ -514,7 +562,7 @@
                                 type="number"
                                 value={editedStep.volgorde}
                                 onChange={(e) => setEditedStep(prev => ({ ...prev, volgorde: parseInt(e.target.value) }))}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
                             />
                         </div>
                     </div>
@@ -527,7 +575,7 @@
                             type="text"
                             value={editedStep.titel}
                             onChange={(e) => setEditedStep(prev => ({ ...prev, titel: e.target.value }))}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
                         />
                     </div>
 
@@ -539,7 +587,7 @@
                             <select
                                 value={editedStep.type}
                                 onChange={(e) => setEditedStep(prev => ({ ...prev, type: e.target.value }))}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
                             >
                                 <option value="parameters">Parameters</option>
                                 <option value="clausules">Clausules</option>
@@ -568,7 +616,7 @@
                                 <h3 className="text-lg font-medium">Vragen</h3>
                                 <button
                                     onClick={handleQuestionAdd}
-                                    className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm"
+                                        className="btn-secondary text-white px-3 py-1 rounded text-sm"
                                 >
                                     ➕ Vraag Toevoegen
                                 </button>
@@ -686,7 +734,7 @@
                                 type="text"
                                 value={editedQuestion.vraag_id}
                                 onChange={(e) => setEditedQuestion(prev => ({ ...prev, vraag_id: e.target.value }))}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
                             />
                         </div>
 
@@ -698,7 +746,7 @@
                                 type="text"
                                 value={editedQuestion.titel}
                                 onChange={(e) => setEditedQuestion(prev => ({ ...prev, titel: e.target.value }))}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
                             />
                         </div>
 
@@ -710,7 +758,7 @@
                                 <select
                                     value={editedQuestion.type}
                                     onChange={(e) => setEditedQuestion(prev => ({ ...prev, type: e.target.value }))}
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
                                 >
                                     <option value="select">Select</option>
                                     <option value="boolean">Ja/Nee</option>

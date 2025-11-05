@@ -1,191 +1,434 @@
 {
   "flow_id": "basis-flow",
-  "naam": "Basis Contract Flow",
-  "beschrijving": "Standaard flow voor contract generatie",
-  "versie": "1.0",
+  "naam": "Basis Contract Flow - Wmo/Jeugd",
+  "beschrijving": "Flow gebaseerd op workflow document standaardovereenkomst CS Jeugd",
+  "versie": "2.0",
   "auteur": "Systeem",
-  "laatste_update": "2025-01-06",
+  "laatste_update": "2025-10-10",
   "stappen": [
     {
-      "stap_id": "parameters",
-      "titel": "Algemene Parameters",
+      "stap_id": "workflowoverzicht",
+      "titel": "Workflowoverzicht - Basis Informatie",
       "type": "parameters",
       "verplicht": true,
       "volgorde": 1,
       "vragen": [
         {
-          "vraag_id": "contract_type",
-          "titel": "Wat voor type contract wordt er opgesteld?",
+          "vraag_id": "opdrachtgever_naam",
+          "titel": "Naam gemeente / regio (Opdrachtgever)",
+          "type": "text",
+          "verplicht": false
+        },
+        {
+          "vraag_id": "opdrachtgever_adres",
+          "titel": "Adres (Opdrachtgever)",
+          "type": "text",
+          "verplicht": false
+        },
+        {
+          "vraag_id": "opdrachtgever_postcode",
+          "titel": "Postcode (Opdrachtgever)",
+          "type": "text",
+          "verplicht": false
+        },
+        {
+          "vraag_id": "opdrachtgever_plaats",
+          "titel": "Plaats (Opdrachtgever)",
+          "type": "text",
+          "verplicht": false
+        },
+        {
+          "vraag_id": "opdrachtgever_kvk",
+          "titel": "KvK-nummer (Opdrachtgever)",
+          "type": "text",
+          "verplicht": false
+        },
+        {
+          "vraag_id": "opdrachtnemer_naam",
+          "titel": "Naam organisatie aanbieder (Opdrachtnemer)",
+          "type": "text",
+          "verplicht": false
+        },
+        {
+          "vraag_id": "opdrachtnemer_adres",
+          "titel": "Adres (Opdrachtnemer)",
+          "type": "text",
+          "verplicht": false
+        },
+        {
+          "vraag_id": "opdrachtnemer_postcode",
+          "titel": "Postcode (Opdrachtnemer)",
+          "type": "text",
+          "verplicht": false
+        },
+        {
+          "vraag_id": "opdrachtnemer_plaats",
+          "titel": "Plaats (Opdrachtnemer)",
+          "type": "text",
+          "verplicht": false
+        },
+        {
+          "vraag_id": "opdrachtnemer_kvk",
+          "titel": "KvK-nummer (Opdrachtnemer)",
+          "type": "text",
+          "verplicht": false
+        },
+        {
+          "vraag_id": "inkoopmethode",
+          "titel": "Hoe koopt Opdrachtgever de jeugdhulp in?",
           "type": "select",
           "verplicht": true,
           "opties": [
             {
-              "waarde": "dienstverlening",
-              "label": "Dienstverlening",
-              "volgende_stappen": ["verplicht_dienstverlening"]
+              "waarde": "aanbestedingsprocedure",
+              "label": "Via een aanbestedingsprocedure",
+              "volgende_stappen": ["inkoopprocedure_vraag"]
             },
             {
-              "waarde": "leverancier",
-              "label": "Leverancier",
-              "volgende_stappen": ["verplicht_leverancier"]
-            },
-            {
-              "waarde": "onderhoud",
-              "label": "Onderhoud",
-              "volgende_stappen": ["verplicht_onderhoud"]
+              "waarde": "toelatingsprocedure",
+              "label": "Via een toelatingsprocedure",
+              "volgende_stappen": ["uitvoeringsvariant_vraag"]
             }
           ]
         },
         {
-          "vraag_id": "bedrag_contract",
-          "titel": "Wat is het geschatte contractbedrag?",
+          "vraag_id": "inkoopprocedure",
+          "titel": "Welke inkoopprocedure is gehanteerd?",
+          "type": "select",
+          "verplicht": false,
+          "conditioneel": {
+            "field": "inkoopmethode",
+            "value": "aanbestedingsprocedure"
+          },
+          "opties": [
+            {
+              "waarde": "selectie",
+              "label": "Aanbesteding met selectie"
+            },
+            {
+              "waarde": "emvi",
+              "label": "Aanbesteding met EMVI-criterium"
+            },
+            {
+              "waarde": "zonder_emvi",
+              "label": "Aanbesteding zonder EMVI-criterium"
+            }
+          ],
+          "volgende_stappen": ["uitvoeringsvariant_vraag"]
+        },
+        {
+          "vraag_id": "uitvoeringsvariant",
+          "titel": "Welke uitvoeringsvariant?",
           "type": "select",
           "verplicht": true,
           "opties": [
             {
-              "waarde": "onder_25000",
-              "label": "Onder €25.000",
-              "volgende_stappen": ["simplified_flow"]
+              "waarde": "inspanningsgericht",
+              "label": "Inspanningsgericht"
             },
             {
-              "waarde": "25000_100000",
-              "label": "€25.000 - €100.000",
-              "volgende_stappen": ["standard_flow"]
+              "waarde": "outputgericht",
+              "label": "Outputgericht"
             },
             {
-              "waarde": "boven_100000",
-              "label": "Boven €100.000",
-              "volgende_stappen": ["extended_flow"]
+              "waarde": "taakgericht",
+              "label": "Taakgericht"
             }
-          ]
+          ],
+          "volgende_stappen": ["jeugdhulp_vraag"]
         },
         {
-          "vraag_id": "privacy_sensitive",
-          "titel": "Worden er persoonsgegevens verwerkt?",
-          "type": "boolean",
+          "vraag_id": "jeugdhulp",
+          "titel": "Op welke jeugdhulp heeft de overeenkomst betrekking?",
+          "type": "multiselect",
           "verplicht": true,
-          "volgende_stappen": {
-            "true": ["privacy_verplicht"],
-            "false": ["privacy_optioneel"]
-          }
+          "opties": [
+            {
+              "waarde": "jeugdhulp_thuis",
+              "label": "Jeugdhulp thuis"
+            },
+            {
+              "waarde": "jeugdhulp_verblijf",
+              "label": "Jeugdhulp verblijf"
+            },
+            {
+              "waarde": "jeugdhulp_pleegzorg",
+              "label": "Jeugdhulp pleegzorg"
+            },
+            {
+              "waarde": "jeugdhulp_gesloten",
+              "label": "Jeugdhulp gesloten"
+            }
+          ],
+          "volgende_stappen": ["extra_overwegingen"]
+        },
+        {
+          "vraag_id": "extra_overwegingen",
+          "titel": "Welke extra overwegingen toevoegen?",
+          "type": "textarea",
+          "verplicht": false,
+          "volgende_stappen": ["begripsdefinities"]
+        },
+        {
+          "vraag_id": "begripsdefinities",
+          "titel": "Welke begripsdefinities toevoegen?",
+          "type": "textarea",
+          "verplicht": false,
+          "volgende_stappen": ["deel1"]
         }
       ]
     },
     {
-      "stap_id": "verplicht_dienstverlening",
-      "titel": "Verplichte Clausules - Dienstverlening",
-      "type": "clausules",
+      "stap_id": "deel1",
+      "titel": "Deel 1 - Bepalingen tussen opdrachtgever en alle opdrachtnemers",
+      "type": "parameters",
       "verplicht": true,
       "volgorde": 2,
-      "conditionele_clausules": [
-        "CLAUSULE_DEFINITIES",
-        "CLAUSULE_TOEPASSELIJK_RECHT",
-        "CLAUSULE_LOOPTIJD",
-        "CLAUSULE_DECLARATIE",
-        "CLAUSULE_BETALING",
-        "CLAUSULE_AVG"
+      "vragen": [
+        {
+          "vraag_id": "specifieke_jeugdhulp",
+          "titel": "Specifieke jeugdhulp: beschrijving invullen",
+          "type": "textarea",
+          "verplicht": false,
+          "artikel": "1.1"
+        },
+        {
+          "vraag_id": "meerdere_opdrachtnemers",
+          "titel": "Sluit opdrachtgever met meerdere opdrachtnemers een overeenkomst?",
+          "type": "boolean",
+          "verplicht": true,
+          "artikel": "1.0"
+        },
+        {
+          "vraag_id": "documenten_samenstelling",
+          "titel": "Uit welke documenten bestaat de overeenkomst?",
+          "type": "multiselect",
+          "verplicht": true,
+          "artikel": "1.2",
+          "opties": [
+            {
+              "waarde": "overeenkomst",
+              "label": "1. Overeenkomst",
+              "verplicht": true
+            },
+            {
+              "waarde": "nadere_overeenkomsten",
+              "label": "2. Nadere overeenkomsten"
+            },
+            {
+              "waarde": "nota_van_inlichtingen",
+              "label": "3. Nota's van inlichtingen"
+            },
+            {
+              "waarde": "gemeentelijke_inkoopdocumenten",
+              "label": "4. Gemeentelijke inkoopdocumenten",
+              "subvraag": {
+                "vraag_id": "gemeentelijke_inkoopdocumenten_tekst",
+                "titel": "Welke gemeentelijke inkoopdocumenten?",
+                "type": "text"
+              }
+            },
+            {
+              "waarde": "bijlagen_deelneming",
+              "label": "5. Bijlagen deelneming"
+            },
+            {
+              "waarde": "bijlagen_inschrijving",
+              "label": "6. Bijlagen inschrijving"
+            },
+            {
+              "waarde": "bijlagen_aanmelding",
+              "label": "7. Bijlagen aanmelding"
+            }
+          ]
+        },
+        {
+          "vraag_id": "looptijd_begindatum",
+          "titel": "Looptijd overeenkomst - Begindatum",
+          "type": "date",
+          "verplicht": true,
+          "artikel": "1.3.1"
+        },
+        {
+          "vraag_id": "looptijd_einddatum",
+          "titel": "Looptijd overeenkomst - Einddatum",
+          "type": "date",
+          "verplicht": true,
+          "artikel": "1.3.1"
+        },
+        {
+          "vraag_id": "verlenging_hoevaak",
+          "titel": "Hoe vaak mag de overeenkomst verlengd worden?",
+          "type": "text",
+          "verplicht": false,
+          "artikel": "1.3.2"
+        },
+        {
+          "vraag_id": "verlenging_maanden",
+          "titel": "Met hoeveel maanden mag verlengd worden?",
+          "type": "text",
+          "verplicht": false,
+          "artikel": "1.3.2"
+        },
+        {
+          "vraag_id": "opzegoptie",
+          "titel": "Opzegoptie",
+          "type": "select",
+          "verplicht": true,
+          "artikel": "1.3.4",
+          "opties": [
+            {
+              "waarde": "opzegoptie_variant1",
+              "label": "Variant 1: Opzegging met X dagen opzegtermijn"
+            },
+            {
+              "waarde": "opzegoptie_variant2",
+              "label": "Variant 2: Opzegging met X maanden opzegtermijn"
+            },
+            {
+              "waarde": "opzegoptie_variant3",
+              "label": "Variant 3: Opzegging met ingang van nieuw jaar"
+            }
+          ]
+        },
+        {
+          "vraag_id": "herzieningsclausule",
+          "titel": "Herzieningsclausule?",
+          "type": "boolean",
+          "verplicht": true,
+          "artikel": "1.4",
+          "conditioneel_vragen": {
+            "true": [
+              {
+                "vraag_id": "herzieningsclausule_tekst",
+                "titel": "Extra wijzigingen voor herzieningsclausule",
+                "type": "textarea"
+              }
+            ]
+          }
+        },
+        {
+          "vraag_id": "bestedingsruimte",
+          "titel": "Bestedingsruimte?",
+          "type": "boolean",
+          "verplicht": true,
+          "artikel": "1.5"
+        },
+        {
+          "vraag_id": "opzegging_onvoldoende_inzet",
+          "titel": "Opzegging bij onvoldoende inzet?",
+          "type": "boolean",
+          "verplicht": true,
+          "artikel": "1.6"
+        },
+        {
+          "vraag_id": "bepaling_18_18plus",
+          "titel": "18-/18+ bepaling?",
+          "type": "boolean",
+          "verplicht": true,
+          "artikel": "1.7"
+        },
+        {
+          "vraag_id": "bibob",
+          "titel": "BIBOB?",
+          "type": "boolean",
+          "verplicht": true,
+          "artikel": "1.8"
+        },
+        {
+          "vraag_id": "sroi",
+          "titel": "SROI opnemen?",
+          "type": "boolean",
+          "verplicht": true,
+          "artikel": "1.9",
+          "conditioneel_vragen": {
+            "true": [
+              {
+                "vraag_id": "sroi_voorwaarden",
+                "titel": "Voorwaarden voor SROI",
+                "type": "textarea"
+              }
+            ]
+          }
+        },
+        {
+          "vraag_id": "extra_bepalingen_deel1",
+          "titel": "Extra bepalingen deel 1 toevoegen?",
+          "type": "textarea",
+          "verplicht": false,
+          "artikel": "1.10+"
+        }
       ],
-      "volgende_stappen": ["optioneel_dienstverlening"]
+      "volgende_stappen": ["deel2"]
     },
     {
-      "stap_id": "verplicht_leverancier",
-      "titel": "Verplichte Clausules - Leverancier",
-      "type": "clausules",
-      "verplicht": true,
-      "volgorde": 2,
-      "conditionele_clausules": [
-        "CLAUSULE_DEFINITIES",
-        "CLAUSULE_TOEPASSELIJK_RECHT",
-        "CLAUSULE_LOOPTIJD",
-        "CLAUSULE_DECLARATIE",
-        "CLAUSULE_BETALING",
-        "CLAUSULE_AVG",
-        "CLAUSULE_LEVERING"
-      ],
-      "volgende_stappen": ["optioneel_leverancier"]
-    },
-    {
-      "stap_id": "verplicht_onderhoud",
-      "titel": "Verplichte Clausules - Onderhoud",
-      "type": "clausules",
-      "verplicht": true,
-      "volgorde": 2,
-      "conditionele_clausules": [
-        "CLAUSULE_DEFINITIES",
-        "CLAUSULE_TOEPASSELIJK_RECHT",
-        "CLAUSULE_LOOPTIJD",
-        "CLAUSULE_DECLARATIE",
-        "CLAUSULE_BETALING",
-        "CLAUSULE_AVG",
-        "CLAUSULE_ONDERHOUD"
-      ],
-      "volgende_stappen": ["optioneel_onderhoud"]
-    },
-    {
-      "stap_id": "privacy_verplicht",
-      "titel": "Privacy Clausules - Verplicht",
-      "type": "clausules",
-      "verplicht": true,
+      "stap_id": "deel2",
+      "titel": "Deel 2 - Individuele bepalingen voor één specifieke opdrachtnemer",
+      "type": "parameters",
+      "verplicht": false,
       "volgorde": 3,
-      "conditionele_clausules": [
-        "CLAUSULE_AVG",
-        "CLAUSULE_DPO",
-        "CLAUSULE_DATA_PROCESSING"
+      "conditioneel": {
+        "field": "meerdere_opdrachtnemers",
+        "value": true
+      },
+      "vragen": [
+        {
+          "vraag_id": "individuele_afspraken",
+          "titel": "Wil opdrachtgever individuele afspraken maken aanvullend op Deel 1?",
+          "type": "boolean",
+          "verplicht": true,
+          "artikel": "2.1",
+          "conditioneel_vragen": {
+            "true": [
+              {
+                "vraag_id": "individuele_afspraken_tekst",
+                "titel": "Individuele afspraken tekst",
+                "type": "textarea"
+              }
+            ]
+          }
+        }
       ],
-      "volgende_stappen": ["optioneel"]
+      "volgende_stappen": ["deel3"]
     },
     {
-      "stap_id": "privacy_optioneel",
-      "titel": "Privacy Clausules - Optioneel",
+      "stap_id": "deel3",
+      "titel": "Deel 3 - Generieke bepalingen",
       "type": "clausules",
-      "verplicht": false,
-      "volgorde": 3,
-      "conditionele_clausules": [
-        "CLAUSULE_AVG"
-      ],
-      "volgende_stappen": ["optioneel"]
-    },
-    {
-      "stap_id": "optioneel_dienstverlening",
-      "titel": "Optionele Clausules - Dienstverlening",
-      "type": "clausules",
-      "verplicht": false,
+      "verplicht": true,
       "volgorde": 4,
       "conditionele_clausules": [
-        "CLAUSULE_OPZEGGING",
-        "CLAUSULE_INDEXERING",
-        "CLAUSULE_KWALITEIT",
-        "CLAUSULE_RAPPORTAGE"
-      ],
-      "volgende_stappen": ["aanpassen"]
-    },
-    {
-      "stap_id": "optioneel_leverancier",
-      "titel": "Optionele Clausules - Leverancier",
-      "type": "clausules",
-      "verplicht": false,
-      "volgorde": 4,
-      "conditionele_clausules": [
-        "CLAUSULE_OPZEGGING",
-        "CLAUSULE_INDEXERING",
-        "CLAUSULE_KWALITEIT",
-        "CLAUSULE_GARANTIE",
-        "CLAUSULE_LEVERING"
-      ],
-      "volgende_stappen": ["aanpassen"]
-    },
-    {
-      "stap_id": "optioneel_onderhoud",
-      "titel": "Optionele Clausules - Onderhoud",
-      "type": "clausules",
-      "verplicht": false,
-      "volgorde": 4,
-      "conditionele_clausules": [
-        "CLAUSULE_OPZEGGING",
-        "CLAUSULE_INDEXERING",
-        "CLAUSULE_KWALITEIT",
-        "CLAUSULE_ONDERHOUD",
-        "CLAUSULE_STORING"
+        "CLAUSULE_3_1",
+        "CLAUSULE_3_2",
+        "CLAUSULE_3_3",
+        "CLAUSULE_3_4",
+        "CLAUSULE_3_5",
+        "CLAUSULE_3_6",
+        "CLAUSULE_3_7",
+        "CLAUSULE_3_8",
+        "CLAUSULE_3_9",
+        "CLAUSULE_3_10",
+        "CLAUSULE_3_11",
+        "CLAUSULE_3_12",
+        "CLAUSULE_3_13",
+        "CLAUSULE_3_14",
+        "CLAUSULE_3_15",
+        "CLAUSULE_3_16",
+        "CLAUSULE_3_17",
+        "CLAUSULE_3_18",
+        "CLAUSULE_3_19",
+        "CLAUSULE_3_20",
+        "CLAUSULE_3_21",
+        "CLAUSULE_3_22",
+        "CLAUSULE_3_23",
+        "CLAUSULE_3_24",
+        "CLAUSULE_3_25",
+        "CLAUSULE_3_26",
+        "CLAUSULE_3_27",
+        "CLAUSULE_3_28",
+        "CLAUSULE_3_29",
+        "CLAUSULE_3_30",
+        "CLAUSULE_3_31"
       ],
       "volgende_stappen": ["aanpassen"]
     },

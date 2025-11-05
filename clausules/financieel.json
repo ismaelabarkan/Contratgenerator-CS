@@ -1,5 +1,6 @@
 {
   "CLAUSULE_DECLARATIE": {
+    "artikelnummer": "3.4",
     "titel": "Declaratie",
     "tekst": "Declaraties worden ingediend via het landelijk berichtenverkeer. {opdrachtgever} kan onjuiste declaraties afwijzen.",
     "toelichting": "Regelt hoe facturen ingediend moeten worden.",
@@ -21,6 +22,7 @@
     "auteur": "Juridisch Team"
   },
   "CLAUSULE_BETALING": {
+    "artikelnummer": "3.5",
     "titel": "Betaling",
     "tekst": "Betaling vindt plaats binnen {betalingstermijn} dagen na ontvangst van een correcte declaratie.",
     "toelichting": "Bepaalt de betalingstermijn.",
@@ -42,6 +44,7 @@
     "auteur": "Juridisch Team"
   },
   "CLAUSULE_INDEXERING": {
+    "artikelnummer": "3.8",
     "titel": "Indexering",
     "tekst": "Tarieven worden jaarlijks aangepast op basis van de CPI zoals gepubliceerd door het CBS.",
     "toelichting": "Zorgt voor automatische aanpassing van tarieven aan inflatie.",

@@ -1,0 +1,237 @@
+# Overeenkomst Wmo begeleiding (2026–2029)
+
+**Versie:** 0.3  
+**Status:** Concept – Re Ketenbureau i-Sociaal Domein
+
+---
+
+## Partijen
+
+**1. Opdrachtgever**  
+De gemeente **{{gemeente.naam}}**,  
+gevestigd te **{{gemeente.postcodePlaats}}**,  
+adres: **{{gemeente.adres}}**,  
+KVK: **{{gemeente.kvk}}**  
+hierna te noemen: **“Opdrachtgever”**
+
+**en**
+
+**2. Opdrachtnemer**  
+De organisatie **{{aanbieder.naam}}**,  
+gevestigd te **{{aanbieder.postcodePlaats}}**,  
+adres: **{{aanbieder.adres}}**,  
+KVK: **{{aanbieder.kvk}}**,  
+AGB-code: **{{aanbieder.agb}}**  
+hierna te noemen: **“Opdrachtnemer”**
+
+Opdrachtgever en Opdrachtnemer worden samen aangeduid als: **“Partijen”**
+
+---
+
+## Overwegingen
+
+1. Opdrachtgever is verantwoordelijk voor het uitvoeren van de Wmo onder de Jeugdwet.
+2. Opdrachtgever wil voor inwoners passende begeleiding inkopen.
+3. Partijen willen samenwerken op basis van duidelijkheid, kwaliteit en continuïteit.
+4. Deze overeenkomst is gesloten om de overeengekomen ondersteuning te leveren.
+5. *(Indien sprake van aanbesteding)* Deze overeenkomst is tot stand gekomen na aanbesteding […].  
+6. *(Indien geen aanbesteding)* Deze overeenkomst is tot stand gekomen na toelatingsprocedure […].  
+7. Partijen streven naar goede samenwerking en transparantie.  
+8. Partijen houden zich aan wet- en regelgeving, waaronder Wmo 2015 en AVG.  
+9. **Uitvoeringsvariant**: {{contract.uitvoeringsvariant}}  
+10. *(Eventuele aanvullende overwegingen ingevoerd door opdrachtgever)*
+
+---
+
+## Definities
+
+De definities in deze overeenkomst hebben de betekenis zoals opgenomen in hoofdstuk 1 van de standaardovereenkomst van het CS Sociaal Domein.
+
+*(Indien opdrachtgever definities toevoegt, komen deze hier als opsomming)*
+
+---
+
+# DEEL 1 – Bepalingen tussen Opdrachtgever en alle Opdrachtnemers
+
+## Artikel 1.1 – Vorm van Wmo-begeleiding
+
+De overeenkomst heeft betrekking op de volgende vormen van Wmo-begeleiding:
+
+{{#producten.indivBegeleidingBasis}}
+- Individuele begeleiding – basis
+{{/producten.indivBegeleidingBasis}}
+
+{{#producten.indivBegeleidingPlus}}
+- Individuele begeleiding – plus
+{{/producten.indivBegeleidingPlus}}
+
+{{#producten.dagbestedingBasisInclVervoer}}
+- Dagbesteding – basis (inclusief vervoer)
+{{/producten.dagbestedingBasisInclVervoer}}
+
+{{#producten.dagbestedingPlusInclVervoer}}
+- Dagbesteding – plus (inclusief vervoer)
+{{/producten.dagbestedingPlusInclVervoer}}
+
+{{#producten.kortdurendVerblijf}}
+- Kortdurend verblijf
+{{/producten.kortdurendVerblijf}}
+
+{{#producten.beschermdThuis}}
+- Beschermd Thuis
+{{/producten.beschermdThuis}}
+
+**Specifieke omschrijving:**  
+{{contract.specifiekeOmschrijving}}
+
+---
+
+## Artikel 1.2 – Documenten behorend bij de overeenkomst
+
+De overeenkomst bestaat uit:
+
+1. Deze overeenkomst
+2. Nadere overeenkomsten *(indien van toepassing)*
+3. Nota(’s) van inlichtingen *(indien van toepassing)*
+4. Gemeentelijke inkoopdocumenten:
+   - 4.1: {{contract.documenten.inkoopdocumenten}}
+   - 4.2: Algemeen Inkoopvoorwaarden VNG
+   - 4.3: Bijlagen deelneming / inschrijving / aanmelding *(indien van toepassing)*
+
+---
+
+## Artikel 1.3 – Looptijd en verlenging
+
+1. De overeenkomst gaat in op **{{contract.looptijd.start}}** en loopt tot en met **{{contract.looptijd.einde}}**.
+2. De overeenkomst kan maximaal **{{contract.verlengingAantal}}** keer worden verlengd met telkens **{{contract.verlengingMaanden}}** maanden.
+3. Melding van verlenging vindt plaats uiterlijk **{{contract.meldtermijnMaanden}}** maanden voor het einde van de looptijd.
+4. Opzegging gebeurt volgens de door Opdrachtgever gekozen optie:
+   - **Optie:** {{contract.opzegOptie}}  
+   *(hier komt exacte standaardtekst per gekozen optie)*
+
+---
+
+## Artikel 1.4 – Herzieningsclausule
+
+{{#bepalingen.herziening}}
+Opdrachtgever kan de overeenkomst wijzigen onder:
+- aard: {{bepalingen.herzieningsAard}}
+- omvang: {{bepalingen.herzieningsOmvang}}
+- voorwaarden: {{bepalingen.herzieningsVoorwaarden}}
+
+Art. 1.4.2 en 1.4.3 – standaardtekst
+{{/bepalingen.herziening}}
+
+{{^bepalingen.herziening}}
+N.v.t.
+{{/bepalingen.herziening}}
+
+---
+
+## Artikel 1.5 – Bestedingsruimte
+
+{{#bepalingen.bestedingsruimte}}
+1.5.1 t/m 1.5.10 standaardtekst  
+- Indien aanbesteding: beide aandachtsstreepjes invullen  
+- Indien geen aanbesteding: alleen tweede aandachtsstreepje invullen
+{{/bepalingen.bestedingsruimte}}
+
+{{^bepalingen.bestedingsruimte}}
+N.v.t.
+{{/bepalingen.bestedingsruimte}}
+
+---
+
+## Artikel 1.6 – Opzegging bij onvoldoende inzet
+
+{{#bepalingen.opzeggingOnvoldoendeInzet}}
+1.6.1 en 1.6.2 standaardtekst
+{{/bepalingen.opzeggingOnvoldoendeInzet}}
+
+{{^bepalingen.opzeggingOnvoldoendeInzet}}
+N.v.t.
+{{/bepalingen.opzeggingOnvoldoendeInzet}}
+
+---
+
+## Artikel 1.7 – 18-/18+ bepaling
+
+{{#bepalingen.bepaling18plus}}
+1.7.1 t/m 1.7.3 standaardtekst
+{{/bepalingen.bepaling18plus}}
+
+{{^bepalingen.bepaling18plus}}
+N.v.t.
+{{/bepalingen.bepaling18plus}}
+
+---
+
+## Artikel 1.8 – Bibob
+
+{{#bepalingen.bibob}}
+1.8.1 t/m 1.8.5 standaardtekst
+{{/bepalingen.bibob}}
+
+{{^bepalingen.bibob}}
+N.v.t.
+{{/bepalingen.bibob}}
+
+---
+
+## Artikel 1.9 – Social Return on Investment (SROI)
+
+{{#bepalingen.sroiPct}}
+Opdrachtgever stelt de volgende SROI-voorwaarden:
+{{bepalingen.sroiVoorwaarden}}
+{{/bepalingen.sroiPct}}
+
+{{^bepalingen.sroiPct}}
+N.v.t.
+{{/bepalingen.sroiPct}}
+
+---
+
+## Artikel 1.10 – Extra bepalingen
+
+*(Alleen opnemen indien door opdrachtgever ingevuld, doornummeren: 1.10, 1.11, 1.12 …)*
+
+---
+
+# DEEL 2 – Individuele bepalingen
+
+*(Alleen opnemen indien van toepassing)*
+
+{{#deel2}}
+### Artikel 2.1 t/m 2.n – Individuele afspraken
+{{deel2.tekst}}
+{{/deel2}}
+
+{{^deel2}}
+*(Geen aanvullende individuele bepalingen)*
+{{/deel2}}
+
+---
+
+# DEEL 3 – Generieke bepalingen
+
+### Art. 3.1 t/m Art. 3.31
+- Standaardteksten volgens landelijke standaard
+- Afhankelijk van uitvoeringsvariant kan tekst A of tekst B van toepassing zijn
+- Art. 3.6 en 3.11 kunnen N.v.t. zijn bij bepaalde combinaties (zoals alleen individuele overeenkomst of taakgericht)
+
+*(Exacte standaardteksten volgen in officiële template)*
+
+---
+
+## Ondertekening
+
+Aldus overeengekomen, in tweevoud,
+
+**Plaats:** {{ondertekening.plaats}}  
+**Datum:** {{ondertekening.datum}}
+
+**Namens Opdrachtgever:**  
+{{ondertekening.gemeenteNaam}}, {{ondertekening.gemeenteFunctie}}
+
+**Namens Opdrachtnemer:**  
+{{ondertekening.aanbiederNaam}}, {{ondertekening.aanbiederFunctie}}

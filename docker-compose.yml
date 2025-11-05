@@ -20,7 +20,7 @@ services:
     volumes:
       # Mount voor development - wijzigingen worden direct zichtbaar
       - ./standalone_contract_generator_v3_flow.html:/app/public/index.html:ro
-      - ./clausules:/app/public/clausules:ro
+      - ./clausules:/app/clausules:ro
       - ./flows:/app/flows:ro
       - ./beheer:/app/public/beheer:ro
       - flows-data:/app

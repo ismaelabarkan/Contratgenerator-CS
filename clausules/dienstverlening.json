@@ -1,5 +1,6 @@
 {
   "CLAUSULE_KWALITEIT": {
+    "artikelnummer": "3.9",
     "titel": "Kwaliteit van dienstverlening",
     "tekst": "De dienstverlener zorgt ervoor dat de dienstverlening voldoet aan de in deze overeenkomst gestelde eisen en aan de algemeen aanvaarde normen voor dergelijke dienstverlening.",
     "toelichting": "Bepaalt de kwaliteitseisen voor de dienstverlening.",
@@ -21,6 +22,7 @@
     "auteur": "Juridisch Team"
   },
   "CLAUSULE_RAPPORTAGE": {
+    "artikelnummer": "3.10",
     "titel": "Rapportage en verantwoording",
     "tekst": "De dienstverlener rapporteert maandelijks over de voortgang van de dienstverlening aan {opdrachtgever}. De rapportage bevat een overzicht van de uitgevoerde werkzaamheden en eventuele knelpunten.",
     "toelichting": "Regelt de rapportageverplichting van de dienstverlener.",
