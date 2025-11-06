@@ -1,0 +1,73 @@
+import type { DataModel } from "./data-model";
+
+export const data: Partial<DataModel> = {
+	opdrachtgever_voorletters: "B",
+	opdrachtgever_naam_ondertekening: "Urgemeester",
+	opdrachtgever_functie: "Keukenhulp",
+	opdrachtnemer_voorletters: "D",
+	opdrachtnemer_naam_ondertekening: "Irecteur",
+	opdrachtnemer_functie: "Sloopkogel",
+	ondertekening_plaats: "Groningen",
+	ondertekening_datum: "2026-01-01",
+
+	opdrachtgever_naam: "Duckstad",
+	opdrachtgever_adres: "blabkla",
+	opdrachtgever_postcode: "1234 AX",
+	opdrachtgever_plaats: "Duckstad",
+	opdrachtgever_kvk: "54321",
+	opdrachtnemer_naam: "DuckstadVerzorgd",
+	opdrachtnemer_adres: "Straatje 3",
+	opdrachtnemer_postcode: "4321 AB",
+	opdrachtnemer_plaats: "Duckstad",
+	opdrachtnemer_kvk: "654321",
+	inkoopmethode: "aanbestedingsprocedure",
+	inkoopprocedure: "emvi",
+	alle_aanbieders_contract: false,
+	uitvoeringsvariant: "taakgericht",
+	extra_overwegingen: [
+		"Opdrachtgever is betrouwbaar.",
+		"Opdrachtnemer is betrouwbaar.",
+	],
+	begripsdefinities: [
+		{
+			begrip: "JaapJunior",
+			definitie: "Chatbot voor het beantwoorden van vragen.",
+		},
+		{
+			begrip: "Wanbetaling",
+			definitie: "Opdrachtgever betaalt niet of te laat.",
+		},
+	],
+	jeugdhulp: ["jeugdhulp_1", "jeugdhulp_3"],
+	looptijd_begindatum: "2026-01-01",
+	looptijd_einddatum: "2028-12-31",
+
+	indexering_startdatum: "2027-01-01",
+	verlenging_hoevaak: "2",
+	verlenging_maanden: "12",
+	documenten_samenstelling: [
+		"gemeentelijke_inkoopdocumenten",
+		"bijlagen_deelneming",
+		"bijlagen_inschrijving",
+	],
+	documenten_bijlagen_overig: ["Programma van Eisen", "Sociale kaart Duckstad"],
+	specifieke_jeugdhulp: "Pleegzorg 2000 Euro per maand.\n",
+	meerdere_opdrachtnemers: true,
+	opzegoptie: "opzegoptie_variant3",
+	herzieningsclausule: false,
+	herzieningsclausule_tekst: ["Wijziging 1", "Wijziging 2"],
+	bestedingsruimte: true,
+	opzegging_onvoldoende_inzet: true,
+	bepaling_18_18plus: false,
+	bibob: true,
+	sroi: false,
+	extra_bepalingen_deel1: [
+		"Overeenkomst kan opgeschort worden als : ....",
+		"Er wordt een boete in rekening gebracht wanneer ...",
+	],
+	individuele_afspraken: true,
+	opzegoptie_maanden: "3",
+	opzegoptie_voorwaarden:
+		"overbruggingszorg geregeld\novereenstemming met opdrachtnemer\n",
+	individuele_afspraken_tekst: "Blabla bla",
+};

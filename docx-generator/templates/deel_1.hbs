@@ -1,0 +1,253 @@
+# Deel 1: Bepalingen die gelden tussen Opdrachtgever en alle Opdrachtnemers waarmee Opdrachtgever een overeenkomst sluit
+
+## Artikel 1.1: Voorwerp van de overeenkomst
+
+De overeenkomst heeft betrekking op de volgende jeugdhulp:
+
+{{#inArray jeugdhulp "jeugdhulp_1"}}
+- ondersteuning van en hulp en zorg, niet zijnde preventie, aan jeugdigen en hun ouders bij het verminderen, stabiliseren, behandelen en opheffen van of omgaan met de gevolgen van psychische problemen en stoornissen, psychosociale problemen, gedragsproblemen of een verstandelijke beperking van de jeugdige, opvoedingsproblemen van de ouders of adoptie gerelateerde problemen;
+{{/inArray}}
+{{#inArray jeugdhulp "jeugdhulp_2"}}
+- het bevorderen van de deelname aan het maatschappelijk verkeer en van het zelfstandig functioneren van jeugdigen met een somatische, verstandelijke, lichamelijke of zintuiglijke beperking, een chronisch psychisch probleem of een psychosociaal probleem, die de leeftijd van 18 (achttien) jaar nog niet hebben bereikt, en
+{{/inArray}}
+{{#inArray jeugdhulp "jeugdhulp_3"}}
+- het ondersteunen bij of het overnemen van activiteiten op het gebied van de persoonlijke verzorging gericht op het opheffen van een tekort aan zelfredzaamheid bij jeugdigen met een verstandelijke, lichamelijke of zintuiglijke beperking of een somatische of psychiatrische aandoening of beperking, die de leeftijd van 18 (achttien) jaar nog niet hebben bereikt.
+{{/inArray}}
+
+Meer specifiek gaat het om de volgende jeugdhulp:
+
+{{specifieke_jeugdhulp}}
+
+## Artikel 1.2: Hiërarchische volgorde documenten
+
+De volgende bijlagen zijn (in hiërarchische volgorde) van toepassing. Zij maken integraal onderdeel uit van de overeenkomst die Partijen sluiten. Het gaat steeds om de gepubliceerde, meest actuele versie van:
+
+1. De overeenkomst;
+1. Nadere overeenkomsten gesloten op basis van deze overeenkomst;
+1. De Nota(’s) van Inlichtingen (latere versies gaan voor op voorgaande versies);
+{{#inArray documenten_samenstelling "gemeentelijke_inkoopdocumenten"}}
+1. De Gemeentelijke inkoopdocumenten met daarin: 
+{{#each documenten_bijlagen_overig}}
+    1.	{{this}};
+{{/each}}
+    1.	Het meest recente Model Algemene Inkoopvoorwaarden van de Vereniging van Nederlandse Gemeenten (september 2024). 
+{{#if (eq inkoopmethode "aanbestedingsprocedure")}}
+{{#inArray documenten_samenstelling "bijlagen_deelneming"}}
+    1. Het verzoek tot deelneming met daarin:
+        1.	[bijlagen benoemen]
+        1.	[bijlagen benoemen]
+{{/inArray}}
+{{#inArray documenten_samenstelling "bijlagen_inschrijving"}}
+	1. de inschrijving van de Jeugdhulpaanbieder met daarin:
+        1.	[bijlagen benoemen]
+        1.	[bijlagen benoemen]
+{{/inArray}}
+{{else if (eq inkoopmethode "toelatingsprocedure")}}
+{{#inArray documenten_samenstelling "bijlagen_inschrijving"}}
+	1. De aanmelding van de Jeugdhulpaanbieder met daarin:
+        1.	[bijlagen benoemen]
+        1.	[bijlagen benoemen]
+{{/inArray}}
+{{/if}}
+{{/inArray}}
+
+## Artikel 1.3: Looptijd
+
+1.3.1  
+De overeenkomst start op {{date looptijd_begindatum "DD-MM-YYYY"}} en loopt tot en met {{date looptijd_einddatum "dd-mm-yyyy"}}.
+
+1.3.2  
+Opdrachtgever mag de overeenkomst na afloop geheel of deels verlengen met {{ verlenging_maanden }} kalendermaanden. Dit mag maximaal {{ verlenging_hoevaak }} keer.
+
+1.3.3  
+Opdrachtgever meldt uiterlijk 6 kalendermaanden voor het einde of hij de overeenkomst wil verlengen.
+
+1.3.4  
+{{#if (eq opzegoptie "opzegoptie_variant1")}}
+Geen van de Partijen mag tussentijds opzeggen. Alleen de artikelen {{#if herzieningsclausule}}1.4.2, {{/if}}{{#if opzegging_onvoldoende_inzet}}1.6.1, {{/if}}3.19.1, 3.22 en 3.30.4 maken hierop een uitzondering.
+{{else if (eq opzegoptie "opzegoptie_variant2")}}
+Opdrachtgever mag naast de mogelijkheden genoemd in artikel {{#if herzieningsclausule}}1.4.2, {{/if}}{{#if opzegging_onvoldoende_inzet}}1.6.1, {{/if}}3.19.1 en 3.22 tussentijds schriftelijk opzeggen met een opzegtermijn van {{opzegoptie_maanden}} kalendermaanden.  
+Opdrachtnemer mag niet tussentijds opzeggen, behalve volgens artikel 1.4.2, 3.22 en 3.30.4.
+{{else if (eq opzegoptie "opzegoptie_variant3")}}
+Opdrachtgever mag naast de mogelijkheden genoemd in artikel {{#if herzieningsclausule}}1.4.2, {{/if}}{{#if opzegging_onvoldoende_inzet}}1.6.1, {{/if}}3.19.1 en 3.22 tussentijds schriftelijk opzeggen met een opzegtermijn van {{opzegoptie_maanden}} kalendermaanden.  
+Opdrachtnemer mag naast de mogelijkheden genoemd in artikel 1.4.2, 3.22 en 3.30.4 tussentijds schriftelijk opzeggen met een opzegtermijn van {{opzegoptie_maanden}} kalendermaanden.  
+Opdrachtnemer moet dan wel voldoen aan de volgende voorwaarden: {{opzegoptie_voorwaarden}}.
+{{/if}}
+
+## Artikel 1.4 – Herzieningsclausule
+
+{{#unless herzieningsclausule}}
+n.v.t.
+{{else}}
+1.4.1  
+Opdrachtgever mag de overeenkomst tussentijds wijzigen na overleg met Opdrachtnemer. Deze wijzigingsbevoegdheid komt boven op de mogelijkheden in artikel 3.22, 3.25, 3.29.2 en 3.30.
+
+Partijen houden een termijn aan van maximaal zes kalendermaanden voor het doorvoeren van de wijziging.
+
+{{#each herzieningsclausule_tekst}}
+Wijzigingsmogelijkheid {{ plus @index 1}}: Aard en omvang van de wijziging: {{this}}
+{{/each}}
+
+Partijen leggen een wijziging vast in een schriftelijk addendum bij de overeenkomst.
+
+1.4.2  
+Opdrachtnemer weigert een wijziging niet zonder goede reden. Als Opdrachtnemer de wijziging niet aanvaardt, dan geldt die weigering als een opzegging van de overeenkomst met een opzegtermijn tot aan de ingangsdatum van de wijziging, tenzij Partijen anders zijn overeengekomen in de wijzigingsmogelijkheden in artikel 1.4.1.
+
+1.4.3  
+Bij opzegging op basis van dit artikel vergoeden Partijen geen schade of kosten. Andere wijzigingsbepalingen in de overeenkomst blijven ook gelden.{{#if (eq inkoopmethode "aanbestedingsprocedure")}} De wijzigingsmogelijkheden uit de Aanbestedingswet 2012 gelden: artikel 2.163b, 2.163d, 2.163e en 2.163f.{{/if}}
+{{/unless}}
+
+## Artikel 1.5 – Bestedingsruimte
+
+{{#unless bestedingsruimte}}
+n.v.t.
+{{else}}
+1.5.1  
+Opdrachtgever mag alleen via artikel 1.4, gedurende de looptijd van de overeenkomst, een bestedingsruimte invoeren of aanpassen. Partijen gebruiken bestedingsruimte alleen bij inspanningsgerichte of outputgerichte uitvoering.
+
+1.5.2  
+Opdrachtgever stelt jaarlijks per Opdrachtnemer een bestedingsruimte vast (naar rato van het lopende kalenderjaar). Als Opdrachtgever tijdens het jaar bestedingsruimte gaat gebruiken, dan informeert hij Opdrachtnemer minimaal 6 kalendermaanden vooraf. De afspraken over de hoogte van de bestedingsruimte staan in deel 2 van de overeenkomst.
+
+1.5.3  
+Opdrachtgever volgt bij het instellen van bestedingsruimte de volgende regels:
+
+a) Als de bestedingsruimte het hele jaar geldt, dan loopt die van 1 januari tot 31 december.  
+b) Als de bestedingsruimte later start, dan loopt die vanaf de ingangsdatum tot 31 december.  
+c) Opdrachtgever informeert minimaal 6 kalendermaanden vooraf over:  
+- het voornemen om bestedingsruimte in te voeren,
+- de processtappen,
+- de manier van informatie-uitwisseling,
+- en geeft Opdrachtnemer de kans een zienswijze te geven.  
+d) Opdrachtgever informeert minimaal 3 kalendermaanden vooraf over het besluit over duur en hoogte van bestedingsruimte.  
+e) Bij verlenging van de bestedingsruimte gelden dezelfde regels opnieuw.  
+
+1.5.4  
+Opdrachtgever bepaalt jaarlijks de hoogte van de bestedingsruimte op basis van:
+
+a) de aard van de jeugdhulp en aantal jeugdigen,  
+b) omzetontwikkeling van Opdrachtnemer (verleden en toekomst),  
+c) aantal jeugdigen met jeugdhulp in eerdere jaren,  
+d) verwachte groei of daling van omzet of aantal jeugdigen,  
+e) aanbod van producten en diensten,  
+f) gemaakte prestatieafspraken en samenwerking met het lokaal team (als aanwezig).  
+
+1.5.5  
+Uiterlijk 2 maanden voor de ingangsdatum maken Partijen een plan met:
+
+a) gevolgen voor administratieve lasten,  
+b) maatregelen om binnen de bestedingsruimte te blijven,  
+c) afspraken over jeugdhulp aan jeugdigen die al jeugdhulp krijgen,  
+d) afspraken over jeugdigen op de wachtlijst,  
+e) jeugdhulp na het bereiken van de bestedingsruimte,  
+f) taakverdeling bij aspecifieke toewijzing,  
+g) procedure bij hulp ná de maximale bestedingsruimte (een specifieke toewijzing moet Opdrachtgever altijd volledige betalen),  
+h) hoe Partijen elkaar informeren bij het bereiken van de bestedingsruimte,  
+i) afspraken over tussentijdse aanpassing,  
+j) afspraken over crisishulp (blijft doorgaan en Opdrachtgever betaalt deze altijd),  
+k) mogelijkheid tot tussentijdse aanpassing bij nieuwe inzichten of omstandigheden.  
+
+1.5.6  
+Binnen de bestedingsruimte levert Opdrachtnemer de afgesproken jeugdhulp.
+
+1.5.7  
+Opdrachtgever bewaakt de bestedingsruimte, tenzij sprake is van een aspecifieke toewijzing. In het laatste geval bewaakt Opdrachtnemer de bestedingsruimte. Partijen maken samen afspraken over deze verantwoordelijkheid en zetten dit in het plan uit artikel 1.5.5. 
+
+Als 70% van de bestedingsruimte is benut of overschrijding dreigt, meldt Opdrachtgever dit schriftelijk aan Opdrachtnemer. Binnen 2 weken overleggen Partijen over een oplossing. Zij gebruiken hierbij het plan uit artikel 1.5.5.
+
+Binnen 2 weken beslist Opdrachtgever of de ruimte wordt aangepast.
+
+Zonder schriftelijke aanpassing betaalt Opdrachtgever geen jeugdhulp boven de bestedingsruimte.
+
+De Opdrachtgever informeert andere betrokkenen direct volgens de afspraken in het plan.
+
+1.5.8  
+Als er bestedingsruimte bestaat voor meerdere vormen van jeugdhulp, dan mag Opdrachtnemer die bij elkaar optellen, mits:
+{{#if (eq inkoopmethode "aanbestedingsprocedure")}}
+-  dit geen wezenlijke wijziging oplevert volgens de Aanbestedingswet 2012, en
+{{/if}}
+- Opdrachtgever hiervoor schriftelijk toestemming geeft.
+
+1.5.9  
+Verwacht één van de Partijen dat de maximale ruimte wordt bereikt, dan kunnen zij een cliëntenstop afspreken voor (delen van) de overeenkomst. Opdrachtgever bevestigt deze stop schriftelijk. Bij een cliëntenstop vervalt de acceptatieplicht van Opdrachtnemer uit artikel 3.1.1.
+
+1.5.10  
+Opdrachtgever heft de cliëntenstop op als Opdrachtnemer weer ruimte heeft binnen de nieuwe bestedingsruimte. Opdrachtnemer onderbouwt die ruimte met cijfers. Opdrachtgever beslist of er daadwerkelijk genoeg ruimte is om de stop op te heffen.
+{{/unless}}
+
+## Artikel 1.6 – Opzegging bij onvoldoende inzet
+
+{{#unless opzegging_onvoldoende_inzet}}
+n.v.t.
+{{ else }}
+1.6.1  
+Als Opdrachtnemer binnen 12 kalendermaanden na de start van de overeenkomst onvoldoende inzet pleegt, dan mag Opdrachtgever de overeenkomst schriftelijk opzeggen met een opzegtermijn van 6 maanden. Met onvoldoende inzet bedoelen Partijen: [bijvoorbeeld minder dan een concrete omzet of minder dan een concreet aantal geholpen jeugdigen]
+
+1.6.2  
+Opdrachtgever zegt niet op volgens artikel 1.6.1 als:
+- Opdrachtnemer jeugdhulp biedt waarvoor binnen de gemeente aantoonbaar een tekort bestaat;
+- Opdrachtnemer een aantoonbaar uniek aanbod levert dat anders zou verdwijnen;
+- Opdrachtnemer binnen 12 kalendermaanden een gemiddelde klanttevredenheid van 8.5 of hoger haalt, gemeten met een door Opdrachtgever goedgekeurde methode.
+{{/unless}}
+
+## Artikel 1.7 – 18-/18+
+
+{{#unless bepaling_18_18plus}}
+n.v.t.
+{{ else }}
+1.7.1  
+Opdrachtnemer houdt vanaf het begin rekening met hulp na het 18e jaar van de jeugdige. Als de jeugdige de leeftijd van 16,5 jaar bereikt, dan neemt Opdrachtnemer het initiatief om samen met de jeugdige een plan te maken. In dit plan staat per big 5 leefdomein (support, wonen, school en werk, inkomen en welzijn):
+- hoe het nu gaat,
+- welke doelen de jeugdige nog heeft,
+- en wie helpt om die doelen te bereiken.
+
+Opdrachtnemer is verantwoordelijk voor een goede overdracht naar andere (zorg)aanbieders.
+
+1.7.2  
+Opdrachtnemer regelt vóór het 18e jaar waar mogelijk ook andere hulp buiten de Jeugdwet. Opdrachtnemer doet dit als dat redelijk is en past bij goed hulpverlenerschap. Andere partijen moeten wel de voorwaarden regelen die dit mogelijk maken.
+
+1.7.3  
+Bij verlengde jeugdhulp – niet zijnde pleegzorg – betrekt Opdrachtnemer de officiële verwijzers zoals genoemd in de Jeugdwet. Zij helpen bepalen welke hulp na het 18e jaar passend is. Verlengde jeugdhulp betekent hier jeugdhulp in het kader van de Jeugdwet voor jongeren tussen 18 en 23 jaar, die niet valt onder de Zorgverzekeringswet, Wlz of Wmo 2015.
+{{/unless}}
+
+## Artikel 1.8: Bibob Onderzoek
+
+{{#unless bibob}}
+n.v.t.
+{{ else }}
+1.8.1  
+Op deze overeenkomst is de Wet Bibob van toepassing. Dat betekent dat Opdrachtgever tijdens de looptijd van de overeenkomst zelf onderzoek mag doen, op grond van de artikelen 7a, 7b en 7c van de Wet Bibob. Opdrachtgever mag ook het Landelijk Bureau Bibob om advies vragen. Het onderzoek en/of het advies mag gaan over:
+1. Opdrachtnemer,
+1. de combinant,
+1. een onderaannemer, en/of
+1. één of meer vertegenwoordigers van deze partijen, zoals bestuurders of toezichthouders.
+Dit is in lijn met artikel 5 lid 2 en artikel 9 lid 2 van de Wet Bibob.
+
+1.8.2  
+Opdrachtnemer, combinant, onderaannemer en/of één of meer vertegenwoordigers van deze partijen, zoals bestuurders of toezichthouders, verstrekken op eigen kosten alle gevraagde informatie over hun organisatie of persoon. Zij leveren deze informatie aan zodra Opdrachtgever of het Landelijk Bureau Bibob daarom vraagt.
+
+1.8.3  
+Opdrachtgever laat Opdrachtnemer weten wanneer hij een Bibob-advies aanvraagt bij het Landelijk Bureau Bibob.
+
+1.8.4  
+Na ontvangst van het advies – zoals bedoeld in artikel 1.8.3 van deze overeenkomst - informeert Opdrachtgever Opdrachtnemer en biedt hij de mogelijkheid om een zienswijze te geven. Daarbij respecteert Opdrachtgever het beginsel van hoor en wederhoor. Vervolgens beslist Opdrachtgever of hij gevolgen verbindt aan het advies en zo ja, welke. Hij houdt daarbij rekening met de regels uit de Wet Bibob.
+
+1.8.5  
+Het Bibob-advies helpt Opdrachtgever bij zijn afweging om:  
+a) de overeenkomst met Opdrachtnemer te ontbinden; of  
+b) wel of geen toestemming te geven voor de inzet van een (beoogde) onderaannemer.  
+{{/unless}}
+
+## Artikel 1.9: Social Return on Investment
+
+{{#unless sroi}}
+n.v.t.
+{{ else }}
+Opdrachtgever wil de volgende voorwaarden stellen: {{ sroi_voorwaarden }}
+{{/unless}}
+
+{{#each extra_bepalingen_deel1}}
+### Artikel 1.{{plus @index 10}}: {{this}}
+{{/each}}
+
+{{!-- [Indien aanwezig: Invullen overige bepalingen die gelden tussen Opdrachtgever en alle Opdrachtnemers waarmee Opdrachtgever een overeenkomst sluit] --}}
+

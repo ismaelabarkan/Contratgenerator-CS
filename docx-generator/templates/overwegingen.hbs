@@ -1,0 +1,38 @@
+# Overwegingen
+
+Partijen bij de overeenkomst overwegen dat:
+
+- Opdrachtgever volgens de Jeugdwet moet zorgen voor goede jeugdhulp, dichtbij en op tijd;
+- Opdrachtgever hiervoor afspraken wil maken met één of meer jeugdhulpaanbieders, die Opdrachtgever al dan niet als hoofdaannemer contracteert;
+- De VNG op 2 december 2022 een contractstandaard vaststelde die gemeenten en jeugdhulpaanbieders samen hebben opgesteld;
+- Opdrachtgever deze contractstandaard gebruikt op de voorgeschreven manier bij het inkopen van jeugdhulp;
+{{#if (eq inkoopmethode "aanbestedingsprocedure")}}
+- Opdrachtgever een Europese aanbestedingsprocedure doorliep voor sociale en andere specifieke diensten;
+{{else if (eq inkoopmethode "toelatingsprocedure")}}
+- Opdrachtgever een toelatingsprocedure doorliep om Opdrachtnemers toe te laten;
+{{/if}}
+- Op Opdrachtnemer geen uitsluitingsgronden van toepassing zijn;
+- Opdrachtnemer aan alle eisen voor geschiktheid voldeed;
+{{#if (eq inkoopprocedure "selectie")}}
+- Opdrachtgever Opdrachtnemer op basis van duidelijke criteria selecteerde;
+{{else if (eq inkoopprocedure "emvi")}}
+-  Opdrachtnemer de economisch meest voordelige inschrijving indiende en Opdrachtgever daarom de opdracht aan hem wil geven;
+{{else if (eq inkoopprocedure "zonder_emvi")}}
+- Partijen via aanvaarding van een aanbod samen een overeenkomst willen sluiten;
+{{/if}}
+{{#if uitvoeringsvariant}}
+- Partijen in de overeenkomst voor de {{ uitvoeringsvariant }}e uitvoeringsvariant kiezen;
+{{/if}}
+{{#or (eq uitvoeringsvariant "inspanningsgericht") (eq uitvoeringsvariant "outputgericht")}}
+- De afspraken over prestaties en tarieven volledig bij deze overeenkomst horen;
+{{/or}}
+{{#if (eq uitvoeringsvariant "taakgericht")}}
+- De afspraken over prestaties en het taakgerichte budget volledig bij deze overeenkomst horen;
+{{/if}}
+- Opdrachtnemer verantwoorde hulp wil geven: veilig, doeltreffend, doelmatig, cliëntgericht en passend bij de echte behoefte;
+- Opdrachtnemer bij keuzes in jeugdhulp de beste balans zoekt tussen individueel belang, algemeen belang, effectiviteit en kosten;
+- Opdrachtnemer de positie van jeugdigen en hun naasten versterkt waarbij de jeugdhulp de kwaliteit van leven verbetert;
+- Partijen geen handelingen willen die wel wettelijk mogen, maar niet passen bij het doel van de wet;
+{{#each extra_overwegingen}}
+- {{this}}
+{{/each}}
