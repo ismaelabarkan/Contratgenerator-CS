@@ -99,7 +99,7 @@
           "type": "select",
           "verplicht": true,
           "info_button": true,
-          "toelichting": "Kies de manier waarop de gemeente jeugdhulp inkoopt. Bij aanbesteding vindt een openbare procedure plaats. Bij toelating kunnen alleen erkende aanbieders deelnemen.",
+          "toelichting": "De contractstandaard is van toepassing op: Europese aanbesteding (AW 2012), SAS-procedure met EMVI-criterium, SAS-procedure zonder EMVI-criterium en de toelatingsprocedure (voorheen ‘open house’). SAS = sociale en andere specifieke diensten; EMVI = economisch meest voordelige inschrijving.",
           "opties": [
             {
               "waarde": "aanbestedingsprocedure",
@@ -140,7 +140,8 @@
           "volgende_stappen": [
             "uitvoeringsvariant_vraag"
           ],
-          "info_button": false,
+          "info_button": true,
+          "toelichting": "De invulling hangt af van EMVI (4a) en of er selectie is (4b). Als alle inschrijvers een contract kregen, hoefden selectiecriteria niet te worden toegepast.",
           "groep": "inkoop"
         },
         {
@@ -152,7 +153,8 @@
             "field": "inkoopmethode",
             "value": "aanbestedingsprocedure"
           },
-          "info_button": false,
+          "info_button": true,
+          "toelichting": "Beïnvloedt welke overwegingen je opneemt. Bij selectie (Nee) horen andere overwegingen dan bij ‘alle aanbieders contract’.",
           "groep": "inkoop"
         },
         {
@@ -160,8 +162,8 @@
           "titel": "Welke uitvoeringsvariant?",
           "type": "select",
           "verplicht": true,
-          "info_button": false,
-          "toelichting": "Inspanningsgericht: aanbieden maakt inspanning voor resultaat. Outputgericht: betaling gebaseerd op behaalde resultaten. Taakgericht: afgesproken taken uitvoeren.",
+          "info_button": true,
+          "toelichting": "Inspanningsgericht: afrekenen op tijdseenheden. Outputgericht: afrekenen op behaalde resultaten. Taakgericht: vast budget voor een groep jeugdigen; aanbieder bepaalt uitvoering; geen verantwoording per cliënt.",
           "opties": [
             {
               "waarde": "inspanningsgericht",
@@ -189,8 +191,8 @@
           "volgende_stappen": [
             "begripsdefinities"
           ],
-          "info_button":true,
-          "toelichting": "De overwegingen laten zien hoe partijen de overeenkomst sluiten en hoe zij de overeenkomst interpreteren. De overwegingen lichten toe welke doelen partijen hebben en hoe ze samenwerken.De overwegingen sluiten aan op: •verplichtingen uit de Jeugdwet,•de inkoopprocedure,•de gekozen uitvoeringsvariant,•algemene doelstellingen voor jeugdhulp. Partijen mogen deze overwegingen aanvullen met extra punten uit hun eigen gemeente of regio.\n",
+          "info_button": true,
+          "toelichting": "Overwegingen tonen hoe partijen de overeenkomst sluiten en interpreteren (doelen, samenwerking). Sluiten aan op Jeugdwet, inkoopprocedure, uitvoeringsvariant en algemene doelstellingen. Gemeenten mogen aanvullen met eigen punten.",
           "item_label": "Overweging",
           "groep": "jeugdhulp"
         },
@@ -203,30 +205,30 @@
             "deel1"
           ],
           "info_button": true,
-          "toelichting": "De lijst met begripsdefinities in de overeenkomst kan worden uitgebreid met extra definities. Dat is alleen zinvol als een begrip in de overeenkomst niet in een wet wordt uitgelegd.\nDe contractstandaard gebruikt namelijk definities uit de geldende wet- en regelgeving. Ook gelden de definities uit de gemeentelijke verordening.\nEnkele toelichtingen:\n·     Voor het begrip 'fraude' gebruikt de overeenkomst een aangepaste tekst van VNG Naleving.\n·     Voor 'gepast gebruik' gebruikt de overeenkomst de definitie uit WLZ-overeenkomsten van zorgkantoren.\n·     Voor '(a)specifiek en generiek toewijzen' volgt de overeenkomst de uitleg uit de Handreiking Uit­voeringsvarianten iWmo en iJw, versie 1.3, p. 5 van Zorginstituut Nederland.\nDe contractstandaard gebruikt het begrip 'micro-onderneming' zoals gedefinieerd in aanbeveling 2003/361/EG.",
+          "toelichting": "Alleen zinnig als een begrip niet al in wet/verordening is gedefinieerd. Contract volgt wettelijke definities. Enkele toelichtingen: ‘fraude’ (VNG Naleving), ‘gepast gebruik’ (WLZ-zorgkantoren), ‘(a)specifiek en generiek toewijzen’ (Handreiking iWmo/iJw v1.3), ‘micro-onderneming’ (Aanbeveling 2003/361/EG).",
           "groep": "jeugdhulp"
         }
       ],
       "groepen": {
         "opdrachtgever": {
-          "label": "Opdrachtgever Gegevens",
+          "label": "Opdrachtgever",
           "info_button": true,
-          "toelichting": "Er kan slechts één contractpartij Opdrachtgever zijn: dus een individuele gemeente óf een consortium met meerdere gemeenten (juridische entiteit) óf een gemeente die namens een aantal andere gemeenten optreedt als contractpartij/penvoerder."
+          "toelichting": "Er kan slechts één contractpartij Opdrachtgever zijn: individuele gemeente, consortium (juridische entiteit) of gemeente die als penvoerder optreedt."
         },
         "opdrachtnemer": {
           "label": "Opdrachtnemer",
           "info_button": true,
-          "toelichting": "Er kan slechts één contractpartij Opdrachtnemer zijn: dus een individuele aanbieder óf een consortium met meerdere aanbieders (juridische entiteit) óf een aanbieder die namens een combinatie van aanbieders optreedt als contractpartij/penvoerder."
+          "toelichting": "Er kan slechts één contractpartij Opdrachtnemer zijn: individuele aanbieder, consortium (juridische entiteit) of aanbieder die als penvoerder optreedt."
         },
         "inkoop": {
           "label": "Inkoop en Aanbesteding",
           "info_button": true,
-          "toelichting": "De contractstandaard is van toepassing op de volgende inkoopprocedures • Europese aanbesteding (AW 2012):- SAS-procedure met EMVI-criterium - SAS-procedure zonder EMVI-criterium• Toelatingsprocedure (voormalig ‘open house’) SAS = sociale en andere specifieke diensten EMVI = economisch meest voordelige inschrijving"
+          "toelichting": "Van toepassing bij: Europese aanbesteding (SAS met/zonder EMVI) en toelatingsprocedure (‘open house’)."
         },
         "uitvoering": {
           "label": "Uitvoeringsvariant",
-          "info_button":true,
-          "toelichting": "De volgende uitvoeringsvarianten worden onderscheiden:\n•\tInspanningsgericht: gemeente en aanbieder spreken af wat en hoeveel de aanbieder levert in een vaste tijdseenheid en ze rekenen af op die geleverde tijdseenheden.\n•\tOutputgericht: gemeente en aanbieder spreken af welk resultaat nodig is, maar niet hoe de aanbieder dat resultaat bereikt en ze rekenen af als het resultaat is bereikt.\n•\tTaakgericht: gemeente geeft een opdracht voor een groep jeugdigen aan een aanbieder en die krijgt daar een vast budget voor. De aanbieder bepaalt zelf de manier van uitvoering. Bij taakgericht werken hoeft de aanbieder geen verantwoording per cliënt af te leggen.\nBron: Handreiking Uitvoeringsvarianten iWmo en iJw, Zorginstituut Nederland\n"
+          "info_button": true,
+          "toelichting": "Keuze beïnvloedt diverse artikelen (o.a. 3.1, 3.6, 3.8, 3.11, 3.19) en de contractinvulling."
         },
         "jeugdhulp": {
           "label": "Jeugdhulp en Aanvullende Informatie",
@@ -257,18 +259,19 @@
           "opties": [
             {
               "waarde": "jeugdhulp_1",
-              "label": "1: Ondersteuning van en hulp en zorg, niet zijnde preventie, aan jeugdigen en hun ouders bij het verminderen, stabiliseren, behandelen en opheffen van of omgaan met de gevolgen van psychische problemen en stoornissen, psychosociale problemen, gedragsproblemen of een verstandelijke beperking van de jeugdige, opvoedingsproblemen van de ouders of adoptie gerelateerde problemen"
+              "label": "1: Ondersteuning/hulp/zorg bij psychische/psychosociale/gedragsproblemen of verstandelijke beperking; opvoedingsproblemen; adoptiegerelateerde problemen"
             },
             {
               "waarde": "jeugdhulp_2",
-              "label": "2: Het bevorderen van de deelname aan het maatschappelijk verkeer en van het zelfstandig functioneren van jeugdigen met een somatische, verstandelijke, lichamelijke of zintuiglijke beperking, een chronisch psychisch probleem of een psychosociaal probleem, die de leeftijd van 18 (achttien) jaar nog niet hebben bereikt"
+              "label": "2: Bevorderen maatschappelijke deelname/zelfstandigheid jeugdigen <18 met beperking of psychisch/psychosociaal probleem"
             },
             {
               "waarde": "jeugdhulp_3",
-              "label": "3: Het ondersteunen bij of het overnemen van activiteiten op het gebied van de persoonlijke verzorging gericht op het opheffen van een tekort aan zelfredzaamheid bij jeugdigen met een verstandelijke, lichamelijke of zintuiglijke beperking of een somatische of psychiatrische aandoening of beperking, die de leeftijd van 18 (achttien) jaar nog niet hebben bereikt."
+              "label": "3: Persoonlijke verzorging gericht op opheffen tekort aan zelfredzaamheid bij jeugdigen <18"
             }
           ],
-          "info_button": false,
+          "info_button": true,
+          "toelichting": "Kies één of meer standaardblokken die globaal weergeven op welke jeugdhulp deze overeenkomst betrekking heeft.",
           "groep": "jeugdhulp"
         },
         {
@@ -277,7 +280,8 @@
           "type": "textarea",
           "verplicht": false,
           "artikel": "1.1",
-          "info_button": false,
+          "info_button": true,
+          "toelichting": "Vul kernbedingen in (product/prestatie, kwaliteitseisen en tarief/budget). Stem dit af op de verordening.",
           "groep": "specifiek"
         },
         {
@@ -286,7 +290,8 @@
           "type": "boolean",
           "verplicht": true,
           "artikel": "1.0",
-          "info_button": false,
+          "info_button": true,
+          "toelichting": "Gaat het om dezelfde jeugdhulp die ook bij andere opdrachtnemers wordt ingekocht? Een consortium telt als één opdrachtnemer.",
           "groep": "meerdere"
         },
         {
@@ -333,7 +338,8 @@
               "label": "4.5 Bijlagen aanmelding (toelatingsprocedure)"
             }
           ],
-          "info_button": false,
+          "info_button": true,
+          "toelichting": "Alle bijlagen horen bij de overeenkomst en volgen een vaste rangorde. VNG Model AIV wordt van toepassing verklaard. Bij strijdigheid gaat een hoger gerangschikte bijlage voor.",
           "groep": "documenten"
         },
         {
@@ -352,7 +358,8 @@
           "type": "date",
           "verplicht": true,
           "artikel": "1.3.1",
-          "info_button": false,
+          "info_button": true,
+          "toelichting": "Looptijd moet redelijk zijn—zeker bij Europese aanbesteding en bij toelating zonder tussentijdse instroom.",
           "groep": "looptijd"
         },
         {
@@ -369,7 +376,8 @@
           "titel": "Vanaf welke datum wordt de eerste indexering van de tarieven toegepast?",
           "type": "date",
           "verplicht": true,
-          "info_button": false,
+          "info_button": true,
+          "toelichting": "Eerste indexering uiterlijk op 1 januari van het jaar ná de ingangsdatum van de overeenkomst.",
           "groep": "looptijd"
         },
         {
@@ -378,7 +386,8 @@
           "type": "text",
           "verplicht": false,
           "artikel": "1.3.2",
-          "info_button": false,
+          "info_button": true,
+          "toelichting": "Beperkt aantal keren verlengen. Verlengen mag alleen via art. 1.3.3 en moet aantoonbaar gecommuniceerd zijn (ontvangsttheorie BW).",
           "groep": "verlenging"
         },
         {
@@ -410,7 +419,8 @@
               "label": "Optie 3: Opdrachtgever mag naast de mogelijkheden genoemd in artikel 1.4.2, [1.6.1], 3.19.1 en 3.22 tussentijds schriftelijk opzeggen met een opzegtermijn van [aantal] kalendermaanden. Opdrachtnemer mag naast de mogelijkheden genoemd in artikel 1.4.2, 3.22 en 3.30.4 tussentijds schriftelijk opzeggen met een opzegtermijn van [aantal] kalendermaanden. Opdrachtnemer moet dan wel voldoen aan de volgende voorwaarden: [voorwaarden benoemen]."
             }
           ],
-          "info_button": false,
+          "info_button": true,
+          "toelichting": "Drie opties: 1 en 3 wederkerig; 2 vooral voor Opdrachtgever. Beperk je opzegmogelijkheid niet onnodig—dat kan aanbieders afhouden.",
           "groep": "opzegoptie"
         },
         {
@@ -460,7 +470,8 @@
               }
             ]
           },
-          "info_button": false,
+          "info_button": true,
+          "toelichting": "Optioneel. Wijzigingen moeten aanbestedingsrechtelijk passen en voldoen aan beginselen van behoorlijk bestuur. Onjuiste toepassing kan onrechtmatig zijn.",
           "groep": "herzieningsclausule"
         },
         {
@@ -469,7 +480,8 @@
           "type": "boolean",
           "verplicht": true,
           "artikel": "1.5",
-          "info_button": false,
+          "info_button": true,
+          "toelichting": "‘Bestedingsruimte’ (budgetplafond): leveren tot een bedrag; daarna voor risico aanbieder. Regels beschermen gemeente, aanbieder en cliënt. Gemeente blijft verantwoordelijk voor passende hulp.",
           "groep": "bestedingsruimte"
         },
         {
@@ -478,7 +490,8 @@
           "type": "boolean",
           "verplicht": true,
           "artikel": "1.6",
-          "info_button": false,
+          "info_button": true,
+          "toelichting": "Opzeggen als aanbieder 12 maanden onder vooraf bepaalde objectieve norm blijft (omzet/aantal cliënten/trajecten), behalve bij schaarse/unique hulp of hoge klanttevredenheid. Optioneel, maar bij keuze verplicht opnemen.",
           "groep": "opzegging"
         },
         {
@@ -487,7 +500,8 @@
           "type": "boolean",
           "verplicht": true,
           "artikel": "1.7",
-          "info_button": false,
+          "info_button": true,
+          "toelichting": "Opdrachtnemer regelt warme overdracht naar Wmo/Zvw/WLZ. Initieert plan met cliënt (vanaf 16,5 jaar) en beschrijft big-5 leefdomeinen en betrokkenen. Wmo-contract kent een spiegelbepaling.",
           "groep": "bepaling"
         },
         {
@@ -496,7 +510,8 @@
           "type": "boolean",
           "verplicht": true,
           "artikel": "1.8",
-          "info_button": false,
+          "info_button": true,
+          "toelichting": "Facultatief instrument om te toetsen of gunning/voortzetting verantwoord is; voorkomt onbewuste facilitering van strafbare feiten. Gestandaardiseerde teksten opnemen in inkoopdocument en overeenkomst.",
           "groep": "bepaling"
         },
         {
@@ -515,7 +530,8 @@
               }
             ]
           },
-          "info_button": false,
+          "info_button": true,
+          "toelichting": "Gemeenten met SROI-beleid leggen voorwaarden hier vast en alleen op deze plek.",
           "groep": "bepaling"
         },
         {
@@ -524,7 +540,8 @@
           "type": "string_list",
           "verplicht": false,
           "artikel": "1.10+",
-          "info_button": false,
+          "info_button": true,
+          "toelichting": "Opdrachtgever mag extra bepalingen opnemen, mits niet in tegenspraak met deel 1/2/3. Nummer door (1.10 t/m 1.n). Conformiteit wordt getoetst.",
           "item_label": "Bepaling",
           "groep": "extra"
         }
@@ -618,13 +635,15 @@
             "true": [
               {
                 "vraag_id": "individuele_afspraken_tekst",
-                "titel": "Individuele afspraken tekst",
+                "titulo": "Individuele afspraken tekst",
                 "type": "textarea",
-                "info_button": false
+                "info_button": true,
+                "toelichting": "Voorbeelden: plan van aanpak uit aanbesteding, afwijkend tarief of taakgericht budget per aanbieder. Afwijken van deel 1 en deel 3 is niet toegestaan."
               }
             ]
           },
-          "info_button": false,
+          "info_button": true,
+          "toelichting": "Deel 2 bevat afspraken die alleen gelden voor deze opdrachtnemer; bij meerdere opdrachtnemers kunnen plannen/tarieven verschillen als dat vooraf is aangegeven.",
           "groep": "individuele"
         }
       ],
@@ -680,6 +699,86 @@
         "CLAUSULE_3_30",
         "CLAUSULE_3_31"
       ],
+      "clausule_regels": {
+        "3_1": "3.1.1 en 3.8 tekst afhankelijk van uitvoeringsvariant (inspannings/output versus taakgericht). 3.1.2-3.1.9 standaardtekst.",
+        "3_2_3_5": "Standaardtekst; neem ingevulde indexeringsdatum over.",
+        "3_6": "Alleen opnemen bij inspannings- of outputgericht én meerdere opdrachtnemers (anders: n.v.t.).",
+        "3_7": "Standaardtekst.",
+        "3_8": "Tekst afhankelijk van uitvoeringsvariant.",
+        "3_9_3_10": "Standaardtekst.",
+        "3_11": "Alleen opnemen bij inspannings- of outputgericht (anders: n.v.t.).",
+        "3_12_3_18": "Standaardtekst.",
+        "3_19": "Eerste zin standaard; vervolgspecifiek afhankelijk van uitvoeringsvariant. 3.19.2-3.19.5 standaard; 3.19.6 variantafhankelijk.",
+        "3_20_3_31": "Standaardtekst."
+      },
+      "volgende_stappen": [
+        "ondertekening"
+      ]
+    },
+    {
+      "stap_id": "ondertekening",
+      "titel": "Ondertekening",
+      "type": "parameters",
+      "verplicht": false,
+      "volgorde": 5,
+      "vragen": [
+        {
+          "vraag_id": "ondertekening_plaats",
+          "titel": "Plaats",
+          "type": "text",
+          "verplicht": false,
+          "info_button": false
+        },
+        {
+          "vraag_id": "ondertekening_datum",
+          "titel": "Datum",
+          "type": "date",
+          "verplicht": false,
+          "info_button": false
+        },
+        {
+          "vraag_id": "opdrachtgever_voorletters",
+          "titel": "Voorletters (Opdrachtgever)",
+          "type": "text",
+          "verplicht": false,
+          "info_button": false
+        },
+        {
+          "vraag_id": "opdrachtgever_naam_ondertekening",
+          "titel": "Naam (Opdrachtgever)",
+          "type": "text",
+          "verplicht": false,
+          "info_button": false
+        },
+        {
+          "vraag_id": "opdrachtgever_functie",
+          "titel": "Functie (Opdrachtgever)",
+          "type": "text",
+          "verplicht": false,
+          "info_button": false
+        },
+        {
+          "vraag_id": "opdrachtnemer_voorletters",
+          "titel": "Voorletters (Opdrachtnemer)",
+          "type": "text",
+          "verplicht": false,
+          "info_button": false
+        },
+        {
+          "vraag_id": "opdrachtnemer_naam_ondertekening",
+          "titel": "Naam (Opdrachtnemer)",
+          "type": "text",
+          "verplicht": false,
+          "info_button": false
+        },
+        {
+          "vraag_id": "opdrachtnemer_functie",
+          "titel": "Functie (Opdrachtnemer)",
+          "type": "text",
+          "verplicht": false,
+          "info_button": false
+        }
+      ],
       "volgende_stappen": [
         "review"
       ]
@@ -689,7 +788,7 @@
       "titel": "Review en Export",
       "type": "review",
       "verplicht": false,
-      "volgorde": 5,
+      "volgorde": 6,
       "volgende_stappen": []
     }
   ]

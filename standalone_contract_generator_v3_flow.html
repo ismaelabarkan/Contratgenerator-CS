@@ -1956,24 +1956,35 @@
                         }
                         
                         // Ondertekening section
+                        const plaats = flowAnswers.ondertekening_plaats || flowAnswers.opdrachtgever_plaats || '[plaats]';
+                        const datum = flowAnswers.ondertekening_datum 
+                            ? new Date(flowAnswers.ondertekening_datum).toLocaleDateString('nl-NL')
+                            : new Date().toLocaleDateString('nl-NL');
+                        const ogVoorletters = flowAnswers.opdrachtgever_voorletters || '';
+                        const ogNaam = flowAnswers.opdrachtgever_naam_ondertekening || flowAnswers.opdrachtgever_naam || '[naam]';
+                        const ogFunctie = flowAnswers.opdrachtgever_functie || '[functie]';
+                        const onVoorletters = flowAnswers.opdrachtnemer_voorletters || '';
+                        const onNaam = flowAnswers.opdrachtnemer_naam_ondertekening || flowAnswers.opdrachtnemer_naam || '[naam]';
+                        const onFunctie = flowAnswers.opdrachtnemer_functie || '[functie]';
+                        
                         htmlContent += `
                                 <div class="section-title">Ondertekening</div>
                                 <div class="contract-detail">
                                     Aldus overeengekomen, in tweevoud,
                                 </div>
                                 <div class="contract-detail">
-                                    <strong>Plaats:</strong> ${flowAnswers.opdrachtgever_plaats || '[plaats]'}<br>
-                                    <strong>Datum:</strong> ${new Date().toLocaleDateString('nl-NL')}
+                                    <strong>Plaats:</strong> ${plaats}<br>
+                                    <strong>Datum:</strong> ${datum}
                                 </div>
                                 <br>
                                 <div class="contract-detail">
                                     <strong>Namens Opdrachtgever:</strong><br>
-                                    ${flowAnswers.opdrachtgever_naam || '[naam]'}, ${flowAnswers.opdrachtgever_functie || '[functie]'}
+                                    ${ogVoorletters ? ogVoorletters + ' ' : ''}${ogNaam}, ${ogFunctie}
                                 </div>
                                 <br>
                                 <div class="contract-detail">
                                     <strong>Namens Opdrachtnemer:</strong><br>
-                                    ${flowAnswers.opdrachtnemer_naam || '[naam]'}, ${flowAnswers.opdrachtnemer_functie || '[functie]'}
+                                    ${onVoorletters ? onVoorletters + ' ' : ''}${onNaam}, ${onFunctie}
                                 </div>
                             </body>
                             </html>
