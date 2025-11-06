@@ -144,12 +144,46 @@ The flow engine implements specific legal contract assembly rules:
     {
       "stap_id": "step1",
       "type": "parameters",  // or "clausules", "edit", "review"
-      "vragen": [...],
+      "groepen": {
+        "opdrachtgever": {
+          "label": "Opdrachtgever Gegevens",
+          "info_button": false,
+          "toelichting": "Optioneel: toelichting op groepsniveau"
+        }
+      },
+      "vragen": [
+        {
+          "vraag_id": "example",
+          "titel": "Question Title",
+          "type": "text",  // or select, textarea, boolean, date, multiselect, etc.
+          "verplicht": false,
+          "info_button": true,  // Show/hide info button for this question (default: false)
+          "groep": "opdrachtgever", // NEW: group key this question belongs to
+          "groep_label": "(optioneel) override van group label for this question"
+        }
+      ],
       "volgende_stappen": ["step2"]
     }
   ]
 }
 ```
+
+### Info Button Feature (vraag- en groepsniveau)
+Per vraag (question) kan je bepalen of de info-knop getoond moet worden via het `info_button` veld:
+- `"info_button": true` - Toont de ℹ️ knop waarmee gebruikers toelichting kunnen openen
+- `"info_button": false` - Verbergt de info-knop voor deze vraag (standaard)
+- De toelichting text wordt opgehaald uit het `toelichting` veld van de vraag
+- De frontend rendert het info-icoontje alleen als `info_button` niet gelijk is aan `false`
+
+Op groepsniveau (binnen een parameters-stap) kan je ook een info-knop tonen:
+- `stap.groepen[<key>].info_button: true|false`
+- `stap.groepen[<key>].toelichting: "..."`
+- `stap.groepen[<key>].label: "Weergavetitel"`
+
+De frontend groepeert in deze volgorde:
+1. `vraag.groep` (configureerbaar)
+2. legacy hardcoded mapping (backwards compatible)
+3. prefix-heuristiek voor IDs (tekst vóór eerste underscore)
 
 ### Clausule JSON Structure
 ```json

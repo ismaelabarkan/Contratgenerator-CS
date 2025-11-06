@@ -1,0 +1,85 @@
+================================================================================
+INFO BUTTON FEATURE - IMPLEMENTATIE SAMENVATTING
+================================================================================
+
+GEÏMPLEMENTEERDE WIJZIGINGEN
+========================================
+
+1. FLOW JSON BESTANDEN (3 bestanden)
+   ✓ flows/basis-flow.json
+   ✓ flows/financieel-flow.json  
+   ✓ flows/privacy-flow.json
+   
+   Wat is gedaan:
+   - info_button veld toegevoegd aan alle vragen
+   - Standaard waarde: false (info-knop verborgen)
+   - Voorbeelden: 2 vragen ingesteld op true met toelichting
+
+2. FRONTEND HTML BESTAND
+   ✓ standalone_contract_generator_v3_flow.html
+   
+   Wijzigingen:
+   - Info-knop render logic aangepast (lijn 836)
+   - Check: vraag.info_button !== false voor knop display
+   - Check: vraag.info_button !== false voor toelichting display
+   
+   Logica:
+   ```javascript
+   {vraag.info_button !== false && (
+     <button>ℹ️</button>
+   )}
+   {vraag.info_button !== false && showInfo && (
+     <div>Toelichting...</div>
+   )}
+   ```
+
+3. DOCUMENTATIE
+   ✓ CLAUDE.md - Bijgewerkt met info_button feature docs
+   ✓ INFO_BUTTON_FEATURE.md - Uitgebreide gebruikshandleiding
+   ✓ Dit samenvattings document
+
+GEBRUIKSPATROON
+========================================
+
+In je flow JSON, voeg toe per vraag:
+
+{
+  "vraag_id": "mijn_vraag",
+  "titel": "Vraagstelling",
+  "type": "text",
+  "info_button": true,                    ← NIEUW
+  "toelichting": "Uitleg voor gebruiker"  ← NIEUW
+}
+
+HUIDIGE VOORBEELDEN IN BASIS-FLOW
+========================================
+
+1. inkoopmethode (lijn 87-108)
+   info_button: true
+   toelichting: "Bij aanbesteding vindt een openbare procedure plaats..."
+
+2. uitvoeringsvariant (lijn 145-169)
+   info_button: true
+   toelichting: "Inspanningsgericht: aanbieden maakt inspanning..."
+
+VERIFIERING
+========================================
+
+✓ Alle flow JSON bestanden zijn geldig
+✓ Frontend renders voorbeelden correct
+✓ Standaard gedrag: info-knop verborgen voor alle bestaande vragen
+✓ Backward compatible: oude vragen werken zonder wijzigingen
+
+VOLGENDE STAPPEN VOOR GEBRUIKER
+========================================
+
+Per vraag waar je een info-knop wilt:
+1. Open het relevante flow JSON bestand
+2. Voeg info_button: true toe
+3. Voeg toelichting: "uitleg" toe
+4. Sla op
+5. Herlaad de browser (F5)
+
+Zie INFO_BUTTON_FEATURE.md voor gedetailleerde richtlijnen en voorbeelden!
+
+================================================================================

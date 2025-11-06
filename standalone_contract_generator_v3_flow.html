@@ -541,6 +541,118 @@
             const [editedText, setEditedText] = useState({});
             const [showInfo, setShowInfo] = useState({});
             const [downloaded, setDownloaded] = useState(false);
+            const [replaceAllOnImport, setReplaceAllOnImport] = useState(false);
+            const [autosaveEnabled, setAutosaveEnabled] = useState(true);
+
+            const draftKey = useMemo(() => currentFlow ? `draft_${currentFlow.flow_id}` : 'draft_unknown', [currentFlow]);
+
+            // Autosave to localStorage
+            useEffect(() => {
+                try {
+                    if (!autosaveEnabled || !currentFlow) return;
+                    // filter antwoorden op vraag_ids in de flow
+                    const collectVraagIds = (flow) => {
+                        const ids = new Set();
+                        (flow.stappen || []).forEach(step => {
+                            if (Array.isArray(step.vragen)) {
+                                step.vragen.forEach(vraag => {
+                                    if (vraag && vraag.vraag_id) ids.add(vraag.vraag_id);
+                                    if (vraag.conditioneel_vragen) {
+                                        Object.values(vraag.conditioneel_vragen).forEach(arr => {
+                                            (arr || []).forEach(sv => { if (sv && sv.vraag_id) ids.add(sv.vraag_id); });
+                                        });
+                                    }
+                                    if (Array.isArray(vraag.opties)) {
+                                        vraag.opties.forEach(opt => {
+                                            if (opt && opt.subvraag && opt.subvraag.vraag_id) ids.add(opt.subvraag.vraag_id);
+                                        });
+                                    }
+                                });
+                            }
+                        });
+                        return ids;
+                    };
+                    const ids = collectVraagIds(currentFlow);
+                    const merged = { ...parameters, ...flowAnswers };
+                    const filtered = {};
+                    Object.keys(merged).forEach(k => { if (ids.has(k)) filtered[k] = merged[k]; });
+                    const payload = {
+                        flow_id: currentFlow.flow_id,
+                        flow_naam: currentFlow.naam,
+                        timestamp: new Date().toISOString(),
+                        antwoorden: filtered
+                    };
+                    localStorage.setItem(draftKey, JSON.stringify(payload));
+                } catch (e) {
+                    console.warn('Autosave mislukt:', e);
+                }
+            }, [autosaveEnabled, parameters, flowAnswers, currentFlow, draftKey]);
+
+            const saveDraft = useCallback(() => {
+                try {
+                    if (!currentFlow) return alert('Geen flow geladen');
+                    const collectVraagIds = (flow) => {
+                        const ids = new Set();
+                        (flow.stappen || []).forEach(step => {
+                            if (Array.isArray(step.vragen)) {
+                                step.vragen.forEach(vraag => {
+                                    if (vraag && vraag.vraag_id) ids.add(vraag.vraag_id);
+                                    if (vraag.conditioneel_vragen) {
+                                        Object.values(vraag.conditioneel_vragen).forEach(arr => {
+                                            (arr || []).forEach(sv => { if (sv && sv.vraag_id) ids.add(sv.vraag_id); });
+                                        });
+                                    }
+                                    if (Array.isArray(vraag.opties)) {
+                                        vraag.opties.forEach(opt => {
+                                            if (opt && opt.subvraag && opt.subvraag.vraag_id) ids.add(opt.subvraag.vraag_id);
+                                        });
+                                    }
+                                });
+                            }
+                        });
+                        return ids;
+                    };
+                    const ids = collectVraagIds(currentFlow);
+                    const merged = { ...parameters, ...flowAnswers };
+                    const filtered = {};
+                    Object.keys(merged).forEach(k => { if (ids.has(k)) filtered[k] = merged[k]; });
+                    const payload = {
+                        flow_id: currentFlow.flow_id,
+                        flow_naam: currentFlow.naam,
+                        timestamp: new Date().toISOString(),
+                        antwoorden: filtered
+                    };
+                    localStorage.setItem(draftKey, JSON.stringify(payload));
+                    alert('Concept lokaal opgeslagen.');
+                } catch (e) {
+                    alert('Opslaan mislukt: ' + e.message);
+                }
+            }, [currentFlow, parameters, flowAnswers, draftKey]);
+
+            const loadDraft = useCallback(() => {
+                try {
+                    const txt = localStorage.getItem(draftKey);
+                    if (!txt) return alert('Geen lokaal concept gevonden.');
+                    const payload = JSON.parse(txt);
+                    if (payload.flow_id && currentFlow && payload.flow_id !== currentFlow.flow_id) {
+                        const ok = confirm('Concept hoort bij een andere flow ("' + payload.flow_id + '"). Toch laden?');
+                        if (!ok) return;
+                    }
+                    const ans = payload.antwoorden || {};
+                    setParameters(prev => ({ ...prev, ...ans }));
+                    setFlowAnswers(prev => ({ ...prev, ...ans }));
+                    alert('Concept geladen.');
+                } catch (e) {
+                    alert('Laden mislukt: ' + e.message);
+                }
+            }, [draftKey, currentFlow]);
+
+            const clearDraft = useCallback(() => {
+                try {
+                    localStorage.removeItem(draftKey);
+                    alert('Lokaal concept gewist.');
+                } catch {}
+            }, [draftKey]);
             const [validationErrors, setValidationErrors] = useState({});
             const [clausules, setClausules] = useState({});
             const [loading, setLoading] = useState(true);
@@ -710,11 +822,11 @@
                 // Show validation feedback if there are missing required questions
                 const hasMissingRequired = missingRequiredQuestions.length > 0;
                 
-                // Group questions by category
+                // Group questions by category (configurable via vraag.groep / step.groepen)
                 const groupedQuestions = {};
                 const standaloneQuestions = [];
-                
-                // Define question groups for better organization
+
+                // Define question groups (legacy fallback)
                 const questionGroups = {
                     'opdrachtgever': ['opdrachtgever_naam', 'opdrachtgever_adres', 'opdrachtgever_postcode', 'opdrachtgever_plaats', 'opdrachtgever_kvk'],
                     'opdrachtnemer': ['opdrachtnemer_naam', 'opdrachtnemer_adres', 'opdrachtnemer_postcode', 'opdrachtnemer_plaats', 'opdrachtnemer_kvk'],
@@ -738,27 +850,32 @@
                 currentStep.vragen?.forEach((vraag) => {
                     const vraagId = vraag.vraag_id;
                     let grouped = false;
+                    // 1) Prefer explicit vraag.groep
+                    if (vraag.groep) {
+                        const g = String(vraag.groep);
+                        if (!groupedQuestions[g]) groupedQuestions[g] = [];
+                        groupedQuestions[g].push(vraag);
+                        grouped = true;
+                    }
                     
-                    // Check if question belongs to a predefined group
-                    for (const [groupName, questionIds] of Object.entries(questionGroups)) {
-                        if (questionIds.includes(vraagId)) {
-                            if (!groupedQuestions[groupName]) {
-                                groupedQuestions[groupName] = [];
+                    // 2) Legacy hardcoded mapping
+                    if (!grouped) {
+                        for (const [groupName, questionIds] of Object.entries(questionGroups)) {
+                            if (questionIds.includes(vraagId)) {
+                                if (!groupedQuestions[groupName]) groupedQuestions[groupName] = [];
+                                groupedQuestions[groupName].push(vraag);
+                                grouped = true;
+                                break;
                             }
-                            groupedQuestions[groupName].push(vraag);
-                            grouped = true;
-                            break;
                         }
                     }
                     
-                    // If not in predefined group, try to extract from ID
+                    // 3) Heuristic: prefix before underscore
                     if (!grouped) {
                         const parts = vraagId.split('_');
                         if (parts.length > 1) {
                             const category = parts[0];
-                            if (!groupedQuestions[category]) {
-                                groupedQuestions[category] = [];
-                            }
+                            if (!groupedQuestions[category]) groupedQuestions[category] = [];
                             groupedQuestions[category].push(vraag);
                         } else {
                             standaloneQuestions.push(vraag);
@@ -766,7 +883,7 @@
                     }
                 });
                 
-                // Category labels
+                // Category labels (legacy fallback)
                 const categoryLabels = {
                     'opdrachtgever': 'Opdrachtgever Gegevens',
                     'opdrachtnemer': 'Opdrachtnemer Gegevens',
@@ -786,6 +903,24 @@
                     'extra': 'Extra Bepalingen',
                     'individuele': 'Individuele Afspraken'
                 };
+
+                const stepGroupConfig = currentStep.groepen || {};
+                const allGroupKeys = Object.keys(groupedQuestions);
+                // Legacy volgorde als default
+                const legacyGroupOrder = [
+                    'opdrachtgever','opdrachtnemer','inkoop','uitvoering','jeugdhulp',
+                    'looptijd','verlenging','documenten','specifiek','meerdere','opzegoptie',
+                    'herzieningsclausule','bestedingsruimte','opzegging','bepaling','extra','individuele'
+                ];
+                const configuredOrder = Array.isArray(currentStep.groepen_order) ? currentStep.groepen_order : legacyGroupOrder;
+                const groupOrder = [];
+                // 1) Eerst geconfigureerde/legacy volgorde, maar alleen aanwezige groepen
+                configuredOrder.forEach(key => {
+                    if (allGroupKeys.includes(key) && !groupOrder.includes(key)) groupOrder.push(key);
+                });
+                // 2) Daarna eventuele overige groepen alfabetisch
+                const remaining = allGroupKeys.filter(k => !groupOrder.includes(k)).sort((a,b)=>a.localeCompare(b));
+                groupOrder.push(...remaining);
                 
                 const renderQuestion = (vraag) => {
                                         // Conditional visibility handling based on previous answers
@@ -833,6 +968,7 @@
                                     {vraag.titel} {vraag.verplicht && <span className="text-red-500">*</span>}
                                     {isEmpty && <span className="ml-2 text-xs text-red-600">(verplicht)</span>}
                                 </label>
+                                                {vraag.info_button !== false && (
                                                 <button
                                                     type="button"
                                                     onClick={() => toggleInfo(`QUESTION_${vraag.vraag_id}`)}
@@ -842,8 +978,9 @@
                                                 >
                                                     ℹ️
                                                 </button>
+                                                )}
                             </div>
-                                            {showInfo[`QUESTION_${vraag.vraag_id}`] && (
+                                            {vraag.info_button !== false && showInfo[`QUESTION_${vraag.vraag_id}`] && (
                                 <div className="mb-3 p-3 bg-blue-50 rounded-lg">
                                                     <p className="text-sm text-blue-800">
                                                         <strong>Toelichting:</strong> {vraag.toelichting || 'Geen toelichting beschikbaar.'}
@@ -933,7 +1070,7 @@
                                         <div key={idx} className="flex gap-3 items-start">
                                             <input
                                                 type="text"
-                                                placeholder={`Overweging ${idx + 1}`}
+                                                placeholder={`${vraag.item_label || 'Overweging'} ${idx + 1}`}
                                                 value={item || ''}
                                                 onChange={(e) => {
                                                     const current = Array.isArray(flowAnswers[vraag.vraag_id]) ? [...flowAnswers[vraag.vraag_id]] : [];
@@ -963,7 +1100,7 @@
                                             handleFlowAnswer(vraag.vraag_id, [...current, '']);
                                         }}
                                     >
-                                        + Overweging toevoegen
+                                        + {(vraag.item_label || 'Overweging')} toevoegen
                                     </button>
                                 </div>
                             )}
@@ -1097,16 +1234,42 @@
                         )}
                         
                         {/* Grouped questions */}
-                        {Object.entries(groupedQuestions).map(([category, questions]) => (
-                            <div key={category} className="border border-gray-200 rounded-lg p-6 bg-gray-50">
-                                <h3 className="text-lg font-semibold text-gray-800 mb-4">
-                                    {categoryLabels[category] || category.charAt(0).toUpperCase() + category.slice(1)}
-                                </h3>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    {questions.map(renderQuestion)}
+                        {groupOrder.map((category) => {
+                            const questions = groupedQuestions[category] || [];
+                            const cfg = stepGroupConfig[category] || {};
+                            const label = cfg.label || categoryLabels[category] || (category.charAt(0).toUpperCase() + category.slice(1));
+                            const showGroupInfo = cfg.info_button === true;
+                            return (
+                                <div key={category} className="border border-gray-200 rounded-lg p-6 bg-gray-50">
+                                    <div className="flex items-start justify-between mb-4">
+                                        <h3 className="text-lg font-semibold text-gray-800">{label}</h3>
+                                        {showGroupInfo && (
+                                            <div className="ml-3">
+                                                <button
+                                                    type="button"
+                                                    onClick={() => toggleInfo(`GROUP_${category}`)}
+                                                    className="text-blue-600 hover:text-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
+                                                    aria-label={`Toon toelichting voor groep ${label}`}
+                                                    aria-expanded={!!showInfo[`GROUP_${category}`]}
+                                                >
+                                                    ℹ️
+                                                </button>
+                                            </div>
+                                        )}
+                                    </div>
+                                    {showGroupInfo && showInfo[`GROUP_${category}`] && (
+                                        <div className="mb-3 p-3 bg-blue-50 rounded-lg">
+                                            <p className="text-sm text-blue-800">
+                                                <strong>Toelichting:</strong> {cfg.toelichting || 'Geen toelichting beschikbaar.'}
+                                            </p>
+                                        </div>
+                                    )}
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        {questions.map(renderQuestion)}
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
+                            );
+                        })}
                         
                         {/* Standalone questions */}
                         {standaloneQuestions.length > 0 && (
@@ -1856,6 +2019,170 @@
                 }
             }, [selected, clausules, editedText, parameters, flowAnswers, currentFlow]);
 
+            const exportAnswersAsJSON = useCallback(() => {
+                try {
+                    if (!currentFlow) {
+                        alert('Geen flow geladen');
+                        return;
+                    }
+                    const collectVraagIds = (flow) => {
+                        const ids = new Set();
+                        const types = {};
+                        (flow.stappen || []).forEach(step => {
+                            if (Array.isArray(step.vragen)) {
+                                step.vragen.forEach(vraag => {
+                                    if (vraag && vraag.vraag_id) ids.add(vraag.vraag_id);
+                                    if (vraag && vraag.vraag_id && vraag.type) types[vraag.vraag_id] = vraag.type;
+                                    // conditionele_vragen
+                                    if (vraag.conditioneel_vragen) {
+                                        Object.values(vraag.conditioneel_vragen).forEach(arr => {
+                                            (arr || []).forEach(sv => { if (sv && sv.vraag_id) { ids.add(sv.vraag_id); if (sv.type) types[sv.vraag_id] = sv.type; } });
+                                        });
+                                    }
+                                    // opties.subvraag
+                                    if (Array.isArray(vraag.opties)) {
+                                        vraag.opties.forEach(opt => {
+                                            if (opt && opt.subvraag && opt.subvraag.vraag_id) { ids.add(opt.subvraag.vraag_id); if (opt.subvraag.type) types[opt.subvraag.vraag_id] = opt.subvraag.type; }
+                                        });
+                                    }
+                                });
+                            }
+                        });
+                        return { ids, types };
+                    };
+                    const { ids: vraagIds, types: vraagTypes } = collectVraagIds(currentFlow);
+                    const merged = { ...parameters, ...flowAnswers };
+                    const filtered = {};
+                    Object.keys(merged).forEach(k => {
+                        if (vraagIds.has(k)) {
+                            const t = vraagTypes[k];
+                            const val = merged[k];
+                            if (t === 'boolean') {
+                                // Exporteer als echte booleans
+                                filtered[k] = (val === true || val === 'true') ? true : (val === false || val === 'false') ? false : undefined;
+                            } else {
+                                filtered[k] = val;
+                            }
+                        }
+                    });
+                    const payload = {
+                        flow_id: currentFlow.flow_id,
+                        flow_naam: currentFlow.naam,
+                        timestamp: new Date().toISOString(),
+                        antwoorden: filtered
+                    };
+                    const json = JSON.stringify(payload, null, 2);
+                    const blob = new Blob([json], { type: 'application/json' });
+                    const datum = new Date().toISOString().split('T')[0];
+                    const filename = `${currentFlow.flow_id || 'flow'}_antwoorden_${datum}.json`;
+                    if (typeof saveAs !== 'undefined') {
+                        saveAs(blob, filename);
+                    } else {
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = filename;
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(url);
+                    }
+                } catch (e) {
+                    console.error('Fout bij JSON export:', e);
+                    alert('Fout bij JSON export: ' + e.message);
+                }
+            }, [parameters, flowAnswers, currentFlow]);
+
+            // JSON import (answers)
+            const fileInputRef = React.useRef(null);
+            const openImportDialog = useCallback(() => {
+                if (fileInputRef.current) fileInputRef.current.click();
+            }, []);
+
+            const handleImportFile = useCallback((event) => {
+                try {
+                    const file = event.target.files && event.target.files[0];
+                    if (!file) return;
+                    const reader = new FileReader();
+                    reader.onload = () => {
+                        try {
+                            const text = reader.result;
+                            const payload = JSON.parse(text);
+                            if (!payload || typeof payload !== 'object' || !payload.antwoorden) {
+                                alert('Bestand bevat geen geldige antwoorden-structuur.');
+                                return;
+                            }
+                            if (currentFlow && payload.flow_id && payload.flow_id !== currentFlow.flow_id) {
+                                const doorgaan = confirm('De antwoorden zijn van een andere flow ("' + payload.flow_id + '"). Toch laden?');
+                                if (!doorgaan) return;
+                            }
+                            // Bepaal vraagtypes voor normalisatie (o.a. boolean)
+                            const collectVraagTypes = (flow) => {
+                                const types = {};
+                                (flow.stappen || []).forEach(step => {
+                                    if (Array.isArray(step.vragen)) {
+                                        step.vragen.forEach(vraag => {
+                                            if (vraag && vraag.vraag_id && vraag.type) types[vraag.vraag_id] = vraag.type;
+                                            if (vraag && vraag.conditioneel_vragen) {
+                                                Object.values(vraag.conditioneel_vragen).forEach(arr => (arr || []).forEach(sv => {
+                                                    if (sv && sv.vraag_id && sv.type) types[sv.vraag_id] = sv.type;
+                                                }));
+                                            }
+                                            if (Array.isArray(vraag.opties)) {
+                                                vraag.opties.forEach(opt => {
+                                                    if (opt && opt.subvraag && opt.subvraag.vraag_id && opt.subvraag.type) {
+                                                        types[opt.subvraag.vraag_id] = opt.subvraag.type;
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    }
+                                });
+                                return types;
+                            };
+                            const vraagTypes = currentFlow ? collectVraagTypes(currentFlow) : {};
+
+                            // Normaliseer antwoorden: booleans als strings 'true'/'false' voor UI-compatibiliteit
+                            const rawAns = payload.antwoorden || {};
+                            const ans = Object.fromEntries(Object.entries(rawAns).map(([k, v]) => {
+                                if (vraagTypes[k] === 'boolean') {
+                                    if (v === true) return [k, 'true'];
+                                    if (v === false) return [k, 'false'];
+                                }
+                                return [k, v];
+                            }));
+
+                            if (replaceAllOnImport) {
+                                setParameters({});
+                                setFlowAnswers({});
+                                // korte microtask zodat lege set wordt verwerkt vóór merge
+                                queueMicrotask(() => {
+                                    setParameters(prev => ({ ...prev, ...ans }));
+                                    setFlowAnswers(prev => ({ ...prev, ...ans }));
+                                });
+                            } else {
+                                setParameters(prev => ({ ...prev, ...ans }));
+                                setFlowAnswers(prev => ({ ...prev, ...ans }));
+                            }
+                            alert('Antwoorden geladen (' + Object.keys(ans).length + ' velden).');
+                        } catch (e) {
+                            console.error('Fout bij lezen JSON:', e);
+                            alert('Fout bij lezen JSON: ' + e.message);
+                        } finally {
+                            // reset input zodat dezelfde file opnieuw gekozen kan worden indien nodig
+                            event.target.value = '';
+                        }
+                    };
+                    reader.onerror = () => {
+                        alert('Kon bestand niet lezen.');
+                    };
+                    reader.readAsText(file, 'utf-8');
+                } catch (e) {
+                    console.error(e);
+                    alert('Fout bij importeren: ' + e.message);
+                }
+            }, [currentFlow, setParameters, setFlowAnswers, replaceAllOnImport]);
+
             // Loading state
             if (loading) {
                 return (
@@ -2306,14 +2633,37 @@
                     {/* Navigation */}
                     <div className="fixed bottom-0 left-0 right-0 bg-white border-t shadow-lg">
                         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-                            <div className="flex justify-between">
-                                <button
-                                    onClick={prevStep}
-                                    disabled={flowEngine.current?.flowHistory?.length === 0}
-                                    className="px-6 py-3 bg-gray-500 text-white rounded-lg hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed font-medium transition-colors"
-                                >
-                                    ← Vorige
-                                </button>
+                            <div className="flex justify-between items-center">
+                                <div className="flex items-center gap-3">
+                                    <button
+                                        onClick={prevStep}
+                                        disabled={flowEngine.current?.flowHistory?.length === 0}
+                                        className="px-6 py-3 bg-gray-500 text-white rounded-lg hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed font-medium transition-colors"
+                                    >
+                                        ← Vorige
+                                    </button>
+                                    <button
+                                        onClick={exportAnswersAsJSON}
+                                        className="px-4 py-3 bg-gray-700 text-white rounded-lg hover:bg-gray-800 font-medium transition-colors"
+                                        title="Exporteer huidige antwoorden als JSON"
+                                    >
+                                        🗂️ Export JSON
+                                    </button>
+                                    <button
+                                        onClick={openImportDialog}
+                                        className="px-4 py-3 bg-gray-500 text-white rounded-lg hover:bg-gray-600 font-medium transition-colors"
+                                        title="Importeer antwoorden vanuit JSON"
+                                    >
+                                        📥 Import JSON
+                                    </button>
+                                    <input
+                                        type="file"
+                                        accept="application/json"
+                                        ref={fileInputRef}
+                                        onChange={handleImportFile}
+                                        className="hidden"
+                                    />
+                                </div>
                                 {currentStep && currentFlow && currentFlow.stappen.findIndex(s => s.stap_id === currentStep.stap_id) === currentFlow.stappen.length - 1 ? (
                                     // Last step - show completion options
                                     <div className="flex space-x-3">

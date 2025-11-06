@@ -19,10 +19,27 @@
           "type": "select",
           "verplicht": true,
           "opties": [
-            { "waarde": "financieel", "label": "Financieel Contract" },
-            { "waarde": "investering", "label": "Investeringscontract" }
-          ]
+            {
+              "waarde": "financieel",
+              "label": "Financieel Contract"
+            },
+            {
+              "waarde": "investering",
+              "label": "Investeringscontract"
+            }
+          ],
+          "info_button": false,
+          "groep": "contract"
         }
+      ],
+      "groepen": {
+        "contract": {
+          "label": "Contract",
+          "info_button": false
+        }
+      },
+      "groepen_order": [
+        "contract"
       ]
     },
     {

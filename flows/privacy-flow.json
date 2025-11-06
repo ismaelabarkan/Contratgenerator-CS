@@ -19,10 +19,27 @@
           "type": "select",
           "verplicht": true,
           "opties": [
-            { "waarde": "dienstverlening", "label": "Dienstverlening" },
-            { "waarde": "leverancier", "label": "Leverancier" }
-          ]
+            {
+              "waarde": "dienstverlening",
+              "label": "Dienstverlening"
+            },
+            {
+              "waarde": "leverancier",
+              "label": "Leverancier"
+            }
+          ],
+          "info_button": false,
+          "groep": "contract"
         }
+      ],
+      "groepen": {
+        "contract": {
+          "label": "Contract",
+          "info_button": false
+        }
+      },
+      "groepen_order": [
+        "contract"
       ]
     },
     {

@@ -494,6 +494,11 @@
         // ===== STEP EDITOR COMPONENT =====
         function StepEditor({ step, availableClausules, onSave, onCancel }) {
             const [editedStep, setEditedStep] = useState(step);
+            const stepGroups = useMemo(() => {
+                const fromQuestions = new Set((step.vragen || []).map(q => q.groep).filter(Boolean));
+                const fromConfig = new Set(Object.keys(step.groepen || {}));
+                return Array.from(new Set([...fromQuestions, ...fromConfig]));
+            }, [step]);
 
             const handleSave = useCallback(() => {
                 onSave(editedStep);
@@ -514,7 +519,8 @@
                     titel: 'Nieuwe vraag',
                     type: 'select',
                     verplicht: false,
-                    opties: []
+                    opties: [],
+                    groep: ''
                 };
                 
                 setEditedStep(prev => ({
@@ -564,6 +570,64 @@
                                 onChange={(e) => setEditedStep(prev => ({ ...prev, volgorde: parseInt(e.target.value) }))}
                                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
                             />
+                        </div>
+                    </div>
+
+                    {/* Group configuration for this step */}
+                    <div className="border border-gray-200 rounded-lg p-4">
+                        <h3 className="text-md font-semibold mb-3">Groepen</h3>
+                        <div className="space-y-3">
+                            {stepGroups.length === 0 && (
+                                <p className="text-sm text-gray-500">Nog geen groepen. Je kunt per vraag een groep instellen; deze verschijnen hier automatisch.</p>
+                            )}
+                            {stepGroups.map((gKey) => {
+                                const cfg = editedStep.groepen?.[gKey] || {};
+                                const label = cfg.label || '';
+                                const info = cfg.info_button === true;
+                                const toel = cfg.toelichting || '';
+                                return (
+                                    <div key={gKey} className="grid grid-cols-1 md:grid-cols-3 gap-3 items-start bg-gray-50 p-3 rounded">
+                                        <div>
+                                            <label className="block text-xs font-medium text-gray-600 mb-1">Groep sleutel</label>
+                                            <input type="text" value={gKey} disabled className="w-full px-2 py-1 border border-gray-300 rounded" />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-medium text-gray-600 mb-1">Label</label>
+                                            <input
+                                                type="text"
+                                                value={label}
+                                                onChange={(e) => setEditedStep(prev => ({
+                                                    ...prev,
+                                                    groepen: { ...(prev.groepen || {}), [gKey]: { ...(prev.groepen?.[gKey] || {}), label: e.target.value } }
+                                                }))}
+                                                className="w-full px-2 py-1 border border-gray-300 rounded"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-medium text-gray-600 mb-1">Groeps-ℹ️ & toelichting</label>
+                                            <div className="flex items-start gap-3">
+                                                <label className="inline-flex items-center mt-1">
+                                                    <input type="checkbox" className="mr-2" checked={info} onChange={(e) => setEditedStep(prev => ({
+                                                        ...prev,
+                                                        groepen: { ...(prev.groepen || {}), [gKey]: { ...(prev.groepen?.[gKey] || {}), info_button: e.target.checked } }
+                                                    }))} />
+                                                    <span className="text-sm">Info-knop</span>
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    placeholder="Toelichting"
+                                                    value={toel}
+                                                    onChange={(e) => setEditedStep(prev => ({
+                                                        ...prev,
+                                                        groepen: { ...(prev.groepen || {}), [gKey]: { ...(prev.groepen?.[gKey] || {}), toelichting: e.target.value } }
+                                                    }))}
+                                                    className="flex-1 px-2 py-1 border border-gray-300 rounded"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                );
+                            })}
                         </div>
                     </div>
 
@@ -684,6 +748,15 @@
                 onUpdate(editedQuestion);
             }, [editedQuestion, onUpdate]);
 
+            // Push elke wijziging meteen door naar de parent, zodat geen lokale 'Opslaan' nodig is
+            const applyPatch = useCallback((patch) => {
+                setEditedQuestion(prev => {
+                    const next = { ...prev, ...patch };
+                    onUpdate(next);
+                    return next;
+                });
+            }, [onUpdate]);
+
             const handleOptionAdd = useCallback(() => {
                 const newOption = {
                     waarde: `optie_${Date.now()}`,
@@ -691,27 +764,31 @@
                     volgende_stappen: []
                 };
                 
-                setEditedQuestion(prev => ({
-                    ...prev,
-                    opties: [...(prev.opties || []), newOption]
-                }));
+                setEditedQuestion(prev => {
+                    const next = { ...prev, opties: [...(prev.opties || []), newOption] };
+                    onUpdate(next);
+                    return next;
+                });
             }, []);
 
             const handleOptionUpdate = useCallback((optionIndex, updatedOption) => {
-                setEditedQuestion(prev => ({
-                    ...prev,
-                    opties: prev.opties?.map((opt, idx) => 
-                        idx === optionIndex ? updatedOption : opt
-                    ) || []
-                }));
-            }, []);
+                setEditedQuestion(prev => {
+                    const next = {
+                        ...prev,
+                        opties: prev.opties?.map((opt, idx) => idx === optionIndex ? updatedOption : opt) || []
+                    };
+                    onUpdate(next);
+                    return next;
+                });
+            }, [onUpdate]);
 
             const handleOptionDelete = useCallback((optionIndex) => {
-                setEditedQuestion(prev => ({
-                    ...prev,
-                    opties: prev.opties?.filter((_, idx) => idx !== optionIndex) || []
-                }));
-            }, []);
+                setEditedQuestion(prev => {
+                    const next = { ...prev, opties: prev.opties?.filter((_, idx) => idx !== optionIndex) || [] };
+                    onUpdate(next);
+                    return next;
+                });
+            }, [onUpdate]);
 
             return (
                 <div className="border border-gray-200 rounded-lg p-4">
@@ -733,7 +810,7 @@
                             <input
                                 type="text"
                                 value={editedQuestion.vraag_id}
-                                onChange={(e) => setEditedQuestion(prev => ({ ...prev, vraag_id: e.target.value }))}
+                                onChange={(e) => applyPatch({ vraag_id: e.target.value })}
                                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
                             />
                         </div>
@@ -745,9 +822,33 @@
                             <input
                                 type="text"
                                 value={editedQuestion.titel}
-                                onChange={(e) => setEditedQuestion(prev => ({ ...prev, titel: e.target.value }))}
+                                onChange={(e) => applyPatch({ titel: e.target.value })}
                                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
                             />
+                        </div>
+
+                        {/* Groep configuratie per vraag */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">Groep sleutel</label>
+                                <input
+                                    type="text"
+                                    value={editedQuestion.groep || ''}
+                                    onChange={(e) => applyPatch({ groep: e.target.value })}
+                                    placeholder="bijv. opdrachtgever"
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">Groep label (optioneel)</label>
+                                <input
+                                    type="text"
+                                    value={editedQuestion.groep_label || ''}
+                                    onChange={(e) => applyPatch({ groep_label: e.target.value })}
+                                    placeholder="Weergavetitel voor deze vraag/groep"
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                                />
+                            </div>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -757,7 +858,7 @@
                                 </label>
                                 <select
                                     value={editedQuestion.type}
-                                    onChange={(e) => setEditedQuestion(prev => ({ ...prev, type: e.target.value }))}
+                                    onChange={(e) => applyPatch({ type: e.target.value })}
                                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
                                 >
                                     <option value="select">Select</option>
@@ -771,13 +872,42 @@
                                     type="checkbox"
                                     id={`verplicht-${editedQuestion.vraag_id}`}
                                     checked={editedQuestion.verplicht}
-                                    onChange={(e) => setEditedQuestion(prev => ({ ...prev, verplicht: e.target.checked }))}
+                                    onChange={(e) => applyPatch({ verplicht: e.target.checked })}
                                     className="mr-2"
                                 />
                                 <label htmlFor={`verplicht-${editedQuestion.vraag_id}`} className="text-sm font-medium text-gray-700">
                                     Verplicht
                                 </label>
                             </div>
+                        </div>
+
+                        {/* Info button toggle */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="flex items-center">
+                                <input
+                                    type="checkbox"
+                                    id={`info-${editedQuestion.vraag_id}`}
+                                    checked={editedQuestion.info_button !== false}
+                                    onChange={(e) => applyPatch({ info_button: e.target.checked })}
+                                    className="mr-2"
+                                />
+                                <label htmlFor={`info-${editedQuestion.vraag_id}`} className="text-sm font-medium text-gray-700">
+                                    Info-knop tonen (ℹ️)
+                                </label>
+                            </div>
+                            {editedQuestion.info_button !== false && (
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        Toelichting (getoond onder info-knop)
+                                    </label>
+                                    <textarea
+                                        value={editedQuestion.toelichting || ''}
+                                        onChange={(e) => applyPatch({ toelichting: e.target.value })}
+                                        rows={3}
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                                    />
+                                </div>
+                            )}
                         </div>
 
                         {/* Options for select type */}
@@ -821,13 +951,8 @@
                             </div>
                         )}
 
-                        <div className="flex justify-end">
-                            <button
-                                onClick={handleSave}
-                                className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600 text-sm"
-                            >
-                                Opslaan
-                            </button>
+                        <div className="flex justify-end text-xs text-gray-500">
+                            Wijzigingen worden direct toegepast binnen de stap.
                         </div>
                     </div>
                 </div>

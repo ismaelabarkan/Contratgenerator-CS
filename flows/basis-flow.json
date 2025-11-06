@@ -8,7 +8,7 @@
   "stappen": [
     {
       "stap_id": "workflowoverzicht",
-      "titel": "Workflowoverzicht - Basis Informatie",
+      "titel": "Basis Informatie",
       "type": "parameters",
       "verplicht": true,
       "volgorde": 1,
@@ -17,79 +17,106 @@
           "vraag_id": "opdrachtgever_naam",
           "titel": "Naam gemeente / regio (Opdrachtgever)",
           "type": "text",
-          "verplicht": false
+          "verplicht": false,
+          "info_button": false,
+          "groep": "opdrachtgever"
         },
         {
           "vraag_id": "opdrachtgever_adres",
           "titel": "Adres (Opdrachtgever)",
           "type": "text",
-          "verplicht": false
+          "verplicht": false,
+          "info_button": false,
+          "groep": "opdrachtgever"
         },
         {
           "vraag_id": "opdrachtgever_postcode",
           "titel": "Postcode (Opdrachtgever)",
           "type": "text",
-          "verplicht": false
+          "verplicht": false,
+          "info_button": false,
+          "groep": "opdrachtgever"
         },
         {
           "vraag_id": "opdrachtgever_plaats",
           "titel": "Plaats (Opdrachtgever)",
           "type": "text",
-          "verplicht": false
+          "verplicht": false,
+          "info_button": false,
+          "groep": "opdrachtgever"
         },
         {
           "vraag_id": "opdrachtgever_kvk",
           "titel": "KvK-nummer (Opdrachtgever)",
           "type": "text",
-          "verplicht": false
+          "verplicht": false,
+          "info_button": false,
+          "groep": "opdrachtgever"
         },
         {
           "vraag_id": "opdrachtnemer_naam",
           "titel": "Naam organisatie aanbieder (Opdrachtnemer)",
           "type": "text",
-          "verplicht": false
+          "verplicht": false,
+          "info_button": false,
+          "groep": "opdrachtnemer"
         },
         {
           "vraag_id": "opdrachtnemer_adres",
           "titel": "Adres (Opdrachtnemer)",
           "type": "text",
-          "verplicht": false
+          "verplicht": false,
+          "info_button": false,
+          "groep": "opdrachtnemer"
         },
         {
           "vraag_id": "opdrachtnemer_postcode",
           "titel": "Postcode (Opdrachtnemer)",
           "type": "text",
-          "verplicht": false
+          "verplicht": false,
+          "info_button": false,
+          "groep": "opdrachtnemer"
         },
         {
           "vraag_id": "opdrachtnemer_plaats",
           "titel": "Plaats (Opdrachtnemer)",
           "type": "text",
-          "verplicht": false
+          "verplicht": false,
+          "info_button": false,
+          "groep": "opdrachtnemer"
         },
         {
           "vraag_id": "opdrachtnemer_kvk",
           "titel": "KvK-nummer (Opdrachtnemer)",
           "type": "text",
-          "verplicht": false
+          "verplicht": false,
+          "info_button": false,
+          "groep": "opdrachtnemer"
         },
         {
           "vraag_id": "inkoopmethode",
           "titel": "Hoe koopt Opdrachtgever de jeugdhulp in?",
           "type": "select",
           "verplicht": true,
+          "info_button": true,
+          "toelichting": "Kies de manier waarop de gemeente jeugdhulp inkoopt. Bij aanbesteding vindt een openbare procedure plaats. Bij toelating kunnen alleen erkende aanbieders deelnemen.",
           "opties": [
             {
               "waarde": "aanbestedingsprocedure",
               "label": "Via een aanbestedingsprocedure",
-              "volgende_stappen": ["inkoopprocedure_vraag"]
+              "volgende_stappen": [
+                "inkoopprocedure_vraag"
+              ]
             },
             {
               "waarde": "toelatingsprocedure",
               "label": "Via een toelatingsprocedure",
-              "volgende_stappen": ["uitvoeringsvariant_vraag"]
+              "volgende_stappen": [
+                "uitvoeringsvariant_vraag"
+              ]
             }
-          ]
+          ],
+          "groep": "inkoop"
         },
         {
           "vraag_id": "inkoopprocedure",
@@ -110,7 +137,11 @@
               "label": "Zonder EMVI"
             }
           ],
-          "volgende_stappen": ["uitvoeringsvariant_vraag"]
+          "volgende_stappen": [
+            "uitvoeringsvariant_vraag"
+          ],
+          "info_button": false,
+          "groep": "inkoop"
         },
         {
           "vraag_id": "alle_aanbieders_contract",
@@ -120,13 +151,17 @@
           "conditioneel": {
             "field": "inkoopmethode",
             "value": "aanbestedingsprocedure"
-          }
+          },
+          "info_button": false,
+          "groep": "inkoop"
         },
         {
           "vraag_id": "uitvoeringsvariant",
           "titel": "Welke uitvoeringsvariant?",
           "type": "select",
           "verplicht": true,
+          "info_button": false,
+          "toelichting": "Inspanningsgericht: aanbieden maakt inspanning voor resultaat. Outputgericht: betaling gebaseerd op behaalde resultaten. Taakgericht: afgesproken taken uitvoeren.",
           "opties": [
             {
               "waarde": "inspanningsgericht",
@@ -141,22 +176,69 @@
               "label": "Taakgericht"
             }
           ],
-          "volgende_stappen": ["jeugdhulp_vraag"]
+          "volgende_stappen": [
+            "jeugdhulp_vraag"
+          ],
+          "groep": "uitvoering"
         },
         {
           "vraag_id": "extra_overwegingen",
           "titel": "Welke extra overwegingen toevoegen?",
           "type": "string_list",
           "verplicht": false,
-          "volgende_stappen": ["begripsdefinities"]
+          "volgende_stappen": [
+            "begripsdefinities"
+          ],
+          "info_button":true,
+          "toelichting": "De overwegingen laten zien hoe partijen de overeenkomst sluiten en hoe zij de overeenkomst interpreteren. De overwegingen lichten toe welke doelen partijen hebben en hoe ze samenwerken.De overwegingen sluiten aan op: •verplichtingen uit de Jeugdwet,•de inkoopprocedure,•de gekozen uitvoeringsvariant,•algemene doelstellingen voor jeugdhulp. Partijen mogen deze overwegingen aanvullen met extra punten uit hun eigen gemeente of regio.\n",
+          "item_label": "Overweging",
+          "groep": "jeugdhulp"
         },
         {
           "vraag_id": "begripsdefinities",
           "titel": "Welke begripsdefinities toevoegen?",
           "type": "keyvalue_list",
           "verplicht": false,
-          "volgende_stappen": ["deel1"]
+          "volgende_stappen": [
+            "deel1"
+          ],
+          "info_button": true,
+          "toelichting": "De lijst met begripsdefinities in de overeenkomst kan worden uitgebreid met extra definities. Dat is alleen zinvol als een begrip in de overeenkomst niet in een wet wordt uitgelegd.\nDe contractstandaard gebruikt namelijk definities uit de geldende wet- en regelgeving. Ook gelden de definities uit de gemeentelijke verordening.\nEnkele toelichtingen:\n·     Voor het begrip 'fraude' gebruikt de overeenkomst een aangepaste tekst van VNG Naleving.\n·     Voor 'gepast gebruik' gebruikt de overeenkomst de definitie uit WLZ-overeenkomsten van zorgkantoren.\n·     Voor '(a)specifiek en generiek toewijzen' volgt de overeenkomst de uitleg uit de Handreiking Uit­voeringsvarianten iWmo en iJw, versie 1.3, p. 5 van Zorginstituut Nederland.\nDe contractstandaard gebruikt het begrip 'micro-onderneming' zoals gedefinieerd in aanbeveling 2003/361/EG.",
+          "groep": "jeugdhulp"
         }
+      ],
+      "groepen": {
+        "opdrachtgever": {
+          "label": "Opdrachtgever Gegevens",
+          "info_button": true,
+          "toelichting": "Er kan slechts één contractpartij Opdrachtgever zijn: dus een individuele gemeente óf een consortium met meerdere gemeenten (juridische entiteit) óf een gemeente die namens een aantal andere gemeenten optreedt als contractpartij/penvoerder."
+        },
+        "opdrachtnemer": {
+          "label": "Opdrachtnemer",
+          "info_button": true,
+          "toelichting": "Er kan slechts één contractpartij Opdrachtnemer zijn: dus een individuele aanbieder óf een consortium met meerdere aanbieders (juridische entiteit) óf een aanbieder die namens een combinatie van aanbieders optreedt als contractpartij/penvoerder."
+        },
+        "inkoop": {
+          "label": "Inkoop en Aanbesteding",
+          "info_button": true,
+          "toelichting": "De contractstandaard is van toepassing op de volgende inkoopprocedures • Europese aanbesteding (AW 2012):- SAS-procedure met EMVI-criterium - SAS-procedure zonder EMVI-criterium• Toelatingsprocedure (voormalig ‘open house’) SAS = sociale en andere specifieke diensten EMVI = economisch meest voordelige inschrijving"
+        },
+        "uitvoering": {
+          "label": "Uitvoeringsvariant",
+          "info_button":true,
+          "toelichting": "De volgende uitvoeringsvarianten worden onderscheiden:\n•\tInspanningsgericht: gemeente en aanbieder spreken af wat en hoeveel de aanbieder levert in een vaste tijdseenheid en ze rekenen af op die geleverde tijdseenheden.\n•\tOutputgericht: gemeente en aanbieder spreken af welk resultaat nodig is, maar niet hoe de aanbieder dat resultaat bereikt en ze rekenen af als het resultaat is bereikt.\n•\tTaakgericht: gemeente geeft een opdracht voor een groep jeugdigen aan een aanbieder en die krijgt daar een vast budget voor. De aanbieder bepaalt zelf de manier van uitvoering. Bij taakgericht werken hoeft de aanbieder geen verantwoording per cliënt af te leggen.\nBron: Handreiking Uitvoeringsvarianten iWmo en iJw, Zorginstituut Nederland\n"
+        },
+        "jeugdhulp": {
+          "label": "Jeugdhulp en Aanvullende Informatie",
+          "info_button": false
+        }
+      },
+      "groepen_order": [
+        "opdrachtgever",
+        "opdrachtnemer",
+        "inkoop",
+        "uitvoering",
+        "jeugdhulp"
       ]
     },
     {
@@ -173,24 +255,39 @@
           "verplicht": true,
           "artikel": "1.1",
           "opties": [
-            { "waarde": "jeugdhulp_1", "label": "1: Ondersteuning van en hulp en zorg, niet zijnde preventie, aan jeugdigen en hun ouders bij het verminderen, stabiliseren, behandelen en opheffen van of omgaan met de gevolgen van psychische problemen en stoornissen, psychosociale problemen, gedragsproblemen of een verstandelijke beperking van de jeugdige, opvoedingsproblemen van de ouders of adoptie gerelateerde problemen" },
-            { "waarde": "jeugdhulp_2", "label": "2: Het bevorderen van de deelname aan het maatschappelijk verkeer en van het zelfstandig functioneren van jeugdigen met een somatische, verstandelijke, lichamelijke of zintuiglijke beperking, een chronisch psychisch probleem of een psychosociaal probleem, die de leeftijd van 18 (achttien) jaar nog niet hebben bereikt" },
-            { "waarde": "jeugdhulp_3", "label": "3: Het ondersteunen bij of het overnemen van activiteiten op het gebied van de persoonlijke verzorging gericht op het opheffen van een tekort aan zelfredzaamheid bij jeugdigen met een verstandelijke, lichamelijke of zintuiglijke beperking of een somatische of psychiatrische aandoening of beperking, die de leeftijd van 18 (achttien) jaar nog niet hebben bereikt." }
-          ]
+            {
+              "waarde": "jeugdhulp_1",
+              "label": "1: Ondersteuning van en hulp en zorg, niet zijnde preventie, aan jeugdigen en hun ouders bij het verminderen, stabiliseren, behandelen en opheffen van of omgaan met de gevolgen van psychische problemen en stoornissen, psychosociale problemen, gedragsproblemen of een verstandelijke beperking van de jeugdige, opvoedingsproblemen van de ouders of adoptie gerelateerde problemen"
+            },
+            {
+              "waarde": "jeugdhulp_2",
+              "label": "2: Het bevorderen van de deelname aan het maatschappelijk verkeer en van het zelfstandig functioneren van jeugdigen met een somatische, verstandelijke, lichamelijke of zintuiglijke beperking, een chronisch psychisch probleem of een psychosociaal probleem, die de leeftijd van 18 (achttien) jaar nog niet hebben bereikt"
+            },
+            {
+              "waarde": "jeugdhulp_3",
+              "label": "3: Het ondersteunen bij of het overnemen van activiteiten op het gebied van de persoonlijke verzorging gericht op het opheffen van een tekort aan zelfredzaamheid bij jeugdigen met een verstandelijke, lichamelijke of zintuiglijke beperking of een somatische of psychiatrische aandoening of beperking, die de leeftijd van 18 (achttien) jaar nog niet hebben bereikt."
+            }
+          ],
+          "info_button": false,
+          "groep": "jeugdhulp"
         },
         {
           "vraag_id": "specifieke_jeugdhulp",
           "titel": "Meer specifiek gaat het om de volgende jeugdhulp:",
           "type": "textarea",
           "verplicht": false,
-          "artikel": "1.1"
+          "artikel": "1.1",
+          "info_button": false,
+          "groep": "specifiek"
         },
         {
           "vraag_id": "meerdere_opdrachtnemers",
           "titel": "Sluit opdrachtgever met meerdere opdrachtnemers een overeenkomst?",
           "type": "boolean",
           "verplicht": true,
-          "artikel": "1.0"
+          "artikel": "1.0",
+          "info_button": false,
+          "groep": "meerdere"
         },
         {
           "vraag_id": "documenten_samenstelling",
@@ -219,7 +316,8 @@
               "subvraag": {
                 "vraag_id": "gemeentelijke_inkoopdocumenten_tekst",
                 "titel": "Welke gemeentelijke inkoopdocumenten?",
-                "type": "text"
+                "type": "text",
+                "info_button": false
               }
             },
             {
@@ -234,42 +332,63 @@
               "waarde": "bijlagen_aanmelding",
               "label": "4.5 Bijlagen aanmelding (toelatingsprocedure)"
             }
-          ]
+          ],
+          "info_button": false,
+          "groep": "documenten"
         },
         {
           "vraag_id": "documenten_bijlagen_overig",
           "titel": "4.1 Bijlagen (optioneel): welke bijlagen toevoegen?",
           "type": "string_list",
           "verplicht": false,
-          "artikel": "1.2"
+          "artikel": "1.2",
+          "info_button": false,
+          "item_label": "Bijlage",
+          "groep": "documenten"
         },
         {
           "vraag_id": "looptijd_begindatum",
           "titel": "Looptijd overeenkomst - Begindatum",
           "type": "date",
           "verplicht": true,
-          "artikel": "1.3.1"
+          "artikel": "1.3.1",
+          "info_button": false,
+          "groep": "looptijd"
         },
         {
           "vraag_id": "looptijd_einddatum",
           "titel": "Looptijd overeenkomst - Einddatum",
           "type": "date",
           "verplicht": true,
-          "artikel": "1.3.1"
+          "artikel": "1.3.1",
+          "info_button": false,
+          "groep": "looptijd"
+        },
+        {
+          "vraag_id": "indexering_startdatum",
+          "titel": "Vanaf welke datum wordt de eerste indexering van de tarieven toegepast?",
+          "type": "date",
+          "verplicht": true,
+          "info_button": false,
+          "groep": "looptijd"
         },
         {
           "vraag_id": "verlenging_hoevaak",
           "titel": "Hoe vaak mag de overeenkomst verlengd worden?",
           "type": "text",
           "verplicht": false,
-          "artikel": "1.3.2"
+          "artikel": "1.3.2",
+          "info_button": false,
+          "groep": "verlenging"
         },
         {
           "vraag_id": "verlenging_maanden",
           "titel": "Met hoeveel maanden mag verlengd worden?",
           "type": "text",
           "verplicht": false,
-          "artikel": "1.3.2"
+          "artikel": "1.3.2",
+          "info_button": false,
+          "groep": "verlenging"
         },
         {
           "vraag_id": "opzegoptie",
@@ -288,9 +407,11 @@
             },
             {
               "waarde": "opzegoptie_variant3",
-            "label": "Optie 3: Opdrachtgever mag naast de mogelijkheden genoemd in artikel 1.4.2, [1.6.1], 3.19.1 en 3.22 tussentijds schriftelijk opzeggen met een opzegtermijn van [aantal] kalendermaanden. Opdrachtnemer mag naast de mogelijkheden genoemd in artikel 1.4.2, 3.22 en 3.30.4 tussentijds schriftelijk opzeggen met een opzegtermijn van [aantal] kalendermaanden. Opdrachtnemer moet dan wel voldoen aan de volgende voorwaarden: [voorwaarden benoemen]."
+              "label": "Optie 3: Opdrachtgever mag naast de mogelijkheden genoemd in artikel 1.4.2, [1.6.1], 3.19.1 en 3.22 tussentijds schriftelijk opzeggen met een opzegtermijn van [aantal] kalendermaanden. Opdrachtnemer mag naast de mogelijkheden genoemd in artikel 1.4.2, 3.22 en 3.30.4 tussentijds schriftelijk opzeggen met een opzegtermijn van [aantal] kalendermaanden. Opdrachtnemer moet dan wel voldoen aan de volgende voorwaarden: [voorwaarden benoemen]."
             }
-          ]
+          ],
+          "info_button": false,
+          "groep": "opzegoptie"
         },
         {
           "vraag_id": "opzegoptie_maanden",
@@ -300,8 +421,12 @@
           "artikel": "1.3.4",
           "conditioneel": {
             "field": "opzegoptie",
-            "value": ["opzegoptie_variant2", "opzegoptie_variant3"]
-          }
+            "value": [
+              "opzegoptie_variant2",
+              "opzegoptie_variant3"
+            ]
+          },
+          "info_button": false
         },
         {
           "vraag_id": "opzegoptie_voorwaarden",
@@ -311,8 +436,12 @@
           "artikel": "1.3.4",
           "conditioneel": {
             "field": "opzegoptie",
-            "value": ["opzegoptie_variant2", "opzegoptie_variant3"]
-          }
+            "value": [
+              "opzegoptie_variant2",
+              "opzegoptie_variant3"
+            ]
+          },
+          "info_button": false
         },
         {
           "vraag_id": "herzieningsclausule",
@@ -325,38 +454,50 @@
               {
                 "vraag_id": "herzieningsclausule_tekst",
                 "titel": "Extra wijzigingen voor herzieningsclausule",
-                "type": "string_list"
+                "type": "string_list",
+                "info_button": false,
+                "item_label": "Wijziging"
               }
             ]
-          }
+          },
+          "info_button": false,
+          "groep": "herzieningsclausule"
         },
         {
           "vraag_id": "bestedingsruimte",
           "titel": "Bestedingsruimte?",
           "type": "boolean",
           "verplicht": true,
-          "artikel": "1.5"
+          "artikel": "1.5",
+          "info_button": false,
+          "groep": "bestedingsruimte"
         },
         {
           "vraag_id": "opzegging_onvoldoende_inzet",
           "titel": "Opzegging bij onvoldoende inzet?",
           "type": "boolean",
           "verplicht": true,
-          "artikel": "1.6"
+          "artikel": "1.6",
+          "info_button": false,
+          "groep": "opzegging"
         },
         {
           "vraag_id": "bepaling_18_18plus",
           "titel": "18-/18+ bepaling?",
           "type": "boolean",
           "verplicht": true,
-          "artikel": "1.7"
+          "artikel": "1.7",
+          "info_button": false,
+          "groep": "bepaling"
         },
         {
           "vraag_id": "bibob",
           "titel": "BIBOB?",
           "type": "boolean",
           "verplicht": true,
-          "artikel": "1.8"
+          "artikel": "1.8",
+          "info_button": false,
+          "groep": "bepaling"
         },
         {
           "vraag_id": "sroi",
@@ -369,20 +510,92 @@
               {
                 "vraag_id": "sroi_voorwaarden",
                 "titel": "Voorwaarden voor SROI",
-                "type": "textarea"
+                "type": "textarea",
+                "info_button": false
               }
             ]
-          }
+          },
+          "info_button": false,
+          "groep": "bepaling"
         },
         {
           "vraag_id": "extra_bepalingen_deel1",
           "titel": "Extra bepalingen deel 1 toevoegen?",
           "type": "string_list",
           "verplicht": false,
-          "artikel": "1.10+"
+          "artikel": "1.10+",
+          "info_button": false,
+          "item_label": "Bepaling",
+          "groep": "extra"
         }
       ],
-      "volgende_stappen": ["deel2"]
+      "volgende_stappen": [
+        "deel2"
+      ],
+      "groepen": {
+        "jeugdhulp": {
+          "label": "Jeugdhulp en Aanvullende Informatie",
+          "info_button": false
+        },
+        "specifiek": {
+          "label": "Specificatie Jeugdhulp",
+          "info_button": false
+        },
+        "meerdere": {
+          "label": "Meerdere Opdrachtnemers",
+          "info_button": false
+        },
+        "documenten": {
+          "label": "Documenten",
+          "info_button": false
+        },
+        "looptijd": {
+          "label": "Looptijd",
+          "info_button": false
+        },
+        "verlenging": {
+          "label": "Verlenging",
+          "info_button": false
+        },
+        "opzegoptie": {
+          "label": "Tussentijdse opzegmogelijkheden",
+          "info_button": false
+        },
+        "herzieningsclausule": {
+          "label": "Herzieningsclausule",
+          "info_button": false
+        },
+        "bestedingsruimte": {
+          "label": "Bestedingsruimte",
+          "info_button": false
+        },
+        "opzegging": {
+          "label": "Opzegging",
+          "info_button": false
+        },
+        "bepaling": {
+          "label": "Bepalingen",
+          "info_button": false
+        },
+        "extra": {
+          "label": "Extra Bepalingen",
+          "info_button": false
+        }
+      },
+      "groepen_order": [
+        "jeugdhulp",
+        "looptijd",
+        "verlenging",
+        "documenten",
+        "specifiek",
+        "meerdere",
+        "opzegoptie",
+        "herzieningsclausule",
+        "bestedingsruimte",
+        "opzegging",
+        "bepaling",
+        "extra"
+      ]
     },
     {
       "stap_id": "deel2",
@@ -406,13 +619,27 @@
               {
                 "vraag_id": "individuele_afspraken_tekst",
                 "titel": "Individuele afspraken tekst",
-                "type": "textarea"
+                "type": "textarea",
+                "info_button": false
               }
             ]
-          }
+          },
+          "info_button": false,
+          "groep": "individuele"
         }
       ],
-      "volgende_stappen": ["deel3"]
+      "volgende_stappen": [
+        "deel3"
+      ],
+      "groepen": {
+        "individuele": {
+          "label": "Individuele Afspraken",
+          "info_button": false
+        }
+      },
+      "groepen_order": [
+        "individuele"
+      ]
     },
     {
       "stap_id": "deel3",
@@ -453,7 +680,9 @@
         "CLAUSULE_3_30",
         "CLAUSULE_3_31"
       ],
-      "volgende_stappen": ["review"]
+      "volgende_stappen": [
+        "review"
+      ]
     },
     {
       "stap_id": "review",
