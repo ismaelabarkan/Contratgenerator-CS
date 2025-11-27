@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>XSS Test</title>
+</head>
+<body>
+    <h1>XSS Protection Test</h1>
+    <button onclick="testXSS()">Test XSS Protection</button>
+    <div id="result"></div>
+
+    <script>
+        async function testXSS() {
+            const result = document.getElementById('result');
+            result.innerHTML = 'Testing...';
+
+            // Test 1: Script tag in titel
+            try {
+                const response = await fetch('http://localhost:8080/api/clausules', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        clausule_id: 'XSS_TEST_' + Date.now(),
+                        titel: '<script>alert("XSS")</script>Malicious Title',
+                        categorie: 'test',
+                        inhoud: 'Normal content'
+                    })
+                });
+
+                const data = await response.json();
+
+                // Fetch it back
+                const checkResponse = await fetch(`http://localhost:8080/api/clausules/XSS_TEST_${data.id}`);
+                const clausule = await checkResponse.json();
+
+                result.innerHTML = `
+                    <h3>Test Results:</h3>
+                    <p><strong>Original:</strong> &lt;script&gt;alert("XSS")&lt;/script&gt;Malicious Title</p>
+                    <p><strong>Stored:</strong> ${clausule.titel}</p>
+                    <p><strong>Status:</strong> ${clausule.titel.includes('<script>') ? '❌ NOT PROTECTED' : '✅ PROTECTED'}</p>
+                `;
+            } catch (error) {
+                result.innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+            }
+        }
+    </script>
+</body>
+</html>

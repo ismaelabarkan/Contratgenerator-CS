@@ -10,6 +10,8 @@ RUN npm install
 
 # Copy application files
 COPY server.js ./
+COPY backend/ ./backend/
+COPY utils/ ./utils/
 COPY standalone_contract_generator_v3_flow.html ./public/index.html
 COPY clausules/ ./clausules/
 COPY flows/ ./flows/

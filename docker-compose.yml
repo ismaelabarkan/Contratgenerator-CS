@@ -23,6 +23,7 @@ services:
       - ./clausules:/app/clausules:ro
       - ./flows:/app/flows:ro
       - ./beheer:/app/public/beheer:ro
+      - ./afbeeldingen:/app/public/afbeeldingen:ro
       - flows-data:/app
 
 volumes:

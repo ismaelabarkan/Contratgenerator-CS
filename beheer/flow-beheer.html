@@ -3,18 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flow Beheer - Contract Generator</title>
+    <title>Flow Beheer - Contract Generator (v4.3.0)</title>
+    <meta name="app-version" content="4.3.0">
+    <meta name="design-update" content="2025-11-07-security-quickwins">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.5/purify.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-        body { 
-            font-family: 'Inter', sans-serif; 
-            background-color: #f8fafc;
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #f8f9fa;
             margin: 0;
             padding: 0;
         }
-        .focus-visible:focus { outline: 2px solid #dc2626; outline-offset: 2px; }
+        .focus-visible:focus { outline: 2px solid #2563eb; outline-offset: 2px; }
         .loading { animation: spin 1s linear infinite; }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         .flow-builder { min-height: 600px; }
@@ -26,8 +28,8 @@
             position: relative;
             cursor: move;
         }
-        .step-node.selected { border-color: #dc2626; }
-        .step-node.required { border-color: #ef4444; }
+        .step-node.selected { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
+        .step-node.required { border-color: #3b82f6; }
         .connection-line {
             position: absolute;
             height: 2px;
@@ -35,17 +37,93 @@
             z-index: 1;
         }
         
-        /* Custom header styling */
-        .header-red { background-color: #dc2626; }
-        .header-nav { background-color: #1e3a8a; }
-        .btn-primary { background-color: #dc2626; }
-        .btn-primary:hover { background-color: #b91c1c; }
-        .btn-secondary { background-color: #1e3a8a; }
-        .btn-secondary:hover { background-color: #1e40af; }
-        .btn-success { background-color: #059669; }
-        .btn-success:hover { background-color: #047857; }
-        .btn-warning { background-color: #d97706; }
-        .btn-warning:hover { background-color: #b45309; }
+        /* i-Sociaaldomein Design System */
+        .header-red {
+            background: #7B1EA2;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .header-nav {
+            background: #7B1EA2;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Button System - i-Sociaaldomein Style */
+        .btn-primary {
+            background: #7B1EA2 !important;
+            color: white !important;
+            font-weight: 500 !important;
+            font-size: 14px !important;
+            padding: 10px 20px !important;
+            border-radius: 6px !important;
+            transition: all 0.15s ease !important;
+            border: none !important;
+            cursor: pointer !important;
+            line-height: 1.5 !important;
+        }
+        .btn-primary:hover {
+            background: #6A1B8E !important;
+        }
+        .btn-primary:active {
+            background: #5A1777 !important;
+        }
+
+        .btn-secondary {
+            background: #f8f9fa !important;
+            color: #333 !important;
+            font-weight: 500 !important;
+            font-size: 14px !important;
+            padding: 10px 20px !important;
+            border-radius: 6px !important;
+            transition: all 0.15s ease !important;
+            border: 1px solid #ddd !important;
+            cursor: pointer !important;
+            line-height: 1.5 !important;
+        }
+        .btn-secondary:hover {
+            background: #e9ecef !important;
+            border-color: #adb5bd !important;
+        }
+        .btn-secondary:active {
+            background: #dee2e6 !important;
+        }
+
+        .btn-success {
+            background: #28a745 !important;
+            color: white !important;
+            font-weight: 500 !important;
+            font-size: 14px !important;
+            padding: 10px 20px !important;
+            border-radius: 6px !important;
+            transition: all 0.15s ease !important;
+            border: none !important;
+            cursor: pointer !important;
+            line-height: 1.5 !important;
+        }
+        .btn-success:hover {
+            background: #218838 !important;
+        }
+        .btn-success:active {
+            background: #1e7e34 !important;
+        }
+
+        .btn-warning {
+            background: #dc3545 !important;
+            color: white !important;
+            font-weight: 500 !important;
+            font-size: 14px !important;
+            padding: 10px 20px !important;
+            border-radius: 6px !important;
+            transition: all 0.15s ease !important;
+            border: none !important;
+            cursor: pointer !important;
+            line-height: 1.5 !important;
+        }
+        .btn-warning:hover {
+            background: #c82333 !important;
+        }
+        .btn-warning:active {
+            background: #bd2130 !important;
+        }
         
         /* Card styling */
         .content-card {
@@ -301,20 +379,20 @@
 
             return (
                 <div className="min-h-screen">
-                    {/* Red Header */}
+                    {/* Header */}
                     <header className="header-red">
                         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                             <div className="flex justify-between items-center py-3">
-                                <h1 className="text-2xl font-bold text-white">Contract Generator</h1>
-                                <div className="flex items-center space-x-4">
-                                    <div className="flex items-center space-x-2">
-                                        <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-                                            <span className="text-sm font-medium text-gray-700">GS</span>
-                                        </div>
-                                        <span className="text-white font-medium">Admin</span>
+                                <div className="flex items-center gap-4">
+                                    <img src="../afbeeldingen/Logoketenbureau-i-soicaal-domein.svg" alt="Ketenbureau i-Sociaal Domein" className="h-10" />
+                                    <div>
+                                        <h1 className="text-xl font-semibold text-white">Contract Generator</h1>
+                                        <p className="text-xs text-white/70 mt-0.5">v4.3.0 - Flow Beheer</p>
                                     </div>
+                                </div>
+                                <div className="flex items-center space-x-4">
                                     <a href="../" className="text-white hover:text-gray-200 text-sm">
-                                        🚪 Uitloggen
+                                        ← Terug naar Home
                                     </a>
                                 </div>
                             </div>

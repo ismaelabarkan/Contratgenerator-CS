@@ -1,0 +1,6 @@
+{
+  "clausule_id": "XSS_MANUAL_TEST",
+  "titel": "<script>alert('XSS')</script>Malicious Title",
+  "categorie": "test",
+  "inhoud": "Test content"
+}

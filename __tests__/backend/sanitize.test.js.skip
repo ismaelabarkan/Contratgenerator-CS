@@ -1,0 +1,122 @@
+/**
+ * Sanitization Utility Tests
+ * Tests for XSS protection
+ */
+
+const { sanitizeInput, sanitizeObject, stripHTML } = require('../../utils/sanitize');
+
+describe('sanitizeInput', () => {
+    test('removes script tags', () => {
+        const malicious = '<script>alert("XSS")</script>Hello';
+        const clean = sanitizeInput(malicious);
+
+        expect(clean).not.toContain('<script>');
+        expect(clean).toBe('Hello');
+    });
+
+    test('preserves basic HTML tags', () => {
+        const input = '<strong>Bold</strong> and <em>italic</em> text';
+        const output = sanitizeInput(input);
+
+        expect(output).toContain('<strong>');
+        expect(output).toContain('<em>');
+    });
+
+    test('removes event handlers from img tags', () => {
+        const malicious = '<img src="x" onerror="alert(1)">';
+        const clean = sanitizeInput(malicious);
+
+        expect(clean).not.toContain('onerror');
+    });
+
+    test('handles non-string input gracefully', () => {
+        expect(sanitizeInput(123)).toBe(123);
+        expect(sanitizeInput(null)).toBe(null);
+        expect(sanitizeInput(undefined)).toBe(undefined);
+    });
+
+    test('removes javascript: protocol from links', () => {
+        const malicious = '<a href="javascript:alert(1)">Click</a>';
+        const clean = sanitizeInput(malicious);
+
+        expect(clean).not.toContain('javascript:');
+    });
+});
+
+describe('sanitizeObject', () => {
+    test('sanitizes string properties in object', () => {
+        const obj = {
+            title: '<script>alert(1)</script>Title',
+            description: 'Normal text',
+            number: 123
+        };
+
+        const sanitized = sanitizeObject(obj);
+
+        expect(sanitized.title).not.toContain('<script>');
+        expect(sanitized.description).toBe('Normal text');
+        expect(sanitized.number).toBe(123);
+    });
+
+    test('handles nested objects', () => {
+        const obj = {
+            title: '<script>alert(1)</script>Title',
+            nested: {
+                content: '<img onerror="alert(1)">'
+            }
+        };
+
+        const sanitized = sanitizeObject(obj);
+
+        expect(sanitized.title).not.toContain('<script>');
+        expect(sanitized.nested.content).not.toContain('onerror');
+    });
+
+    test('handles arrays of strings', () => {
+        const obj = {
+            items: [
+                '<script>alert(1)</script>Item 1',
+                '<img onerror="alert(1)">Item 2'
+            ]
+        };
+
+        const sanitized = sanitizeObject(obj);
+
+        expect(sanitized.items[0]).not.toContain('<script>');
+        expect(sanitized.items[1]).not.toContain('onerror');
+    });
+
+    test('respects exclude keys', () => {
+        const obj = {
+            safeField: '<script>alert(1)</script>',
+            dangerousField: '<script>alert(2)</script>'
+        };
+
+        const sanitized = sanitizeObject(obj, ['safeField']);
+
+        expect(sanitized.safeField).toContain('<script>');
+        expect(sanitized.dangerousField).not.toContain('<script>');
+    });
+});
+
+describe('stripHTML', () => {
+    test('removes all HTML tags', () => {
+        const input = '<strong>Bold</strong> and <em>italic</em> text';
+        const output = stripHTML(input);
+
+        expect(output).toBe('Bold and italic text');
+    });
+
+    test('removes script tags and content', () => {
+        const input = '<script>alert(1)</script>Text';
+        const output = stripHTML(input);
+
+        expect(output).not.toContain('<script>');
+        expect(output).toBe('Text');
+    });
+
+    test('handles non-string input gracefully', () => {
+        expect(stripHTML(123)).toBe(123);
+        expect(stripHTML(null)).toBe(null);
+    });
+});
