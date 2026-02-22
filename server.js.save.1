@@ -1,3 +1,5 @@
+
+
 /**
  * Contract Generator Backend Server
  * Version: 4.3.0
@@ -33,11 +35,7 @@ const PORT = process.env.PORT || 3001;
 // ===== MIDDLEWARE =====
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
-
-// 🔥 Static folders expliciet serveren
-app.use('/beheer', express.static(path.join(__dirname, 'beheer')));
-app.use('/clausules', express.static(path.join(__dirname, 'clausules')));
-app.use('/afbeeldingen', express.static(path.join(__dirname, 'afbeeldingen')));
+app.use(express.static('public'));
 
 // ===== ROUTES =====
 // API routes
@@ -50,6 +48,8 @@ app.use('/api/health', healthRouter);
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'beheer', 'flow-beheer.html'));
 });
+
+app.use(express.static(__dirname));
 
 
 // ===== ERROR HANDLING =====
@@ -103,3 +103,4 @@ if (require.main === module) {
 
 // Export app for testing
 module.exports = app;
+
